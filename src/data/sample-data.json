@@ -1,0 +1,634 @@
+{
+  "users": [
+    {
+      "id": "user-1",
+      "fullName": "John Admin",
+      "email": "admin@school.edu",
+      "password": "admin123",
+      "role": "ADMIN",
+      "phone": "+1234567890",
+      "profilePhoto": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
+      "coverPhoto": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&h=200&fit=crop",
+      "bio": "School administrator passionate about student development and club management.",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "user-2",
+      "fullName": "Sarah Johnson",
+      "email": "sarah.johnson@school.edu",
+      "password": "teacher123",
+      "role": "TEACHER",
+      "phone": "+1234567891",
+      "profilePhoto": "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
+      "coverPhoto": "https://images.unsplash.com/photo-1523240798139-8c4fc0f5c3a4?w=800&h=200&fit=crop",
+      "bio": "Science teacher and robotics club advisor. Love inspiring students to explore technology.",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "user-3",
+      "fullName": "Michael Chen",
+      "email": "michael.chen@school.edu",
+      "password": "teacher123",
+      "role": "TEACHER",
+      "phone": "+1234567892",
+      "profilePhoto": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
+      "coverPhoto": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=200&fit=crop",
+      "bio": "Art teacher and creative arts club mentor. Helping students express themselves through art.",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "user-4",
+      "fullName": "Emily Rodriguez",
+      "email": "emily.rodriguez@school.edu",
+      "password": "teacher123",
+      "role": "TEACHER",
+      "phone": "+1234567893",
+      "profilePhoto": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
+      "coverPhoto": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=200&fit=crop",
+      "bio": "English teacher and debate club coach. Encouraging critical thinking and public speaking.",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "user-5",
+      "fullName": "David Thompson",
+      "email": "david.thompson@school.edu",
+      "password": "teacher123",
+      "role": "TEACHER",
+      "phone": "+1234567894",
+      "profilePhoto": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
+      "coverPhoto": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=200&fit=crop",
+      "bio": "Physical education teacher and sports coordinator. Promoting healthy lifestyles and teamwork.",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "user-6",
+      "fullName": "Alex Smith",
+      "email": "alex.smith@student.school.edu",
+      "password": "student123",
+      "role": "STUDENT",
+      "phone": "+1234567895",
+      "profilePhoto": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face",
+      "coverPhoto": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&h=200&fit=crop",
+      "bio": "Senior student passionate about technology and robotics. President of the Tech Club.",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "user-7",
+      "fullName": "Emma Wilson",
+      "email": "emma.wilson@student.school.edu",
+      "password": "student123",
+      "role": "STUDENT",
+      "phone": "+1234567896",
+      "profilePhoto": "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
+      "coverPhoto": "https://images.unsplash.com/photo-1523240798139-8c4fc0f5c3a4?w=800&h=200&fit=crop",
+      "bio": "Junior student with a love for art and creativity. Active member of the Art Club.",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "user-8",
+      "fullName": "James Brown",
+      "email": "james.brown@student.school.edu",
+      "password": "student123",
+      "role": "STUDENT",
+      "phone": "+1234567897",
+      "profilePhoto": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
+      "coverPhoto": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=200&fit=crop",
+      "bio": "Sophomore student interested in debate and public speaking. Member of the Debate Team.",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "user-9",
+      "fullName": "Sophia Davis",
+      "email": "sophia.davis@student.school.edu",
+      "password": "student123",
+      "role": "STUDENT",
+      "phone": "+1234567898",
+      "profilePhoto": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
+      "coverPhoto": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=200&fit=crop",
+      "bio": "Freshman student passionate about environmental science. Founder of the Eco Club.",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "user-10",
+      "fullName": "Lucas Garcia",
+      "email": "lucas.garcia@student.school.edu",
+      "password": "student123",
+      "role": "STUDENT",
+      "phone": "+1234567899",
+      "profilePhoto": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
+      "coverPhoto": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=200&fit=crop",
+      "bio": "Senior student and basketball team captain. Leading by example on and off the court.",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    }
+  ],
+  "grades": [
+    {
+      "id": "grade-9",
+      "name": "Grade 9",
+      "startYear": 2024,
+      "endYear": 2025,
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "grade-10",
+      "name": "Grade 10",
+      "startYear": 2024,
+      "endYear": 2025,
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "grade-11",
+      "name": "Grade 11",
+      "startYear": 2024,
+      "endYear": 2025,
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "grade-12",
+      "name": "Grade 12",
+      "startYear": 2024,
+      "endYear": 2025,
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    }
+  ],
+  "userGrades": [
+    {
+      "id": "user-grade-1",
+      "userId": "user-6",
+      "gradeId": "grade-12",
+      "startDate": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "user-grade-2",
+      "userId": "user-7",
+      "gradeId": "grade-11",
+      "startDate": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "user-grade-3",
+      "userId": "user-8",
+      "gradeId": "grade-10",
+      "startDate": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "user-grade-4",
+      "userId": "user-9",
+      "gradeId": "grade-9",
+      "startDate": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "user-grade-5",
+      "userId": "user-10",
+      "gradeId": "grade-12",
+      "startDate": "2024-01-01T00:00:00Z"
+    }
+  ],
+  "clubs": [
+    {
+      "id": "club-1",
+      "name": "Tech Innovators",
+      "description": "A dynamic club focused on exploring cutting-edge technology, programming, and robotics. Students work on real-world projects and participate in competitions.",
+      "logoUrl": "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=200&h=200&fit=crop",
+      "coverImageUrl": "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800&h=300&fit=crop",
+      "category": "Technology",
+      "status": "ACTIVE",
+      "advisorId": "user-2",
+      "documents": [],
+      "gallery": [
+        {
+          "id": "gallery-1",
+          "url": "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=300&fit=crop",
+          "caption": "Robotics Workshop",
+          "uploadedBy": "user-2",
+          "uploadedAt": "2024-01-15T10:00:00Z"
+        },
+        {
+          "id": "gallery-2",
+          "url": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=300&fit=crop",
+          "caption": "Coding Session",
+          "uploadedBy": "user-6",
+          "uploadedAt": "2024-01-20T14:30:00Z"
+        }
+      ],
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "club-2",
+      "name": "Creative Arts Collective",
+      "description": "A vibrant community of artists, designers, and creative minds. We explore various art forms including painting, digital art, photography, and mixed media.",
+      "logoUrl": "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=200&h=200&fit=crop",
+      "coverImageUrl": "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=800&h=300&fit=crop",
+      "category": "Arts",
+      "status": "ACTIVE",
+      "advisorId": "user-3",
+      "documents": [],
+      "gallery": [
+        {
+          "id": "gallery-3",
+          "url": "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=400&h=300&fit=crop",
+          "caption": "Art Exhibition",
+          "uploadedBy": "user-3",
+          "uploadedAt": "2024-01-10T16:00:00Z"
+        },
+        {
+          "id": "gallery-4",
+          "url": "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400&h=300&fit=crop",
+          "caption": "Photography Workshop",
+          "uploadedBy": "user-7",
+          "uploadedAt": "2024-01-25T11:00:00Z"
+        }
+      ],
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "club-3",
+      "name": "Debate Champions",
+      "description": "Develop critical thinking, public speaking, and argumentation skills. Our team competes in regional and national debate tournaments.",
+      "logoUrl": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=200&h=200&fit=crop",
+      "coverImageUrl": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&h=300&fit=crop",
+      "category": "Academic",
+      "status": "ACTIVE",
+      "advisorId": "user-4",
+      "documents": [],
+      "gallery": [
+        {
+          "id": "gallery-5",
+          "url": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400&h=300&fit=crop",
+          "caption": "Debate Competition",
+          "uploadedBy": "user-4",
+          "uploadedAt": "2024-01-12T13:00:00Z"
+        },
+        {
+          "id": "gallery-6",
+          "url": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=300&fit=crop",
+          "caption": "Public Speaking Workshop",
+          "uploadedBy": "user-8",
+          "uploadedAt": "2024-01-18T15:30:00Z"
+        }
+      ],
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "club-4",
+      "name": "Eco Warriors",
+      "description": "Dedicated to environmental conservation and sustainability. We organize clean-up drives, awareness campaigns, and green initiatives.",
+      "logoUrl": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=200&h=200&fit=crop",
+      "coverImageUrl": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=300&fit=crop",
+      "category": "Community Service",
+      "status": "ACTIVE",
+      "advisorId": "user-5",
+      "documents": [],
+      "gallery": [
+        {
+          "id": "gallery-7",
+          "url": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=300&fit=crop",
+          "caption": "Tree Planting Day",
+          "uploadedBy": "user-5",
+          "uploadedAt": "2024-01-05T09:00:00Z"
+        },
+        {
+          "id": "gallery-8",
+          "url": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop",
+          "caption": "Recycling Drive",
+          "uploadedBy": "user-9",
+          "uploadedAt": "2024-01-22T10:00:00Z"
+        }
+      ],
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "club-5",
+      "name": "Sports Legends",
+      "description": "Promoting physical fitness, teamwork, and sportsmanship. We organize tournaments, training sessions, and fitness challenges.",
+      "logoUrl": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=200&h=200&fit=crop",
+      "coverImageUrl": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=300&fit=crop",
+      "category": "Sports",
+      "status": "ACTIVE",
+      "advisorId": "user-5",
+      "documents": [],
+      "gallery": [
+        {
+          "id": "gallery-9",
+          "url": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop",
+          "caption": "Basketball Tournament",
+          "uploadedBy": "user-5",
+          "uploadedAt": "2024-01-08T16:00:00Z"
+        },
+        {
+          "id": "gallery-10",
+          "url": "https://images.unsplash.com/photo-1526676037777-05a232554f77?w=400&h=300&fit=crop",
+          "caption": "Fitness Challenge",
+          "uploadedBy": "user-10",
+          "uploadedAt": "2024-01-28T14:00:00Z"
+        }
+      ],
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    }
+  ],
+  "memberships": [
+    {
+      "id": "membership-1",
+      "userId": "user-6",
+      "clubId": "club-1",
+      "role": "PRESIDENT",
+      "status": "APPROVED",
+      "gradeId": "grade-12",
+      "joinedAt": "2024-01-01T00:00:00Z",
+      "startDate": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "membership-2",
+      "userId": "user-7",
+      "clubId": "club-2",
+      "role": "MEMBER",
+      "status": "APPROVED",
+      "gradeId": "grade-11",
+      "joinedAt": "2024-01-01T00:00:00Z",
+      "startDate": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "membership-3",
+      "userId": "user-8",
+      "clubId": "club-3",
+      "role": "MEMBER",
+      "status": "APPROVED",
+      "gradeId": "grade-10",
+      "joinedAt": "2024-01-01T00:00:00Z",
+      "startDate": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "membership-4",
+      "userId": "user-9",
+      "clubId": "club-4",
+      "role": "PRESIDENT",
+      "status": "APPROVED",
+      "gradeId": "grade-9",
+      "joinedAt": "2024-01-01T00:00:00Z",
+      "startDate": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "membership-5",
+      "userId": "user-10",
+      "clubId": "club-5",
+      "role": "CAPTAIN",
+      "status": "APPROVED",
+      "gradeId": "grade-12",
+      "joinedAt": "2024-01-01T00:00:00Z",
+      "startDate": "2024-01-01T00:00:00Z"
+    }
+  ],
+  "events": [
+    {
+      "id": "event-1",
+      "clubId": "club-1",
+      "title": "Robotics Workshop",
+      "description": "Learn the basics of robotics and programming. Build your own robot and compete in challenges.",
+      "location": "Science Lab 101",
+      "date": "2024-02-15T14:00:00Z",
+      "imageUrl": "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=600&h=300&fit=crop",
+      "rsvpLimit": 25,
+      "createdAt": "2024-01-15T00:00:00Z",
+      "updatedAt": "2024-01-15T00:00:00Z"
+    },
+    {
+      "id": "event-2",
+      "clubId": "club-2",
+      "title": "Art Exhibition",
+      "description": "Showcase your creative talents in our annual art exhibition. All art forms welcome!",
+      "location": "Art Gallery",
+      "date": "2024-02-20T18:00:00Z",
+      "imageUrl": "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=600&h=300&fit=crop",
+      "rsvpLimit": 50,
+      "createdAt": "2024-01-20T00:00:00Z",
+      "updatedAt": "2024-01-20T00:00:00Z"
+    },
+    {
+      "id": "event-3",
+      "clubId": "club-3",
+      "title": "Debate Tournament",
+      "description": "Annual inter-school debate tournament. Compete against other schools and win prizes.",
+      "location": "Auditorium",
+      "date": "2024-02-25T09:00:00Z",
+      "imageUrl": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&h=300&fit=crop",
+      "rsvpLimit": 30,
+      "createdAt": "2024-01-25T00:00:00Z",
+      "updatedAt": "2024-01-25T00:00:00Z"
+    },
+    {
+      "id": "event-4",
+      "clubId": "club-4",
+      "title": "Environmental Clean-up",
+      "description": "Join us for a community clean-up drive. Help make our environment cleaner and greener.",
+      "location": "Local Park",
+      "date": "2024-03-01T10:00:00Z",
+      "imageUrl": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&h=300&fit=crop",
+      "rsvpLimit": 40,
+      "createdAt": "2024-01-30T00:00:00Z",
+      "updatedAt": "2024-01-30T00:00:00Z"
+    },
+    {
+      "id": "event-5",
+      "clubId": "club-5",
+      "title": "Basketball Championship",
+      "description": "Annual basketball championship. Teams from all grades compete for the trophy.",
+      "location": "School Gymnasium",
+      "date": "2024-03-05T16:00:00Z",
+      "imageUrl": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=300&fit=crop",
+      "rsvpLimit": 100,
+      "createdAt": "2024-02-05T00:00:00Z",
+      "updatedAt": "2024-02-05T00:00:00Z"
+    }
+  ],
+  "announcements": [
+    {
+      "id": "announcement-1",
+      "title": "Welcome to the New School Year!",
+      "content": "Welcome back everyone! We're excited to start another amazing year filled with learning, growth, and fun activities. Check out our club fair this Friday to discover new opportunities.",
+      "target": "GLOBAL",
+      "createdBy": "user-1",
+      "createdAt": "2024-01-01T08:00:00Z",
+      "updatedAt": "2024-01-01T08:00:00Z"
+    },
+    {
+      "id": "announcement-2",
+      "title": "Tech Club Meeting This Week",
+      "content": "Attention all Tech Innovators! We have an exciting robotics workshop planned for this Saturday. Don't miss out on this hands-on learning experience.",
+      "target": "CLUB",
+      "clubId": "club-1",
+      "createdBy": "user-2",
+      "createdAt": "2024-01-10T10:00:00Z",
+      "updatedAt": "2024-01-10T10:00:00Z"
+    },
+    {
+      "id": "announcement-3",
+      "title": "Art Exhibition Registration Open",
+      "content": "Calling all artists! Registration for our annual art exhibition is now open. Submit your artwork by next Friday to participate in this amazing showcase.",
+      "target": "CLUB",
+      "clubId": "club-2",
+      "createdBy": "user-3",
+      "createdAt": "2024-01-15T14:00:00Z",
+      "updatedAt": "2024-01-15T14:00:00Z"
+    }
+  ],
+  "badges": [
+    {
+      "id": "badge-1",
+      "name": "First Event",
+      "description": "Attended your first club event",
+      "iconUrl": "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=50&h=50&fit=crop",
+      "autoAssign": true,
+      "condition": "attended_first_event",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "badge-2",
+      "name": "Club Leader",
+      "description": "Became a club president or captain",
+      "iconUrl": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=50&h=50&fit=crop",
+      "autoAssign": true,
+      "condition": "became_leader",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "badge-3",
+      "name": "Event Organizer",
+      "description": "Helped organize a successful event",
+      "iconUrl": "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=50&h=50&fit=crop",
+      "autoAssign": true,
+      "condition": "organized_event",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    }
+  ],
+  "userBadges": [
+    {
+      "id": "user-badge-1",
+      "userId": "user-6",
+      "badgeId": "badge-1",
+      "assignedAt": "2024-01-15T00:00:00Z"
+    },
+    {
+      "id": "user-badge-2",
+      "userId": "user-6",
+      "badgeId": "badge-2",
+      "assignedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "user-badge-3",
+      "userId": "user-9",
+      "badgeId": "badge-2",
+      "assignedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "user-badge-4",
+      "userId": "user-10",
+      "badgeId": "badge-2",
+      "assignedAt": "2024-01-01T00:00:00Z"
+    }
+  ],
+  "forums": [
+    {
+      "id": "forum-1",
+      "clubId": "club-1",
+      "title": "Tech Discussion",
+      "isPrivate": false,
+      "createdBy": "user-2",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "forum-2",
+      "clubId": "club-2",
+      "title": "Art Inspiration",
+      "isPrivate": false,
+      "createdBy": "user-3",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    }
+  ],
+  "forumPosts": [
+    {
+      "id": "post-1",
+      "forumId": "forum-1",
+      "content": "What programming languages should we focus on for the robotics competition?",
+      "postedBy": "user-6",
+      "likes": 5,
+      "isFlagged": false,
+      "createdAt": "2024-01-05T10:00:00Z",
+      "updatedAt": "2024-01-05T10:00:00Z"
+    },
+    {
+      "id": "post-2",
+      "forumId": "forum-2",
+      "content": "Check out this amazing digital art technique I learned!",
+      "postedBy": "user-7",
+      "likes": 8,
+      "isFlagged": false,
+      "createdAt": "2024-01-08T14:00:00Z",
+      "updatedAt": "2024-01-08T14:00:00Z"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "notification-1",
+      "userId": "user-6",
+      "message": "Your membership to Tech Innovators has been approved!",
+      "type": "ANNOUNCEMENT",
+      "isRead": false,
+      "createdAt": "2024-01-01T09:00:00Z"
+    },
+    {
+      "id": "notification-2",
+      "userId": "user-7",
+      "message": "New event: Art Exhibition on February 20th",
+      "type": "EVENT",
+      "isRead": false,
+      "createdAt": "2024-01-20T15:00:00Z"
+    },
+    {
+      "id": "notification-3",
+      "userId": "user-8",
+      "message": "You've earned the 'First Event' badge!",
+      "type": "BADGE",
+      "isRead": true,
+      "createdAt": "2024-01-15T16:00:00Z"
+    }
+  ],
+  "eventAttendees": [
+    {
+      "id": "attendee-1",
+      "eventId": "event-1",
+      "userId": "user-6",
+      "rsvpStatus": "ACCEPTED",
+      "checkedIn": true
+    },
+    {
+      "id": "attendee-2",
+      "eventId": "event-2",
+      "userId": "user-7",
+      "rsvpStatus": "ACCEPTED",
+      "checkedIn": false
+    }
+  ]
+}
