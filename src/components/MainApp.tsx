@@ -11,6 +11,8 @@ import BadgesPage from './Badges/BadgesPage';
 import ProfilePage from './Profile/ProfilePage';
 import AdminPanel from './Admin/AdminPanel';
 import LandingPage from './Landing/LandingPage';
+import ClubDetailPage from './Clubs/ClubDetailPage';
+import EventDetailPage from './Events/EventDetailPage';
 
 const MainApp: React.FC = () => {
   const { currentUser, isLoading } = useAuth();
@@ -30,8 +32,12 @@ const MainApp: React.FC = () => {
     );
   }
 
+  // Show landing page if no user is logged in
   if (!currentUser) {
-    return <LoginForm />;
+    if (currentPage === 'login') {
+      return <LoginForm />;
+    }
+    return <LandingPage onNavigate={handleNavigate} />;
   }
 
   const renderPage = () => {
@@ -49,8 +55,12 @@ const MainApp: React.FC = () => {
         return <StudentDashboard onNavigate={handleNavigate} />;
       case 'clubs':
         return <ClubsPage onNavigate={handleNavigate} />;
+      case 'club-detail':
+        return <ClubDetailPage onNavigate={handleNavigate} clubId={pageData?.clubId} />;
       case 'events':
         return <EventsPage onNavigate={handleNavigate} />;
+      case 'event-detail':
+        return <EventDetailPage onNavigate={handleNavigate} eventId={pageData?.eventId} />;
       case 'forums':
         return <ForumsPage onNavigate={handleNavigate} />;
       case 'badges':

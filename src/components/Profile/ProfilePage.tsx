@@ -87,12 +87,11 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate }) => {
   const handleCancel = () => {
     if (user) {
       setFormData({
-        firstName: user.firstName,
-        lastName: user.lastName,
+        fullName: user.fullName,
         email: user.email,
         phone: user.phone || '',
         bio: user.bio || '',
-        interests: user.interests?.join(', ') || '',
+        interests: '',
         password: '',
         confirmPassword: ''
       });
