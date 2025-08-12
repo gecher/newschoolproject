@@ -3,7 +3,14 @@ import { useAuth } from '../contexts/AuthContext';
 import LoginForm from './Auth/LoginForm';
 import Navbar from './Layout/Navbar';
 import StudentDashboard from './Dashboard/StudentDashboard';
+import TeacherDashboard from './Dashboard/TeacherDashboard';
 import ClubsPage from './Clubs/ClubsPage';
+import EventsPage from './Events/EventsPage';
+import ForumsPage from './Forums/ForumsPage';
+import BadgesPage from './Badges/BadgesPage';
+import ProfilePage from './Profile/ProfilePage';
+import AdminPanel from './Admin/AdminPanel';
+import LandingPage from './Landing/LandingPage';
 
 const MainApp: React.FC = () => {
   const { currentUser, isLoading } = useAuth();
@@ -28,46 +35,32 @@ const MainApp: React.FC = () => {
   }
 
   const renderPage = () => {
+    // Role-based routing
+    if (currentUser.role === 'ADMIN' && currentPage === 'dashboard') {
+      return <AdminPanel onNavigate={handleNavigate} />;
+    }
+
+    if (currentUser.role === 'TEACHER' && currentPage === 'dashboard') {
+      return <TeacherDashboard onNavigate={handleNavigate} />;
+    }
+
     switch (currentPage) {
       case 'dashboard':
         return <StudentDashboard onNavigate={handleNavigate} />;
       case 'clubs':
         return <ClubsPage onNavigate={handleNavigate} />;
       case 'events':
-        return (
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Events</h1>
-            <p className="mt-2 text-gray-600 dark:text-gray-400">Events page coming soon...</p>
-          </div>
-        );
+        return <EventsPage onNavigate={handleNavigate} />;
       case 'forums':
-        return (
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Forums</h1>
-            <p className="mt-2 text-gray-600 dark:text-gray-400">Forums page coming soon...</p>
-          </div>
-        );
+        return <ForumsPage onNavigate={handleNavigate} />;
       case 'badges':
-        return (
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Badges</h1>
-            <p className="mt-2 text-gray-600 dark:text-gray-400">Badges page coming soon...</p>
-          </div>
-        );
+        return <BadgesPage onNavigate={handleNavigate} />;
       case 'profile':
-        return (
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Profile</h1>
-            <p className="mt-2 text-gray-600 dark:text-gray-400">Profile page coming soon...</p>
-          </div>
-        );
+        return <ProfilePage onNavigate={handleNavigate} />;
       case 'admin':
-        return (
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Admin Panel</h1>
-            <p className="mt-2 text-gray-600 dark:text-gray-400">Admin panel coming soon...</p>
-          </div>
-        );
+        return <AdminPanel onNavigate={handleNavigate} />;
+      case 'landing':
+        return <LandingPage onNavigate={handleNavigate} />;
       default:
         return <StudentDashboard onNavigate={handleNavigate} />;
     }

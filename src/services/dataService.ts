@@ -6,10 +6,12 @@ import sampleData from '../data/sample-data.json';
 
 class DataService {
   private data: any;
+  private readonly STORAGE_KEY = 'school_app_data_v1';
 
   constructor() {
-    // Initialize with sample data
-    this.data = { ...sampleData };
+    // Initialize with sample data, but prefer persisted data from localStorage
+    const persisted = this.safeGetFromStorage();
+    this.data = persisted ?? { ...sampleData };
   }
 
   // Generic CRUD operations for JSON manipulation
@@ -21,9 +23,35 @@ class DataService {
     return new Date().toISOString();
   }
 
+  private safeGetFromStorage(): any | null {
+    try {
+      if (typeof window === 'undefined') return null;
+      const raw = window.localStorage.getItem(this.STORAGE_KEY);
+      if (!raw) return null;
+      return JSON.parse(raw);
+    } catch {
+      return null;
+    }
+  }
+
+  private persist(): void {
+    try {
+      if (typeof window === 'undefined') return;
+      window.localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.data));
+    } catch {
+      // ignore storage errors in sandboxed environments
+    }
+  }
+
   // Users
   getUsers(): User[] {
     return this.data.users.filter((user: User) => !user.deletedAt);
+  }
+
+  getCurrentUser(): User | null {
+    // In a real app, this would get the current user from authentication context
+    // For now, return the first user as a mock
+    return this.data.users[0] || null;
   }
 
   getUserById(id: string): User | undefined {
@@ -42,6 +70,7 @@ class DataService {
       updatedAt: this.getCurrentTimestamp()
     };
     this.data.users.push(newUser);
+    this.persist();
     return newUser;
   }
 
@@ -54,6 +83,7 @@ class DataService {
       ...updates,
       updatedAt: this.getCurrentTimestamp()
     };
+    this.persist();
     return this.data.users[userIndex];
   }
 
@@ -62,6 +92,7 @@ class DataService {
     if (userIndex === -1) return false;
 
     this.data.users[userIndex].deletedAt = this.getCurrentTimestamp();
+    this.persist();
     return true;
   }
 
@@ -94,6 +125,7 @@ class DataService {
       updatedAt: this.getCurrentTimestamp()
     };
     this.data.clubs.push(newClub);
+    this.persist();
     return newClub;
   }
 
@@ -106,6 +138,7 @@ class DataService {
       ...updates,
       updatedAt: this.getCurrentTimestamp()
     };
+    this.persist();
     return this.data.clubs[clubIndex];
   }
 
@@ -114,6 +147,7 @@ class DataService {
     if (clubIndex === -1) return false;
 
     this.data.clubs[clubIndex].deletedAt = this.getCurrentTimestamp();
+    this.persist();
     return true;
   }
 
@@ -147,6 +181,7 @@ class DataService {
       updatedAt: this.getCurrentTimestamp()
     };
     this.data.events.push(newEvent);
+    this.persist();
     return newEvent;
   }
 
@@ -159,6 +194,7 @@ class DataService {
       ...updates,
       updatedAt: this.getCurrentTimestamp()
     };
+    this.persist();
     return this.data.events[eventIndex];
   }
 
@@ -167,6 +203,7 @@ class DataService {
     if (eventIndex === -1) return false;
 
     this.data.events[eventIndex].deletedAt = this.getCurrentTimestamp();
+    this.persist();
     return true;
   }
 
@@ -193,6 +230,7 @@ class DataService {
       id: this.generateId()
     };
     this.data.memberships.push(newMembership);
+    this.persist();
     return newMembership;
   }
 
@@ -204,6 +242,7 @@ class DataService {
       ...this.data.memberships[membershipIndex],
       ...updates
     };
+    this.persist();
     return this.data.memberships[membershipIndex];
   }
 
@@ -212,6 +251,7 @@ class DataService {
     if (membershipIndex === -1) return false;
 
     this.data.memberships[membershipIndex].deletedAt = this.getCurrentTimestamp();
+    this.persist();
     return true;
   }
 
@@ -240,7 +280,28 @@ class DataService {
       updatedAt: this.getCurrentTimestamp()
     };
     this.data.announcements.push(newAnnouncement);
+    this.persist();
     return newAnnouncement;
+  }
+
+  updateAnnouncement(id: string, updates: Partial<Announcement>): Announcement | null {
+    const idx = this.data.announcements.findIndex((a: Announcement) => a.id === id);
+    if (idx === -1) return null;
+    this.data.announcements[idx] = {
+      ...this.data.announcements[idx],
+      ...updates,
+      updatedAt: this.getCurrentTimestamp()
+    };
+    this.persist();
+    return this.data.announcements[idx];
+  }
+
+  deleteAnnouncement(id: string): boolean {
+    const idx = this.data.announcements.findIndex((a: Announcement) => a.id === id);
+    if (idx === -1) return false;
+    this.data.announcements.splice(idx, 1);
+    this.persist();
+    return true;
   }
 
   // Event Attendees
@@ -256,6 +317,7 @@ class DataService {
       id: this.generateId()
     };
     this.data.eventAttendees.push(newAttendee);
+    this.persist();
     return newAttendee;
   }
 
@@ -267,6 +329,7 @@ class DataService {
       ...this.data.eventAttendees[attendeeIndex],
       ...updates
     };
+    this.persist();
     return this.data.eventAttendees[attendeeIndex];
   }
 
@@ -289,6 +352,7 @@ class DataService {
       updatedAt: this.getCurrentTimestamp()
     };
     this.data.badges.push(newBadge);
+    this.persist();
     return newBadge;
   }
 
@@ -300,10 +364,35 @@ class DataService {
       assignedAt: this.getCurrentTimestamp()
     };
     this.data.userBadges.push(newUserBadge);
+    this.persist();
     return newUserBadge;
   }
 
+  updateBadge(id: string, updates: Partial<Badge>): Badge | null {
+    const idx = this.data.badges.findIndex((b: Badge) => b.id === id);
+    if (idx === -1) return null;
+    this.data.badges[idx] = {
+      ...this.data.badges[idx],
+      ...updates,
+      updatedAt: this.getCurrentTimestamp()
+    };
+    this.persist();
+    return this.data.badges[idx];
+  }
+
+  deleteBadge(id: string): boolean {
+    const idx = this.data.badges.findIndex((b: Badge) => b.id === id);
+    if (idx === -1) return false;
+    this.data.badges.splice(idx, 1);
+    this.persist();
+    return true;
+  }
+
   // Forums
+  getForums(): Forum[] {
+    return this.data.forums;
+  }
+
   getForumsByClub(clubId: string): Forum[] {
     return this.data.forums.filter((forum: Forum) => forum.clubId === clubId);
   }
@@ -322,7 +411,28 @@ class DataService {
       updatedAt: this.getCurrentTimestamp()
     };
     this.data.forumPosts.push(newPost);
+    this.persist();
     return newPost;
+  }
+
+  updateForumPost(id: string, updates: Partial<ForumPost>): ForumPost | null {
+    const idx = this.data.forumPosts.findIndex((p: ForumPost) => p.id === id);
+    if (idx === -1) return null;
+    this.data.forumPosts[idx] = {
+      ...this.data.forumPosts[idx],
+      ...updates,
+      updatedAt: this.getCurrentTimestamp()
+    };
+    this.persist();
+    return this.data.forumPosts[idx];
+  }
+
+  deleteForumPost(id: string): boolean {
+    const idx = this.data.forumPosts.findIndex((p: ForumPost) => p.id === id);
+    if (idx === -1) return false;
+    this.data.forumPosts.splice(idx, 1);
+    this.persist();
+    return true;
   }
 
   // Notifications
@@ -420,11 +530,22 @@ class DataService {
   importData(jsonData: string) {
     try {
       this.data = JSON.parse(jsonData);
+      this.persist();
       return true;
     } catch (error) {
       console.error('Failed to import data:', error);
       return false;
     }
+  }
+
+  // Convenience helpers for admin tools
+  getAllData() {
+    return { ...this.data };
+  }
+
+  resetToSampleData() {
+    this.data = { ...sampleData };
+    this.persist();
   }
 }
 

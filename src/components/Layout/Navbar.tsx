@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   Search, Bell, User, Menu, X, Sun, Moon, 
-  Home, Users, Calendar, MessageSquare, Award, Settings 
+  Home, Users, Calendar, MessageSquare, Award 
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
@@ -17,17 +17,39 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const navigationItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: Home },
-    { id: 'clubs', label: 'Clubs', icon: Users },
-    { id: 'events', label: 'Events', icon: Calendar },
-    { id: 'forums', label: 'Forums', icon: MessageSquare },
-    { id: 'badges', label: 'Badges', icon: Award },
-  ];
+  const getNavigationItems = () => {
+    const baseItems = [
+      { id: 'dashboard', label: 'Dashboard', icon: Home },
+      { id: 'clubs', label: 'Clubs', icon: Users },
+      { id: 'events', label: 'Events', icon: Calendar },
+      { id: 'forums', label: 'Forums', icon: MessageSquare },
+      { id: 'badges', label: 'Badges', icon: Award },
+    ];
 
-  if (currentUser?.role === 'ADMIN') {
-    navigationItems.push({ id: 'admin', label: 'Admin', icon: Settings });
-  }
+    if (currentUser?.role === 'ADMIN') {
+      return [
+        { id: 'dashboard', label: 'Admin Dashboard', icon: Home },
+        { id: 'clubs', label: 'Clubs', icon: Users },
+        { id: 'events', label: 'Events', icon: Calendar },
+        { id: 'forums', label: 'Forums', icon: MessageSquare },
+        { id: 'badges', label: 'Badges', icon: Award },
+      ];
+    }
+
+    if (currentUser?.role === 'TEACHER') {
+      return [
+        { id: 'dashboard', label: 'Teacher Dashboard', icon: Home },
+        { id: 'clubs', label: 'My Clubs', icon: Users },
+        { id: 'events', label: 'Events', icon: Calendar },
+        { id: 'forums', label: 'Forums', icon: MessageSquare },
+        { id: 'badges', label: 'Badges', icon: Award },
+      ];
+    }
+
+    return baseItems;
+  };
+
+  const navigationItems = getNavigationItems();
 
   return (
     <nav className="bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700">

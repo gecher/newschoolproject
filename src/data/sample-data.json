@@ -10,6 +10,7 @@
       "profilePhoto": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
       "coverPhoto": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&h=200&fit=crop",
       "bio": "School administrator passionate about student development and club management.",
+      "isActive": true,
       "createdAt": "2024-01-01T00:00:00Z",
       "updatedAt": "2024-01-01T00:00:00Z"
     },
@@ -23,6 +24,7 @@
       "profilePhoto": "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
       "coverPhoto": "https://images.unsplash.com/photo-1523240798139-8c4fc0f5c3a4?w=800&h=200&fit=crop",
       "bio": "Science teacher and robotics club advisor. Love inspiring students to explore technology.",
+      "isActive": true,
       "createdAt": "2024-01-01T00:00:00Z",
       "updatedAt": "2024-01-01T00:00:00Z"
     },
@@ -36,6 +38,7 @@
       "profilePhoto": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
       "coverPhoto": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=200&fit=crop",
       "bio": "Art teacher and creative arts club mentor. Helping students express themselves through art.",
+      "isActive": true,
       "createdAt": "2024-01-01T00:00:00Z",
       "updatedAt": "2024-01-01T00:00:00Z"
     },
@@ -49,6 +52,7 @@
       "profilePhoto": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
       "coverPhoto": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=200&fit=crop",
       "bio": "English teacher and debate club coach. Encouraging critical thinking and public speaking.",
+      "isActive": true,
       "createdAt": "2024-01-01T00:00:00Z",
       "updatedAt": "2024-01-01T00:00:00Z"
     },
@@ -62,6 +66,7 @@
       "profilePhoto": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
       "coverPhoto": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=200&fit=crop",
       "bio": "Physical education teacher and sports coordinator. Promoting healthy lifestyles and teamwork.",
+      "isActive": true,
       "createdAt": "2024-01-01T00:00:00Z",
       "updatedAt": "2024-01-01T00:00:00Z"
     },
@@ -75,6 +80,7 @@
       "profilePhoto": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face",
       "coverPhoto": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&h=200&fit=crop",
       "bio": "Senior student passionate about technology and robotics. President of the Tech Club.",
+      "isActive": true,
       "createdAt": "2024-01-01T00:00:00Z",
       "updatedAt": "2024-01-01T00:00:00Z"
     },
@@ -88,6 +94,7 @@
       "profilePhoto": "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
       "coverPhoto": "https://images.unsplash.com/photo-1523240798139-8c4fc0f5c3a4?w=800&h=200&fit=crop",
       "bio": "Junior student with a love for art and creativity. Active member of the Art Club.",
+      "isActive": true,
       "createdAt": "2024-01-01T00:00:00Z",
       "updatedAt": "2024-01-01T00:00:00Z"
     },
@@ -101,6 +108,7 @@
       "profilePhoto": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
       "coverPhoto": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=200&fit=crop",
       "bio": "Sophomore student interested in debate and public speaking. Member of the Debate Team.",
+      "isActive": true,
       "createdAt": "2024-01-01T00:00:00Z",
       "updatedAt": "2024-01-01T00:00:00Z"
     },
@@ -114,6 +122,7 @@
       "profilePhoto": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
       "coverPhoto": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=200&fit=crop",
       "bio": "Freshman student passionate about environmental science. Founder of the Eco Club.",
+      "isActive": true,
       "createdAt": "2024-01-01T00:00:00Z",
       "updatedAt": "2024-01-01T00:00:00Z"
     },
@@ -207,6 +216,8 @@
       "category": "Technology",
       "status": "ACTIVE",
       "advisorId": "user-2",
+      "isApproved": true,
+      "memberCount": 15,
       "documents": [],
       "gallery": [
         {
@@ -236,6 +247,8 @@
       "category": "Arts",
       "status": "ACTIVE",
       "advisorId": "user-3",
+      "isApproved": true,
+      "memberCount": 12,
       "documents": [],
       "gallery": [
         {
@@ -265,6 +278,8 @@
       "category": "Academic",
       "status": "ACTIVE",
       "advisorId": "user-4",
+      "isApproved": true,
+      "memberCount": 8,
       "documents": [],
       "gallery": [
         {
@@ -294,6 +309,8 @@
       "category": "Community Service",
       "status": "ACTIVE",
       "advisorId": "user-5",
+      "isApproved": true,
+      "memberCount": 10,
       "documents": [],
       "gallery": [
         {
@@ -323,6 +340,8 @@
       "category": "Sports",
       "status": "ACTIVE",
       "advisorId": "user-5",
+      "isApproved": true,
+      "memberCount": 18,
       "documents": [],
       "gallery": [
         {

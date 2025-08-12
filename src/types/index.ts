@@ -18,6 +18,7 @@ export interface User {
   profilePhoto?: string
   coverPhoto?: string
   bio?: string
+  isActive?: boolean
   createdAt: string
   updatedAt: string
   deletedAt?: string
@@ -50,6 +51,8 @@ export interface Club {
   category?: string
   status: ClubStatus
   advisorId: string
+  isApproved?: boolean
+  memberCount?: number
   documents?: ClubDocument[]
   gallery?: ClubImage[]
   createdAt: string
