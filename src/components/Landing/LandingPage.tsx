@@ -5,6 +5,7 @@ import {
   CheckCircle, Play, ChevronDown, Menu, X
 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import sampleData from '../../data/sample-data.json';
 
 interface LandingPageProps {
   onNavigate: (page: string) => void;
@@ -13,57 +14,59 @@ interface LandingPageProps {
 const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeFeature, setActiveFeature] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentCategory, setCurrentCategory] = useState(0);
+  const [currentClub, setCurrentClub] = useState(0);
   
-  // Stats animation state
-  const [animatedStats, setAnimatedStats] = useState([
-    { number: 0, label: "Active Students" },
-    { number: 0, label: "Student Clubs" },
-    { number: 0, label: "Events Monthly" },
-    { number: 0, label: "Satisfaction Rate" }
-  ]);
   
-  // Stats target values
-  const statsTargets = [
-    { number: 500, label: "Active Students" },
-    { number: 25, label: "Student Clubs" },
-    { number: 100, label: "Events Monthly" },
-    { number: 95, label: "Satisfaction Rate" }
+
+  // Auto-play slides
+  const slides = [
+    {
+      image: "https://images.unsplash.com/photo-1523240798132-8757214e76ba?w=1200&h=600&fit=crop",
+      title: "Student Collaboration",
+      subtitle: "Connect with peers and build lasting friendships"
+    },
+    {
+      image: "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=1200&h=600&fit=crop",
+      title: "Academic Excellence",
+      subtitle: "Enhance your learning through extracurricular activities"
+    },
+    {
+      image: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=1200&h=600&fit=crop",
+      title: "Leadership Development",
+      subtitle: "Develop essential skills for your future career"
+    }
   ];
 
-  // Animate stats on component mount with counting animation
+  // Auto-play slides effect
   useEffect(() => {
-    const duration = 2000; // 2 seconds for the animation
-    const steps = 60; // 60 steps for smooth animation
-    const interval = duration / steps;
-    
-    const timers = statsTargets.map((stat, index) => {
-      const increment = stat.number / steps;
-      let current = 0;
-      
-      const intervalId = setInterval(() => {
-        current += increment;
-        if (current >= stat.number) {
-          current = stat.number;
-          clearInterval(intervalId);
-        }
-        
-        setAnimatedStats(prev => {
-          const newStats = [...prev];
-          newStats[index] = {
-            ...stat,
-            number: stat.label === "Satisfaction Rate" ? Math.round(current) : Math.round(current)
-          };
-          return newStats;
-        });
-      }, interval);
-      
-      return intervalId;
-    });
-    
-    return () => {
-      timers.forEach(timer => clearInterval(timer));
-    };
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 4000); // Change slide every 4 seconds
+
+    return () => clearInterval(interval);
+  }, [slides.length]);
+
+  // Auto-play categories effect
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentCategory((prev) => (prev + 1) % clubCategories.length);
+    }, 5000); // Change category every 5 seconds
+
+    return () => clearInterval(interval);
   }, []);
+
+  // Auto-play clubs effect
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentClub((prev) => (prev + 1) % 3); // Show 3 clubs per category
+    }, 3000); // Change club every 3 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
+  
 
   const features = [
     {
@@ -92,33 +95,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
     }
   ];
 
-  const stats = [
-    { number: "500+", label: "Active Students" },
-    { number: "25+", label: "Student Clubs" },
-    { number: "100+", label: "Events Monthly" },
-    { number: "95%", label: "Satisfaction Rate" }
-  ];
+  
 
-  const testimonials = [
-    {
-      name: "Sarah Johnson",
-      role: "Student Council President",
-      content: "This platform has revolutionized how we manage our clubs. Everything is so organized and easy to use!",
-      avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face"
-    },
-    {
-      name: "Michael Chen",
-      role: "Science Club Advisor",
-      content: "As a teacher, I love how this system helps me track student engagement and manage club activities efficiently.",
-      avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
-    },
-    {
-      name: "Emily Rodriguez",
-      role: "Art Club Member",
-      content: "The badge system motivates me to participate more, and the forums help me connect with like-minded students.",
-      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face"
-    }
-  ];
+     // Club Categories with clubs from JSON data
+   const clubCategories = sampleData.clubCategories;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
@@ -142,34 +122,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
               </div>
             </div>
             
-            <div className="hidden md:block">
-              <div className="ml-10 flex items-baseline space-x-4">
-                <motion.a
-                  href="#features"
-                  className="text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 px-3 py-2 rounded-md text-sm font-medium"
-                  whileHover={{ y: -2, transition: { duration: 0.2 } }}
-                  transition={{ duration: 0.2 }}
-                >
-                  Features
-                </motion.a>
-                <motion.a
-                  href="#about"
-                  className="text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 px-3 py-2 rounded-md text-sm font-medium"
-                  whileHover={{ y: -2, transition: { duration: 0.2 } }}
-                  transition={{ duration: 0.2 }}
-                >
-                  About
-                </motion.a>
-                <motion.a
-                  href="#testimonials"
-                  className="text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 px-3 py-2 rounded-md text-sm font-medium"
-                  whileHover={{ y: -2, transition: { duration: 0.2 } }}
-                  transition={{ duration: 0.2 }}
-                >
-                  Testimonials
-                </motion.a>
-              </div>
-            </div>
 
             <div className="hidden md:block">
               <motion.button
@@ -202,30 +154,9 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
           transition={{ duration: 0.3 }}
           className="overflow-hidden"
         >
-          {isMenuOpen && (
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
-              <motion.a
-                href="#features"
-                className="text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 block px-3 py-2 rounded-md text-base font-medium"
-                whileHover={{ x: 5, transition: { duration: 0.2 } }}
-              >
-                Features
-              </motion.a>
-              <motion.a
-                href="#about"
-                className="text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 block px-3 py-2 rounded-md text-base font-medium"
-                whileHover={{ x: 5, transition: { duration: 0.2 } }}
-              >
-                About
-              </motion.a>
-              <motion.a
-                href="#testimonials"
-                className="text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 block px-3 py-2 rounded-md text-base font-medium"
-                whileHover={{ x: 5, transition: { duration: 0.2 } }}
-              >
-                Testimonials
-              </motion.a>
-              <motion.button
+                     {isMenuOpen && (
+             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
+               <motion.button
                 onClick={() => onNavigate('login')}
                 className="w-full text-left bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded-md text-base font-medium transition-colors"
                 whileHover={{ backgroundColor: "#4f46e5", transition: { duration: 0.2 } }}
@@ -238,14 +169,80 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
         </motion.div>
       </motion.nav>
 
-      {/* Hero Section */}
+      {/* Hero Section with Auto-play Slides */}
       <motion.section
-        className="pt-20 pb-16 px-4 sm:px-6 lg:px-8"
+        className="pt-20 pb-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
         <div className="max-w-7xl mx-auto">
+          {/* Auto-play Slides */}
+          <div className="relative h-96 md:h-[500px] rounded-2xl overflow-hidden mb-16">
+            {slides.map((slide, index) => (
+              <motion.div
+                key={index}
+                className="absolute inset-0"
+                initial={{ opacity: 0 }}
+                animate={{ 
+                  opacity: currentSlide === index ? 1 : 0,
+                  scale: currentSlide === index ? 1 : 1.1
+                }}
+                transition={{ duration: 1, ease: "easeInOut" }}
+              >
+                <div className="relative h-full">
+                  <img
+                    src={slide.image}
+                    alt={slide.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-black/40"></div>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center text-white">
+                      <motion.h2
+                        className="text-4xl md:text-6xl font-bold mb-4"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ 
+                          opacity: currentSlide === index ? 1 : 0,
+                          y: currentSlide === index ? 0 : 20
+                        }}
+                        transition={{ duration: 0.8, delay: 0.2 }}
+                      >
+                        {slide.title}
+                      </motion.h2>
+                      <motion.p
+                        className="text-xl md:text-2xl"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ 
+                          opacity: currentSlide === index ? 1 : 0,
+                          y: currentSlide === index ? 0 : 20
+                        }}
+                        transition={{ duration: 0.8, delay: 0.4 }}
+                      >
+                        {slide.subtitle}
+                      </motion.p>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+            
+            {/* Slide Indicators */}
+            <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2">
+              {slides.map((_, index) => (
+                <motion.button
+                  key={index}
+                  className={`w-3 h-3 rounded-full transition-colors ${
+                    currentSlide === index ? 'bg-white' : 'bg-white/50'
+                  }`}
+                  onClick={() => setCurrentSlide(index)}
+                  whileHover={{ scale: 1.2 }}
+                  whileTap={{ scale: 0.9 }}
+                />
+              ))}
+            </div>
+          </div>
+
           <motion.div
             className="text-center"
             initial={{ opacity: 0, y: 10 }}
@@ -283,13 +280,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
               >
                 Start Your Journey
                 <ArrowRight className="ml-2 h-5 w-5" />
-              </motion.button>
-              <motion.button
-                className="border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 px-8 py-4 rounded-lg text-lg font-semibold transition-colors flex items-center justify-center"
-                whileTap={{ scale: 0.95 }}
-              >
-                <Play className="mr-2 h-5 w-5" />
-                Watch Demo
               </motion.button>
             </motion.div>
           </motion.div>
@@ -342,39 +332,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
         </div>
       </motion.section>
 
-      {/* Stats Section */}
-      <motion.section
-        className="py-16 bg-white dark:bg-gray-800"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {animatedStats.map((stat, index) => (
-              <motion.div
-                key={index}
-                className="text-center"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 * index + 0.3 }}
-              >
-                <motion.div
-                  className="text-3xl md:text-4xl font-bold text-indigo-600 dark:text-indigo-400 mb-2"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.3, delay: 0.1 * index + 0.4 }}
-                >
-                  {stat.label === "Satisfaction Rate" ? stat.number + "%" : stat.number + (stat.label === "Active Students" ? "+" : "")}
-                </motion.div>
-                <div className="text-gray-600 dark:text-gray-400 font-medium">
-                  {stat.label}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </motion.section>
+      
 
       {/* Features Section */}
       <motion.section
@@ -443,97 +401,9 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
         </div>
       </motion.section>
 
-      {/* About Section */}
+      {/* Club Categories Section */}
       <motion.section
-        id="about"
-        className="py-16 bg-gray-50 dark:bg-gray-900"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-            >
-              <motion.h2
-                className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-              >
-                Built for Modern Education
-              </motion.h2>
-              <motion.p
-                className="text-lg text-gray-600 dark:text-gray-400 mb-8"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.5 }}
-              >
-                Our platform is designed with the needs of today's educational institutions in mind.
-                We understand the importance of fostering student engagement and creating meaningful
-                extracurricular experiences.
-              </motion.p>
-              <div className="space-y-4">
-                {['Role-based access control for security', 'Real-time notifications and updates', 'Mobile-responsive design', 'Comprehensive analytics and reporting'].map((item, index) => (
-                  <motion.div
-                    key={index}
-                    className="flex items-center"
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: 0.6 + index * 0.1 }}
-                    whileHover={{ x: 5, transition: { duration: 0.2 } }}
-                  >
-                    <CheckCircle className="h-6 w-6 text-green-600 dark:text-green-400 mr-3 flex-shrink-0" />
-                    <span className="text-gray-700 dark:text-gray-300">{item}</span>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-            <motion.div
-              className="relative"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-            >
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <div className="h-10 w-10 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full flex items-center justify-center">
-                        <Users className="h-5 w-5 text-white" />
-                      </div>
-                      <div className="ml-3">
-                        <p className="text-sm font-medium text-gray-900 dark:text-white">Active Users</p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">Last 24 hours</p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">1,247</p>
-                      <p className="text-xs text-green-600 dark:text-green-400">+12% from yesterday</p>
-                    </div>
-                  </div>
-                  <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                    <motion.div
-                      className="h-full bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full"
-                      initial={{ width: 0 }}
-                      animate={{ width: '75%' }}
-                      transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
-                    ></motion.div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </motion.section>
-
-      {/* Testimonials Section */}
-      <motion.section
-        id="testimonials"
-        className="py-16"
+        className="py-16 bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-gray-800 dark:to-gray-900"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
@@ -546,100 +416,157 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
             transition={{ duration: 0.5, delay: 0.1 }}
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              What Our Users Say
+              Explore Club Categories
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400">
-              Hear from students, teachers, and administrators who use our platform
+            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              Discover diverse clubs across different categories and find your perfect fit
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <motion.div
-                key={index}
-                className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 border border-gray-200 dark:border-gray-700"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 * index + 0.2 }}
-                whileHover={{ y: -5, transition: { duration: 0.2 } }}
-              >
-                <div className="flex items-center mb-6">
-                  <img
-                    src={testimonial.avatar}
-                    alt={testimonial.name}
-                    className="h-12 w-12 rounded-full object-cover"
-                  />
-                  <div className="ml-4">
-                    <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
-                      {testimonial.name}
-                    </h4>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      {testimonial.role}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
-                  ))}
-                </div>
-                <p className="text-gray-600 dark:text-gray-400 italic">
-                  "{testimonial.content}"
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </motion.section>
+          {/* Category Carousel */}
+          <div className="relative">
+            <div className="overflow-hidden rounded-2xl">
+              <div className="flex transition-transform duration-1000 ease-in-out" style={{
+                transform: `translateX(-${currentCategory * 100}%)`
+              }}>
+                {clubCategories.map((category, categoryIndex) => (
+                  <div key={category.id} className="w-full flex-shrink-0">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                      {/* Category Info */}
+                      <motion.div
+                        className="space-y-6"
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ 
+                          opacity: currentCategory === categoryIndex ? 1 : 0,
+                          x: currentCategory === categoryIndex ? 0 : -20
+                        }}
+                        transition={{ duration: 0.8, delay: 0.2 }}
+                      >
+                        <motion.h3
+                          className="text-3xl font-bold text-gray-900 dark:text-white"
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ 
+                            opacity: currentCategory === categoryIndex ? 1 : 0,
+                            y: currentCategory === categoryIndex ? 0 : 20
+                          }}
+                          transition={{ duration: 0.8, delay: 0.3 }}
+                        >
+                          {category.name}
+                        </motion.h3>
+                        <motion.p
+                          className="text-lg text-gray-600 dark:text-gray-400"
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ 
+                            opacity: currentCategory === categoryIndex ? 1 : 0,
+                            y: currentCategory === categoryIndex ? 0 : 20
+                          }}
+                          transition={{ duration: 0.8, delay: 0.4 }}
+                        >
+                          {category.description}
+                        </motion.p>
+                        
+                        {/* Clubs Grid */}
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                          {category.clubs.map((club, clubIndex) => (
+                            <motion.div
+                              key={clubIndex}
+                              className={`bg-white dark:bg-gray-800 rounded-xl p-4 shadow-lg border-2 transition-all duration-300 ${
+                                currentClub === clubIndex ? 'border-indigo-500 scale-105' : 'border-gray-200 dark:border-gray-700'
+                              }`}
+                              initial={{ opacity: 0, y: 20 }}
+                              animate={{ 
+                                opacity: currentCategory === categoryIndex ? 1 : 0,
+                                y: currentCategory === categoryIndex ? 0 : 20
+                              }}
+                              transition={{ duration: 0.8, delay: 0.5 + clubIndex * 0.1 }}
+                              whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                            >
+                              <div className="relative h-32 mb-3 rounded-lg overflow-hidden">
+                                <img
+                                  src={club.image}
+                                  alt={club.name}
+                                  className="w-full h-full object-cover"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                                <div className="absolute bottom-2 left-2 text-white text-sm font-medium">
+                                  {club.members} members
+                                </div>
+                              </div>
+                              <h4 className="font-semibold text-gray-900 dark:text-white mb-1">
+                                {club.name}
+                              </h4>
+                              <p className="text-sm text-gray-600 dark:text-gray-400">
+                                {club.description}
+                              </p>
+                            </motion.div>
+                          ))}
+                        </div>
+                      </motion.div>
 
-      {/* CTA Section */}
-      <motion.section
-        className="py-16 bg-gradient-to-r from-indigo-600 to-purple-600"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.h2
-            className="text-3xl md:text-4xl font-bold text-white mb-6"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          >
-            Ready to Transform Your School Clubs?
-          </motion.h2>
-          <motion.p
-            className="text-xl text-indigo-100 mb-8 max-w-2xl mx-auto"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            Join thousands of students and educators who are already using our platform
-            to create amazing school communities.
-          </motion.p>
-          <motion.div
-            className="flex flex-col sm:flex-row gap-4 justify-center"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
+                      {/* Category Image */}
+                      <motion.div
+                        className="relative"
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ 
+                          opacity: currentCategory === categoryIndex ? 1 : 0,
+                          x: currentCategory === categoryIndex ? 0 : 20
+                        }}
+                        transition={{ duration: 0.8, delay: 0.3 }}
+                      >
+                        <div className="relative h-96 rounded-2xl overflow-hidden shadow-2xl">
+                          <img
+                            src={category.image}
+                            alt={category.name}
+                            className="w-full h-full object-cover"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+                          <div className="absolute bottom-6 left-6 text-white">
+                            <h4 className="text-2xl font-bold mb-2">{category.name}</h4>
+                            <p className="text-lg opacity-90">{category.clubs.length} clubs available</p>
+                          </div>
+                        </div>
+                      </motion.div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Category Indicators */}
+            <div className="flex justify-center mt-8 space-x-3">
+              {clubCategories.map((_, index) => (
+                <motion.button
+                  key={index}
+                  className={`w-4 h-4 rounded-full transition-all duration-300 ${
+                    currentCategory === index 
+                      ? 'bg-indigo-600 scale-125' 
+                      : 'bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500'
+                  }`}
+                  onClick={() => setCurrentCategory(index)}
+                  whileHover={{ scale: 1.2 }}
+                  whileTap={{ scale: 0.9 }}
+                />
+              ))}
+            </div>
+
+            {/* Navigation Arrows */}
             <motion.button
-              onClick={() => onNavigate('login')}
-              className="bg-white text-indigo-600 hover:bg-gray-100 px-8 py-4 rounded-lg text-lg font-semibold transition-colors flex items-center justify-center"
-              whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
-              whileTap={{ scale: 0.95 }}
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white dark:bg-gray-800 p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+              onClick={() => setCurrentCategory((prev) => (prev - 1 + clubCategories.length) % clubCategories.length)}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
             >
-              Get Started Free
-              <ArrowRight className="ml-2 h-5 w-5" />
+              <ChevronDown className="h-6 w-6 text-gray-600 dark:text-gray-400 transform rotate-90" />
             </motion.button>
             <motion.button
-              className="border-2 border-white text-white hover:bg-white hover:text-indigo-600 px-8 py-4 rounded-lg text-lg font-semibold transition-colors"
-              whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
-              whileTap={{ scale: 0.95 }}
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white dark:bg-gray-800 p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+              onClick={() => setCurrentCategory((prev) => (prev + 1) % clubCategories.length)}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
             >
-              Schedule Demo
+              <ChevronDown className="h-6 w-6 text-gray-600 dark:text-gray-400 transform -rotate-90" />
             </motion.button>
-          </motion.div>
+          </div>
         </div>
       </motion.section>
 
@@ -651,81 +578,22 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
         transition={{ duration: 0.5, delay: 0.2 }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-            >
-              <div className="flex items-center mb-4">
-                <div className="h-8 w-8 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center">
-                  <Users className="h-5 w-5 text-white" />
-                </div>
-                <span className="ml-2 text-xl font-bold">SchoolClubs</span>
-              </div>
-              <p className="text-gray-400">
-                Empowering students to create, connect, and grow through meaningful club experiences.
-              </p>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-            >
-              <h3 className="text-lg font-semibold mb-4">Platform</h3>
-              <ul className="space-y-2 text-gray-400">
-                {['Features', 'Pricing', 'Security', 'API'].map((item, index) => (
-                  <motion.li
-                    key={index}
-                    whileHover={{ x: 5, transition: { duration: 0.2 } }}
-                  >
-                    <a href="#" className="hover:text-white transition-colors">{item}</a>
-                  </motion.li>
-                ))}
-              </ul>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-            >
-              <h3 className="text-lg font-semibold mb-4">Support</h3>
-              <ul className="space-y-2 text-gray-400">
-                {['Help Center', 'Documentation', 'Contact Us', 'Status'].map((item, index) => (
-                  <motion.li
-                    key={index}
-                    whileHover={{ x: 5, transition: { duration: 0.2 } }}
-                  >
-                    <a href="#" className="hover:text-white transition-colors">{item}</a>
-                  </motion.li>
-                ))}
-              </ul>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.6 }}
-            >
-              <h3 className="text-lg font-semibold mb-4">Company</h3>
-              <ul className="space-y-2 text-gray-400">
-                {['About', 'Blog', 'Careers', 'Privacy'].map((item, index) => (
-                  <motion.li
-                    key={index}
-                    whileHover={{ x: 5, transition: { duration: 0.2 } }}
-                  >
-                    <a href="#" className="hover:text-white transition-colors">{item}</a>
-                  </motion.li>
-                ))}
-              </ul>
-            </motion.div>
-          </div>
           <motion.div
-            className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.7 }}
+            className="text-center"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <p>&copy; 2024 SchoolClubs. All rights reserved.</p>
+            <div className="flex items-center justify-center mb-4">
+              <div className="h-8 w-8 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center">
+                <Users className="h-5 w-5 text-white" />
+              </div>
+              <span className="ml-2 text-xl font-bold">SchoolClubs</span>
+            </div>
+            <p className="text-gray-400 mb-4">
+              Empowering students to create, connect, and grow through meaningful club experiences.
+            </p>
+            <p className="text-gray-500">&copy; 2024 SchoolClubs. All rights reserved.</p>
           </motion.div>
         </div>
       </motion.footer>

@@ -649,5 +649,111 @@
       "rsvpStatus": "ACCEPTED",
       "checkedIn": false
     }
+  ],
+  "clubCategories": [
+    {
+      "id": 1,
+      "name": "Academic & STEM",
+      "image": "https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=800&h=600&fit=crop",
+      "description": "Science, Technology, Engineering, and Mathematics clubs",
+      "clubs": [
+        {
+          "name": "Robotics Club",
+          "image": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=400&h=300&fit=crop",
+          "members": 45,
+          "description": "Build and program robots for competitions"
+        },
+        {
+          "name": "Math Olympiad",
+          "image": "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=400&h=300&fit=crop",
+          "members": 32,
+          "description": "Advanced mathematics and problem solving"
+        },
+        {
+          "name": "Science Lab",
+          "image": "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=400&h=300&fit=crop",
+          "members": 28,
+          "description": "Hands-on experiments and research projects"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Arts & Culture",
+      "image": "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=800&h=600&fit=crop",
+      "description": "Creative expression through various art forms",
+      "clubs": [
+        {
+          "name": "Photography Club",
+          "image": "https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=400&h=300&fit=crop",
+          "members": 38,
+          "description": "Capture moments and learn photography skills"
+        },
+        {
+          "name": "Drama Club",
+          "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop",
+          "members": 52,
+          "description": "Theater performances and acting workshops"
+        },
+        {
+          "name": "Art Studio",
+          "image": "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8a?w=400&h=300&fit=crop",
+          "members": 41,
+          "description": "Painting, drawing, and creative expression"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Sports & Fitness",
+      "image": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop",
+      "description": "Physical activities and team sports",
+      "clubs": [
+        {
+          "name": "Basketball Team",
+          "image": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=400&h=300&fit=crop",
+          "members": 15,
+          "description": "Competitive basketball and training"
+        },
+        {
+          "name": "Yoga Club",
+          "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=300&fit=crop",
+          "members": 67,
+          "description": "Mindfulness and physical wellness"
+        },
+        {
+          "name": "Swimming Club",
+          "image": "https://images.unsplash.com/photo-1530549387789-4c1017266635?w=400&h=300&fit=crop",
+          "members": 23,
+          "description": "Swimming techniques and water sports"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Leadership & Service",
+      "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&h=600&fit=crop",
+      "description": "Community service and leadership development",
+      "clubs": [
+        {
+          "name": "Student Council",
+          "image": "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=400&h=300&fit=crop",
+          "members": 12,
+          "description": "Student government and leadership"
+        },
+        {
+          "name": "Volunteer Club",
+          "image": "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400&h=300&fit=crop",
+          "members": 89,
+          "description": "Community service and volunteering"
+        },
+        {
+          "name": "Debate Team",
+          "image": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=300&fit=crop",
+          "members": 34,
+          "description": "Public speaking and debate competitions"
+        }
+      ]
+    }
   ]
 }

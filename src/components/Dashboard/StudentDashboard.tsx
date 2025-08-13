@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  Users, Calendar, Award, TrendingUp, Clock, 
-  MapPin, Star, ChevronRight, Bell, BookOpen 
+  Users, Calendar, Plus, Eye, UserPlus, BarChart3, 
+  CheckCircle, XCircle, BookOpen, Award, MapPin 
 } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useAuth } from '../../contexts/AuthContext';
-import { dataService } from '../../services/dataService';
-import { Club, Event, Membership, UserBadge, Badge, Notification } from '../../types';
+import dataService from '../../services/dataService';
+import type { Club, Event, Membership } from '../../services/dataService';
 
 interface StudentDashboardProps {
   onNavigate: (page: string, data?: any) => void;
@@ -13,351 +14,449 @@ interface StudentDashboardProps {
 
 const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate }) => {
   const { currentUser } = useAuth();
-  const [memberships, setMemberships] = useState<Membership[]>([]);
-  const [clubs, setClubs] = useState<Club[]>([]);
-  const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([]);
-  const [userBadges, setUserBadges] = useState<UserBadge[]>([]);
-  const [badges, setBadges] = useState<Badge[]>([]);
-  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [activeTab, setActiveTab] = useState('overview');
+  const [allClubs, setAllClubs] = useState<Club[]>([]);
+  const [myMemberships, setMyMemberships] = useState<Membership[]>([]);
+  const [allEvents, setAllEvents] = useState<Event[]>([]);
+  const [myEvents, setMyEvents] = useState<Event[]>([]);
 
   useEffect(() => {
     if (currentUser) {
-      // Load user's memberships
-      const userMemberships = dataService.getMembershipsByUser(currentUser.id);
-      setMemberships(userMemberships);
-
-      // Load clubs user is member of
-      const userClubs = userMemberships.map(membership => 
-        dataService.getClubById(membership.clubId)
-      ).filter(Boolean) as Club[];
-      setClubs(userClubs);
-
-      // Load upcoming events from user's clubs
-      const events = userClubs.flatMap(club => 
-        dataService.getEventsByClub(club.id)
-      ).filter(event => new Date(event.date) > new Date())
-       .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-       .slice(0, 5);
-      setUpcomingEvents(events);
-
-      // Load user badges
-      const userBadgesList = dataService.getUserBadges(currentUser.id);
-      setUserBadges(userBadgesList);
-
-      // Load all badges for display
-      const allBadges = dataService.getBadges();
-      setBadges(allBadges);
-
-      // Load notifications
-      const userNotifications = dataService.getUserNotifications(currentUser.id)
-        .slice(0, 5);
-      setNotifications(userNotifications);
+      loadStudentData();
     }
   }, [currentUser]);
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      weekday: 'short',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+  const loadStudentData = () => {
+    if (!currentUser) return;
+    
+    const clubs = dataService.getAllClubs();
+    setAllClubs(clubs);
+    
+    const memberships = dataService.getMembershipsByUser(currentUser.id);
+    setMyMemberships(memberships);
+    
+    const events = dataService.getAllEvents();
+    setAllEvents(events);
+    
+    // Get events for clubs the student is a member of
+    const myClubIds = memberships
+      .filter(m => m.status === 'APPROVED')
+      .map(m => m.clubId);
+    const studentEvents = events.filter(event => myClubIds.includes(event.clubId));
+    setMyEvents(studentEvents);
+  };
+
+  const handleJoinClub = (clubId: string) => {
+    if (!currentUser) return;
+    
+    // Check if already a member
+    const existingMembership = myMemberships.find(m => m.clubId === clubId);
+    if (existingMembership) {
+      alert('You are already a member or have a pending request for this club.');
+      return;
+    }
+    
+    const newMembership = dataService.createMembership({
+      userId: currentUser.id,
+      clubId,
+      role: 'MEMBER',
+      status: 'PENDING',
+      gradeId: 'grade-1' // Default grade
     });
+    
+    if (newMembership) {
+      loadStudentData();
+      alert('Membership request sent successfully!');
+    }
   };
 
-  const getClubById = (clubId: string) => {
-    return clubs.find(club => club.id === clubId);
+  const handleLeaveClub = (membershipId: string) => {
+    if (window.confirm('Are you sure you want to leave this club?')) {
+      const success = dataService.deleteMembership(membershipId);
+      if (success) {
+        loadStudentData();
+        alert('Successfully left the club.');
+      }
+    }
   };
 
-  const getBadgeById = (badgeId: string) => {
-    return badges.find(badge => badge.id === badgeId);
+  const handleRSVPToEvent = (eventId: string) => {
+    if (!currentUser) return;
+    
+    const newAttendee = dataService.createEventAttendee({
+      eventId,
+      userId: currentUser.id,
+      rsvpStatus: 'ACCEPTED',
+      checkedIn: false
+    });
+    
+    if (newAttendee) {
+      alert('Successfully RSVP\'d to the event!');
+    }
   };
+
+  const getStats = () => {
+    const joinedClubs = myMemberships.filter(m => m.status === 'APPROVED').length;
+    const pendingRequests = myMemberships.filter(m => m.status === 'PENDING').length;
+    const totalEvents = myEvents.length;
+    const upcomingEvents = myEvents.filter(event => new Date(event.date) > new Date()).length;
+    const availableClubs = allClubs.filter(club => 
+      !myMemberships.some(m => m.clubId === club.id)
+    ).length;
+
+    return {
+      joinedClubs,
+      pendingRequests,
+      totalEvents,
+      upcomingEvents,
+      availableClubs
+    };
+  };
+
+  const stats = getStats();
+
+  const tabs = [
+    { id: 'overview', label: 'Overview', icon: BarChart3 },
+    { id: 'clubs', label: 'Clubs', icon: Users },
+    { id: 'events', label: 'Events', icon: Calendar },
+  ];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Welcome Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-          Welcome back, {currentUser?.fullName}!
-        </h1>
-        <p className="mt-2 text-gray-600 dark:text-gray-400">
-          Here's what's happening with your clubs and activities.
-        </p>
-      </div>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-8"
+        >
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+            Student Dashboard
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            Welcome back, {currentUser?.fullName}. Discover clubs and events that interest you.
+          </p>
+        </motion.div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-          <div className="flex items-center">
-            <div className="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
-              <Users className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">My Clubs</p>
-              <p className="text-2xl font-semibold text-gray-900 dark:text-white">{clubs.length}</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-          <div className="flex items-center">
-            <div className="p-2 bg-green-100 dark:bg-green-900 rounded-lg">
-              <Calendar className="h-6 w-6 text-green-600 dark:text-green-400" />
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Upcoming Events</p>
-              <p className="text-2xl font-semibold text-gray-900 dark:text-white">{upcomingEvents.length}</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-          <div className="flex items-center">
-            <div className="p-2 bg-yellow-100 dark:bg-yellow-900 rounded-lg">
-              <Award className="h-6 w-6 text-yellow-600 dark:text-yellow-400" />
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Badges Earned</p>
-              <p className="text-2xl font-semibold text-gray-900 dark:text-white">{userBadges.length}</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-          <div className="flex items-center">
-            <div className="p-2 bg-purple-100 dark:bg-purple-900 rounded-lg">
-              <TrendingUp className="h-6 w-6 text-purple-600 dark:text-purple-400" />
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Engagement</p>
-              <p className="text-2xl font-semibold text-gray-900 dark:text-white">High</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* My Clubs */}
-        <div className="lg:col-span-2">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
-            <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-              <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">My Clubs</h2>
-                <button
-                  onClick={() => onNavigate('clubs')}
-                  className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 text-sm font-medium flex items-center"
-                >
-                  View all
-                  <ChevronRight className="h-4 w-4 ml-1" />
-                </button>
+        {/* Stats Overview */}
+        {activeTab === 'overview' && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8"
+          >
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+              <div className="flex items-center">
+                <BookOpen className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Joined Clubs</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.joinedClubs}</p>
+                </div>
               </div>
             </div>
+
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+              <div className="flex items-center">
+                <Calendar className="h-8 w-8 text-green-600 dark:text-green-400" />
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Upcoming Events</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.upcomingEvents}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+              <div className="flex items-center">
+                <Users className="h-8 w-8 text-purple-600 dark:text-purple-400" />
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Available Clubs</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.availableClubs}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+              <div className="flex items-center">
+                <UserPlus className="h-8 w-8 text-yellow-600 dark:text-yellow-400" />
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Pending Requests</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.pendingRequests}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+              <div className="flex items-center">
+                <Award className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Events</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.totalEvents}</p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        {/* Tabs */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow mb-6">
+          <div className="border-b border-gray-200 dark:border-gray-700">
+            <nav className="-mb-px flex space-x-8 px-6">
+              {tabs.map((tab) => {
+                const Icon = tab.icon;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`py-4 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 ${
+                      activeTab === tab.id
+                        ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400'
+                        : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'
+                    }`}
+                  >
+                    <Icon className="h-4 w-4" />
+                    <span>{tab.label}</span>
+                  </button>
+                );
+              })}
+            </nav>
+          </div>
+        </div>
+
+        {/* Tab Content */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow">
+          {/* Clubs */}
+          {activeTab === 'clubs' && (
             <div className="p-6">
-              {clubs.length > 0 ? (
-                <div className="space-y-4">
-                  {clubs.slice(0, 3).map((club) => {
-                    const membership = memberships.find(m => m.clubId === club.id);
-                    return (
-                      <div
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">Clubs</h2>
+              
+              {/* My Clubs Section */}
+              {myMemberships.filter(m => m.status === 'APPROVED').length > 0 && (
+                <div className="mb-8">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">My Clubs</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {myMemberships
+                      .filter(membership => membership.status === 'APPROVED')
+                      .map((membership) => {
+                        const club = dataService.getClubById(membership.clubId);
+                        if (!club) return null;
+                        
+                        return (
+                          <motion.div
+                            key={membership.id}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="bg-gray-50 dark:bg-gray-700 rounded-lg p-6"
+                          >
+                            <div className="flex items-center mb-4">
+                              <img
+                                className="h-12 w-12 rounded-lg object-cover"
+                                src={club.logoUrl}
+                                alt={club.name}
+                              />
+                              <div className="ml-4">
+                                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                                  {club.name}
+                                </h3>
+                                <p className="text-sm text-gray-600 dark:text-gray-400">
+                                  {membership.role}
+                                </p>
+                              </div>
+                            </div>
+                            
+                            <p className="text-gray-600 dark:text-gray-400 mb-4">
+                              {club.description.substring(0, 100)}...
+                            </p>
+                            
+                            <div className="flex items-center justify-between mb-4">
+                              <span className="text-sm text-gray-500 dark:text-gray-400">
+                                {club.memberCount} members
+                              </span>
+                              <span className="text-sm text-gray-500 dark:text-gray-400">
+                                Joined {new Date(membership.joinedAt).toLocaleDateString()}
+                              </span>
+                            </div>
+                            
+                            <div className="flex space-x-2">
+                              <button
+                                onClick={() => onNavigate('club-detail', { clubId: club.id })}
+                                className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded text-sm"
+                              >
+                                View Details
+                              </button>
+                              <button
+                                onClick={() => handleLeaveClub(membership.id)}
+                                className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded text-sm"
+                              >
+                                Leave Club
+                              </button>
+                            </div>
+                          </motion.div>
+                        );
+                      })}
+                  </div>
+                </div>
+              )}
+
+                            {/* Available Clubs Section */}
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Available Clubs</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {allClubs
+                    .filter(club => !myMemberships.some(m => m.clubId === club.id))
+                    .map((club) => (
+                      <motion.div
                         key={club.id}
-                        className="flex items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors cursor-pointer"
-                        onClick={() => onNavigate('club-detail', { clubId: club.id })}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden"
                       >
                         <img
-                          src={club.logoUrl || 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=50&h=50&fit=crop'}
+                          className="w-full h-48 object-cover"
+                          src={club.coverImageUrl}
                           alt={club.name}
-                          className="h-12 w-12 rounded-lg object-cover"
                         />
-                        <div className="ml-4 flex-1">
-                          <h3 className="text-sm font-medium text-gray-900 dark:text-white">{club.name}</h3>
-                          <p className="text-sm text-gray-500 dark:text-gray-400">{club.category}</p>
-                          <div className="flex items-center mt-1">
-                            <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                              membership?.role === 'PRESIDENT' 
-                                ? 'bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200'
-                                : membership?.role === 'CAPTAIN'
-                                ? 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200'
-                                : 'bg-gray-100 dark:bg-gray-600 text-gray-800 dark:text-gray-200'
+                        <div className="p-6">
+                          <div className="flex items-center mb-4">
+                            <img
+                              className="h-12 w-12 rounded-lg object-cover"
+                              src={club.logoUrl}
+                              alt={club.name}
+                            />
+                            <div className="ml-4">
+                              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                                {club.name}
+                              </h3>
+                              <p className="text-sm text-gray-600 dark:text-gray-400">
+                                {club.category}
+                              </p>
+                            </div>
+                          </div>
+                          
+                          <p className="text-gray-600 dark:text-gray-400 mb-4">
+                            {club.description.substring(0, 100)}...
+                          </p>
+                          
+                          <div className="flex items-center justify-between mb-4">
+                            <span className="text-sm text-gray-500 dark:text-gray-400">
+                              {club.memberCount} members
+                            </span>
+                            <span className={`px-2 py-1 text-xs font-semibold rounded-full ${
+                              club.status === 'ACTIVE' 
+                                ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                                : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
                             }`}>
-                              {membership?.role}
+                              {club.status}
                             </span>
                           </div>
+                          
+                          <div className="flex space-x-2">
+                            <button
+                              onClick={() => onNavigate('club-detail', { clubId: club.id })}
+                              className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded text-sm"
+                            >
+                              View Details
+                            </button>
+                            <button
+                              onClick={() => handleJoinClub(club.id)}
+                              className="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded text-sm"
+                            >
+                              <UserPlus className="h-4 w-4" />
+                            </button>
+                          </div>
                         </div>
-                        <ChevronRight className="h-5 w-5 text-gray-400" />
-                      </div>
-                    );
-                  })}
+                      </motion.div>
+                    ))}
                 </div>
-              ) : (
-                <div className="text-center py-8">
-                  <Users className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-500 dark:text-gray-400 mb-4">You haven't joined any clubs yet</p>
-                  <button
-                    onClick={() => onNavigate('clubs')}
-                    className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-                  >
-                    Explore Clubs
-                  </button>
+              </div>
+
+              {/* Pending Requests */}
+              {myMemberships.filter(m => m.status === 'PENDING').length > 0 && (
+                <div className="mt-8">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Pending Requests</h3>
+                  <div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-4">
+                    <p className="text-yellow-800 dark:text-yellow-200">
+                      You have {myMemberships.filter(m => m.status === 'PENDING').length} pending club membership requests.
+                    </p>
+                  </div>
                 </div>
               )}
             </div>
-          </div>
+          )}
 
-          {/* Upcoming Events */}
-          <div className="mt-8 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
-            <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-              <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Upcoming Events</h2>
-                <button
-                  onClick={() => onNavigate('events')}
-                  className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 text-sm font-medium flex items-center"
-                >
-                  View all
-                  <ChevronRight className="h-4 w-4 ml-1" />
-                </button>
-              </div>
-            </div>
+
+
+          {/* Events */}
+          {activeTab === 'events' && (
             <div className="p-6">
-              {upcomingEvents.length > 0 ? (
-                <div className="space-y-4">
-                  {upcomingEvents.map((event) => {
-                    const club = getClubById(event.clubId);
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">Events</h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {allEvents
+                  .filter(event => new Date(event.date) > new Date())
+                  .map((event) => {
+                    const club = dataService.getClubById(event.clubId);
+                    const isMyClub = myMemberships.some(m => 
+                      m.clubId === event.clubId && m.status === 'APPROVED'
+                    );
+                    
                     return (
-                      <div
+                      <motion.div
                         key={event.id}
-                        className="flex items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors cursor-pointer"
-                        onClick={() => onNavigate('event-detail', { eventId: event.id })}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden"
                       >
-                        <div className="p-2 bg-indigo-100 dark:bg-indigo-900 rounded-lg">
-                          <Calendar className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
-                        </div>
-                        <div className="ml-4 flex-1">
-                          <h3 className="text-sm font-medium text-gray-900 dark:text-white">{event.title}</h3>
-                          <p className="text-sm text-gray-500 dark:text-gray-400">{club?.name}</p>
-                          <div className="flex items-center mt-1 text-xs text-gray-500 dark:text-gray-400">
-                            <Clock className="h-3 w-3 mr-1" />
-                            {formatDate(event.date)}
-                            {event.location && (
-                              <>
-                                <MapPin className="h-3 w-3 ml-3 mr-1" />
-                                {event.location}
-                              </>
+                        <img
+                          className="w-full h-48 object-cover"
+                          src={event.imageUrl}
+                          alt={event.title}
+                        />
+                        <div className="p-6">
+                          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                            {event.title}
+                          </h3>
+                          <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                            {event.description.substring(0, 80)}...
+                          </p>
+                          
+                          <div className="space-y-2 mb-4">
+                            <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                              <Calendar className="h-4 w-4 mr-2" />
+                              {new Date(event.date).toLocaleDateString()}
+                            </div>
+                            <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                              <MapPin className="h-4 w-4 mr-2" />
+                              {event.location}
+                            </div>
+                            <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                              <Users className="h-4 w-4 mr-2" />
+                              {club?.name || 'Unknown Club'}
+                            </div>
+                          </div>
+                          
+                          <div className="flex space-x-2">
+                            <button
+                              onClick={() => onNavigate('event-detail', { eventId: event.id })}
+                              className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded text-sm"
+                            >
+                              View Details
+                            </button>
+                            {isMyClub && (
+                              <button
+                                onClick={() => handleRSVPToEvent(event.id)}
+                                className="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded text-sm"
+                              >
+                                RSVP
+                              </button>
                             )}
                           </div>
                         </div>
-                        <ChevronRight className="h-5 w-5 text-gray-400" />
-                      </div>
+                      </motion.div>
                     );
                   })}
-                </div>
-              ) : (
-                <div className="text-center py-8">
-                  <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-500 dark:text-gray-400">No upcoming events</p>
-                </div>
-              )}
+              </div>
             </div>
-          </div>
-        </div>
-
-        {/* Sidebar */}
-        <div className="space-y-8">
-          {/* Recent Badges */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
-            <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Recent Badges</h2>
-            </div>
-            <div className="p-6">
-              {userBadges.length > 0 ? (
-                <div className="space-y-3">
-                  {userBadges.slice(0, 3).map((userBadge) => {
-                    const badge = getBadgeById(userBadge.badgeId);
-                    return (
-                      <div key={userBadge.id} className="flex items-center">
-                        <img
-                          src={badge?.iconUrl || 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=40&h=40&fit=crop'}
-                          alt={badge?.name}
-                          className="h-10 w-10 rounded-full"
-                        />
-                        <div className="ml-3">
-                          <p className="text-sm font-medium text-gray-900 dark:text-white">{badge?.name}</p>
-                          <p className="text-xs text-gray-500 dark:text-gray-400">{badge?.description}</p>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              ) : (
-                <div className="text-center py-4">
-                  <Award className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-                  <p className="text-sm text-gray-500 dark:text-gray-400">No badges earned yet</p>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Recent Notifications */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
-            <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Notifications</h2>
-            </div>
-            <div className="p-6">
-              {notifications.length > 0 ? (
-                <div className="space-y-3">
-                  {notifications.map((notification) => (
-                    <div key={notification.id} className="flex items-start">
-                      <div className={`p-1 rounded-full ${notification.isRead ? 'bg-gray-100 dark:bg-gray-700' : 'bg-blue-100 dark:bg-blue-900'}`}>
-                        <Bell className={`h-4 w-4 ${notification.isRead ? 'text-gray-400' : 'text-blue-600 dark:text-blue-400'}`} />
-                      </div>
-                      <div className="ml-3 flex-1">
-                        <p className={`text-sm ${notification.isRead ? 'text-gray-600 dark:text-gray-400' : 'text-gray-900 dark:text-white font-medium'}`}>
-                          {notification.message}
-                        </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                          {formatDate(notification.createdAt)}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-4">
-                  <Bell className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-                  <p className="text-sm text-gray-500 dark:text-gray-400">No new notifications</p>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Quick Actions */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
-            <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Quick Actions</h2>
-            </div>
-            <div className="p-6 space-y-3">
-              <button
-                onClick={() => onNavigate('clubs')}
-                className="w-full flex items-center p-3 text-left bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
-              >
-                <Users className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
-                <span className="ml-3 text-sm font-medium text-gray-900 dark:text-white">Browse Clubs</span>
-              </button>
-              <button
-                onClick={() => onNavigate('events')}
-                className="w-full flex items-center p-3 text-left bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
-              >
-                <Calendar className="h-5 w-5 text-green-600 dark:text-green-400" />
-                <span className="ml-3 text-sm font-medium text-gray-900 dark:text-white">View Events</span>
-              </button>
-              <button
-                onClick={() => onNavigate('forums')}
-                className="w-full flex items-center p-3 text-left bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
-              >
-                <BookOpen className="h-5 w-5 text-purple-600 dark:text-purple-400" />
-                <span className="ml-3 text-sm font-medium text-gray-900 dark:text-white">Join Discussions</span>
-              </button>
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

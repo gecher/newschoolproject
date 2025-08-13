@@ -1,341 +1,440 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  Building2, 
-  Users, 
-  Calendar, 
-  Megaphone, 
-  Award, 
-  MessageSquare, 
-  Plus, 
-  CheckCircle, 
-  XCircle,
-  Eye,
-  Edit,
-  BarChart3,
-  UserCheck,
-  UserX
+  Users, Calendar, Plus, Edit, Trash2, CheckCircle, XCircle, 
+  Eye, UserPlus, BarChart3, BookOpen, Award 
 } from 'lucide-react';
-import { dataService } from '../../services/dataService';
-import { Club, Event, Membership, Announcement, User } from '../../types';
+import { motion } from 'framer-motion';
+import { useAuth } from '../../contexts/AuthContext';
+import dataService from '../../services/dataService';
+import type { Club, Event, Membership } from '../../services/dataService';
 
 interface TeacherDashboardProps {
-  onNavigate: (page: string) => void;
+  onNavigate: (page: string, data?: any) => void;
 }
 
 const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onNavigate }) => {
+  const { currentUser } = useAuth();
+  const [activeTab, setActiveTab] = useState('overview');
   const [myClubs, setMyClubs] = useState<Club[]>([]);
-  const [pendingMemberships, setPendingMemberships] = useState<Membership[]>([]);
-  const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([]);
-  const [recentAnnouncements, setRecentAnnouncements] = useState<Announcement[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [selectedClub, setSelectedClub] = useState<Club | null>(null);
+  const [myEvents, setMyEvents] = useState<Event[]>([]);
+  const [memberships, setMemberships] = useState<Membership[]>([]);
 
   useEffect(() => {
-    const loadTeacherData = async () => {
-      try {
-        const currentUser = dataService.getCurrentUser();
-        if (currentUser && currentUser.role === 'TEACHER') {
-          // Get clubs where the teacher is an advisor
-          const allClubs = await dataService.getClubs();
-          const teacherClubs = allClubs.filter(club => club.advisorId === currentUser.id);
-          setMyClubs(teacherClubs);
+    if (currentUser) {
+      loadTeacherData();
+    }
+  }, [currentUser]);
 
-          // Get pending memberships for teacher's clubs
-          const allMemberships = await dataService.getMemberships();
-          const pendingMemberships = allMemberships.filter(
-            membership => teacherClubs.some(club => club.id === membership.clubId) && 
-                         membership.status === 'PENDING'
-          );
-          setPendingMemberships(pendingMemberships);
+  const loadTeacherData = () => {
+    if (!currentUser) return;
+    
+    const clubs = dataService.getClubsByAdvisor(currentUser.id);
+    setMyClubs(clubs);
+    
+    const allEvents = dataService.getAllEvents();
+    const teacherEvents = allEvents.filter(event => 
+      clubs.some(club => club.id === event.clubId)
+    );
+    setMyEvents(teacherEvents);
+    
+    const allMemberships = dataService.getAllMemberships();
+    const teacherMemberships = allMemberships.filter(membership =>
+      clubs.some(club => club.id === membership.clubId)
+    );
+    setMemberships(teacherMemberships);
+  };
 
-          // Get upcoming events for teacher's clubs
-          const allEvents = await dataService.getEvents();
-          const teacherEvents = allEvents.filter(
-            event => teacherClubs.some(club => club.id === event.clubId) &&
-                     new Date(event.date) > new Date()
-          );
-          setUpcomingEvents(teacherEvents);
-
-          // Get recent announcements
-          const allAnnouncements = await dataService.getAnnouncements();
-          const clubAnnouncements = allAnnouncements.filter(
-            announcement => teacherClubs.some(club => club.id === announcement.clubId)
-          );
-          setRecentAnnouncements(clubAnnouncements.slice(0, 5));
-        }
-      } catch (error) {
-        console.error('Error loading teacher data:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadTeacherData();
-  }, []);
-
-  const handleApproveMembership = async (membershipId: string, approved: boolean) => {
-    try {
-      // In a real app, you would call an API to update the membership status
-      setPendingMemberships(prev => 
-        prev.filter(membership => membership.id !== membershipId)
-      );
-      alert(`Membership ${approved ? 'approved' : 'rejected'} successfully!`);
-    } catch (error) {
-      console.error('Error updating membership:', error);
-      alert('Failed to update membership');
+  const handleCreateEvent = (clubId: string) => {
+    const newEvent = dataService.createEvent({
+      clubId,
+      title: 'New Event',
+      description: 'Event description',
+      location: 'School Campus',
+      date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // 1 week from now
+      imageUrl: 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=400&h=300&fit=crop',
+      rsvpLimit: 50
+    });
+    
+    if (newEvent) {
+      loadTeacherData();
+      alert('Event created successfully!');
     }
   };
 
-  const stats = {
-    totalClubs: myClubs.length,
-    totalMembers: myClubs.reduce((sum, club) => sum + club.memberCount, 0),
-    pendingApprovals: pendingMemberships.length,
-    upcomingEvents: upcomingEvents.length
+  const handleDeleteEvent = (eventId: string) => {
+    if (window.confirm('Are you sure you want to delete this event?')) {
+      const success = dataService.deleteEvent(eventId);
+      if (success) {
+        loadTeacherData();
+        alert('Event deleted successfully!');
+      }
+    }
   };
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-      </div>
-    );
-  }
+  const handleApproveMembership = (membershipId: string) => {
+    const updatedMembership = dataService.approveMembership(membershipId);
+    if (updatedMembership) {
+      loadTeacherData();
+      alert('Membership approved successfully!');
+    }
+  };
+
+  const handleRejectMembership = (membershipId: string) => {
+    const updatedMembership = dataService.rejectMembership(membershipId);
+    if (updatedMembership) {
+      loadTeacherData();
+      alert('Membership rejected successfully!');
+    }
+  };
+
+  const getStats = () => {
+    const totalClubs = myClubs.length;
+    const totalEvents = myEvents.length;
+    const totalMembers = memberships.filter(m => m.status === 'APPROVED').length;
+    const pendingMemberships = memberships.filter(m => m.status === 'PENDING').length;
+    const upcomingEvents = myEvents.filter(event => new Date(event.date) > new Date()).length;
+
+    return {
+      totalClubs,
+      totalEvents,
+      totalMembers,
+      pendingMemberships,
+      upcomingEvents
+    };
+  };
+
+  const stats = getStats();
+
+  const tabs = [
+    { id: 'overview', label: 'Overview', icon: BarChart3 },
+    { id: 'clubs', label: 'Clubs', icon: Users },
+    { id: 'events', label: 'Events', icon: Calendar },
+    { id: 'memberships', label: 'Memberships', icon: UserPlus },
+  ];
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Teacher Dashboard</h1>
-          <p className="text-gray-600 mt-2">Manage your clubs and student engagement</p>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-8"
+        >
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+            Teacher Dashboard
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            Welcome back, {currentUser?.fullName}. Manage your clubs and activities.
+          </p>
+        </motion.div>
+
+        {/* Stats Overview */}
+        {activeTab === 'overview' && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8"
+          >
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+              <div className="flex items-center">
+                <Users className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">My Clubs</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.totalClubs}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+              <div className="flex items-center">
+                <Calendar className="h-8 w-8 text-green-600 dark:text-green-400" />
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Events</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.totalEvents}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+              <div className="flex items-center">
+                <UserPlus className="h-8 w-8 text-purple-600 dark:text-purple-400" />
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Members</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.totalMembers}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+              <div className="flex items-center">
+                <CheckCircle className="h-8 w-8 text-green-600 dark:text-green-400" />
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Upcoming Events</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.upcomingEvents}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+              <div className="flex items-center">
+                <XCircle className="h-8 w-8 text-yellow-600 dark:text-yellow-400" />
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Pending Requests</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.pendingMemberships}</p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        {/* Tabs */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow mb-6">
+          <div className="border-b border-gray-200 dark:border-gray-700">
+            <nav className="-mb-px flex space-x-8 px-6">
+              {tabs.map((tab) => {
+                const Icon = tab.icon;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`py-4 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 ${
+                      activeTab === tab.id
+                        ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400'
+                        : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'
+                    }`}
+                  >
+                    <Icon className="h-4 w-4" />
+                    <span>{tab.label}</span>
+                  </button>
+                );
+              })}
+            </nav>
+          </div>
         </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <div className="flex items-center">
-              <div className="p-2 bg-blue-100 rounded-lg">
-                <Building2 className="w-6 h-6 text-blue-600" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">My Clubs</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.totalClubs}</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <div className="flex items-center">
-              <div className="p-2 bg-green-100 rounded-lg">
-                <Users className="w-6 h-6 text-green-600" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Members</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.totalMembers}</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <div className="flex items-center">
-              <div className="p-2 bg-yellow-100 rounded-lg">
-                <UserCheck className="w-6 h-6 text-yellow-600" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Pending Approvals</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.pendingApprovals}</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <div className="flex items-center">
-              <div className="p-2 bg-purple-100 rounded-lg">
-                <Calendar className="w-6 h-6 text-purple-600" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Upcoming Events</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.upcomingEvents}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Tab Content */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow">
           {/* My Clubs */}
-          <div className="lg:col-span-2">
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-              <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-                <h3 className="text-lg font-semibold text-gray-900">My Clubs</h3>
-                <button className="inline-flex items-center px-3 py-2 border border-transparent rounded-md text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">
-                  <Plus className="w-4 h-4 mr-2" />
-                  Create Event
-                </button>
-              </div>
-              <div className="p-6">
-                <div className="space-y-4">
-                  {myClubs.map((club) => (
-                    <div key={club.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-                      <div className="flex items-center justify-between mb-3">
-                        <h4 className="text-lg font-semibold text-gray-900">{club.name}</h4>
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                          club.isApproved ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
-                        }`}>
-                          {club.isApproved ? 'Active' : 'Pending'}
-                        </span>
-                      </div>
-                      <p className="text-sm text-gray-600 mb-3">{club.description}</p>
-                      <div className="flex items-center justify-between text-sm text-gray-500 mb-3">
-                        <span>{club.memberCount} members</span>
-                        <span>{club.category}</span>
-                      </div>
-                      <div className="flex space-x-2">
-                        <button 
-                          onClick={() => setSelectedClub(club)}
-                          className="flex-1 inline-flex items-center justify-center px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
-                        >
-                          <Eye className="w-4 h-4 mr-1" />
-                          Manage
-                        </button>
-                        <button className="flex-1 inline-flex items-center justify-center px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
-                          <Edit className="w-4 h-4 mr-1" />
-                          Edit
-                        </button>
-                        <button className="flex-1 inline-flex items-center justify-center px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
-                          <Megaphone className="w-4 h-4 mr-1" />
-                          Announce
-                        </button>
+          {activeTab === 'clubs' && (
+            <div className="p-6">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">My Clubs</h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {myClubs.map((club) => (
+                  <motion.div
+                    key={club.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="bg-gray-50 dark:bg-gray-700 rounded-lg p-6"
+                  >
+                    <div className="flex items-center mb-4">
+                      <img
+                        className="h-12 w-12 rounded-lg object-cover"
+                        src={club.logoUrl}
+                        alt={club.name}
+                      />
+                      <div className="ml-4">
+                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                          {club.name}
+                        </h3>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                          {club.category}
+                        </p>
                       </div>
                     </div>
-                  ))}
-                </div>
+                    
+                    <p className="text-gray-600 dark:text-gray-400 mb-4">
+                      {club.description.substring(0, 100)}...
+                    </p>
+                    
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-sm text-gray-500 dark:text-gray-400">
+                        {club.memberCount} members
+                      </span>
+                      <span className={`px-2 py-1 text-xs font-semibold rounded-full ${
+                        club.status === 'ACTIVE' 
+                          ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                          : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
+                      }`}>
+                        {club.status}
+                      </span>
+                    </div>
+                    
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={() => onNavigate('club-detail', { clubId: club.id })}
+                        className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded text-sm"
+                      >
+                        View Details
+                      </button>
+                      <button
+                        onClick={() => handleCreateEvent(club.id)}
+                        className="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded text-sm"
+                      >
+                        <Plus className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </motion.div>
+                ))}
               </div>
             </div>
+          )}
 
-            {/* Pending Memberships */}
-            {pendingMemberships.length > 0 && (
-              <div className="mt-6 bg-white rounded-lg shadow-sm border border-gray-200">
-                <div className="px-6 py-4 border-b border-gray-200">
-                  <h3 className="text-lg font-semibold text-gray-900">Pending Membership Requests</h3>
-                </div>
-                <div className="p-6">
-                  <div className="space-y-4">
-                    {pendingMemberships.map((membership) => (
-                      <div key={membership.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-                        <div>
-                          <p className="text-sm font-medium text-gray-900">
-                            {membership.userName} wants to join {myClubs.find(c => c.id === membership.clubId)?.name}
-                          </p>
-                          <p className="text-sm text-gray-500">
-                            Requested on {new Date(membership.createdAt).toLocaleDateString()}
-                          </p>
+          {/* Events */}
+          {activeTab === 'events' && (
+            <div className="p-6">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">My Events</h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {myEvents.map((event) => {
+                  const club = dataService.getClubById(event.clubId);
+                  return (
+                    <motion.div
+                      key={event.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden"
+                    >
+                      <img
+                        className="w-full h-48 object-cover"
+                        src={event.imageUrl}
+                        alt={event.title}
+                      />
+                      <div className="p-6">
+                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                          {event.title}
+                        </h3>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                          {event.description.substring(0, 80)}...
+                        </p>
+                        
+                        <div className="space-y-2 mb-4">
+                          <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                            <Calendar className="h-4 w-4 mr-2" />
+                            {new Date(event.date).toLocaleDateString()}
+                          </div>
+                          <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                            <Users className="h-4 w-4 mr-2" />
+                            {club?.name || 'Unknown Club'}
+                          </div>
                         </div>
+                        
                         <div className="flex space-x-2">
                           <button
-                            onClick={() => handleApproveMembership(membership.id, true)}
-                            className="inline-flex items-center px-3 py-2 border border-transparent rounded-md text-sm font-medium text-white bg-green-600 hover:bg-green-700"
+                            onClick={() => onNavigate('event-detail', { eventId: event.id })}
+                            className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded text-sm"
                           >
-                            <CheckCircle className="w-4 h-4 mr-1" />
-                            Approve
+                            View Details
                           </button>
                           <button
-                            onClick={() => handleApproveMembership(membership.id, false)}
-                            className="inline-flex items-center px-3 py-2 border border-transparent rounded-md text-sm font-medium text-white bg-red-600 hover:bg-red-700"
+                            onClick={() => handleDeleteEvent(event.id)}
+                            className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded text-sm"
                           >
-                            <XCircle className="w-4 h-4 mr-1" />
-                            Reject
+                            <Trash2 className="h-4 w-4" />
                           </button>
                         </div>
                       </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Upcoming Events */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-              <div className="px-6 py-4 border-b border-gray-200">
-                <h3 className="text-lg font-semibold text-gray-900">Upcoming Events</h3>
-              </div>
-              <div className="p-6">
-                <div className="space-y-4">
-                  {upcomingEvents.length > 0 ? (
-                    upcomingEvents.slice(0, 3).map((event) => (
-                      <div key={event.id} className="border-l-4 border-blue-500 pl-4">
-                        <h4 className="text-sm font-medium text-gray-900">{event.title}</h4>
-                        <p className="text-sm text-gray-500">{event.clubName}</p>
-                        <p className="text-xs text-gray-400">
-                          {new Date(event.date).toLocaleDateString()} at {event.time}
-                        </p>
-                      </div>
-                    ))
-                  ) : (
-                    <p className="text-sm text-gray-500">No upcoming events</p>
-                  )}
-                </div>
-                {upcomingEvents.length > 3 && (
-                  <button className="mt-4 text-sm text-blue-600 hover:text-blue-700">
-                    View all events →
-                  </button>
-                )}
+                    </motion.div>
+                  );
+                })}
               </div>
             </div>
+          )}
 
-            {/* Recent Announcements */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-              <div className="px-6 py-4 border-b border-gray-200">
-                <h3 className="text-lg font-semibold text-gray-900">Recent Announcements</h3>
-              </div>
-              <div className="p-6">
-                <div className="space-y-4">
-                  {recentAnnouncements.length > 0 ? (
-                    recentAnnouncements.map((announcement) => (
-                      <div key={announcement.id} className="border-l-4 border-green-500 pl-4">
-                        <h4 className="text-sm font-medium text-gray-900">{announcement.title}</h4>
-                        <p className="text-sm text-gray-500 line-clamp-2">{announcement.content}</p>
-                        <p className="text-xs text-gray-400">
-                          {new Date(announcement.createdAt).toLocaleDateString()}
-                        </p>
-                      </div>
-                    ))
-                  ) : (
-                    <p className="text-sm text-gray-500">No recent announcements</p>
-                  )}
-                </div>
+          {/* Memberships */}
+          {activeTab === 'memberships' && (
+            <div className="p-6">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">Membership Requests</h2>
+              
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                  <thead className="bg-gray-50 dark:bg-gray-700">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Student
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Club
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Role
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Status
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                    {memberships.map((membership) => {
+                      const user = dataService.getUserById(membership.userId);
+                      const club = dataService.getClubById(membership.clubId);
+                      
+                      return (
+                        <tr key={membership.id}>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="flex items-center">
+                              <img
+                                className="h-8 w-8 rounded-full object-cover"
+                                src={user?.profilePhoto || ''}
+                                alt={user?.fullName || 'Unknown User'}
+                              />
+                              <div className="ml-3">
+                                <div className="text-sm font-medium text-gray-900 dark:text-white">
+                                  {user?.fullName || 'Unknown User'}
+                                </div>
+                                <div className="text-sm text-gray-500 dark:text-gray-400">
+                                  {user?.email || 'No email'}
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                            {club?.name || 'Unknown Club'}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                            {membership.role}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                              membership.status === 'APPROVED' 
+                                ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                                : membership.status === 'PENDING'
+                                ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
+                                : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+                            }`}>
+                              {membership.status}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                            {membership.status === 'PENDING' && (
+                              <>
+                                <button
+                                  onClick={() => handleApproveMembership(membership.id)}
+                                  className="text-green-600 dark:text-green-400 hover:text-green-900 dark:hover:text-green-300"
+                                >
+                                  <CheckCircle className="h-4 w-4" />
+                                </button>
+                                <button
+                                  onClick={() => handleRejectMembership(membership.id)}
+                                  className="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300"
+                                >
+                                  <XCircle className="h-4 w-4" />
+                                </button>
+                              </>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
               </div>
             </div>
-
-            {/* Quick Actions */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-              <div className="px-6 py-4 border-b border-gray-200">
-                <h3 className="text-lg font-semibold text-gray-900">Quick Actions</h3>
-              </div>
-              <div className="p-6">
-                <div className="space-y-3">
-                  <button className="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">
-                    <Plus className="w-4 h-4 mr-2" />
-                    Create Event
-                  </button>
-                  <button className="w-full inline-flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
-                    <Megaphone className="w-4 h-4 mr-2" />
-                    Send Announcement
-                  </button>
-                  <button className="w-full inline-flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
-                    <Award className="w-4 h-4 mr-2" />
-                    Award Badge
-                  </button>
-                  <button className="w-full inline-flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
-                    <BarChart3 className="w-4 h-4 mr-2" />
-                    View Analytics
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

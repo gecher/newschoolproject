@@ -18,35 +18,28 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
   const [searchQuery, setSearchQuery] = useState('');
 
   const getNavigationItems = () => {
-    const baseItems = [
-      { id: 'dashboard', label: 'Dashboard', icon: Home },
-      { id: 'clubs', label: 'Clubs', icon: Users },
-      { id: 'events', label: 'Events', icon: Calendar },
-      { id: 'forums', label: 'Forums', icon: MessageSquare },
-      { id: 'badges', label: 'Badges', icon: Award },
-    ];
-
     if (currentUser?.role === 'ADMIN') {
       return [
-        { id: 'dashboard', label: 'Admin Dashboard', icon: Home },
+        { id: 'dashboard', label: 'Overview', icon: Home },
         { id: 'clubs', label: 'Clubs', icon: Users },
         { id: 'events', label: 'Events', icon: Calendar },
-        { id: 'forums', label: 'Forums', icon: MessageSquare },
-        { id: 'badges', label: 'Badges', icon: Award },
       ];
     }
 
     if (currentUser?.role === 'TEACHER') {
       return [
-        { id: 'dashboard', label: 'Teacher Dashboard', icon: Home },
-        { id: 'clubs', label: 'My Clubs', icon: Users },
+        { id: 'dashboard', label: 'Overview', icon: Home },
+        { id: 'clubs', label: 'Clubs', icon: Users },
         { id: 'events', label: 'Events', icon: Calendar },
-        { id: 'forums', label: 'Forums', icon: MessageSquare },
-        { id: 'badges', label: 'Badges', icon: Award },
       ];
     }
 
-    return baseItems;
+    // Student role
+    return [
+      { id: 'dashboard', label: 'Overview', icon: Home },
+      { id: 'clubs', label: 'Clubs', icon: Users },
+      { id: 'events', label: 'Events', icon: Calendar },
+    ];
   };
 
   const navigationItems = getNavigationItems();
