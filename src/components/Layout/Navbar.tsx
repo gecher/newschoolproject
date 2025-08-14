@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   Search, Bell, User, Menu, X, Sun, Moon, 
-  Home, Users, Calendar, MessageSquare, Award 
+  Home, Users, Calendar, MessageSquare, Award, BarChart3, UserPlus
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
@@ -18,6 +18,29 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
   const [searchQuery, setSearchQuery] = useState('');
 
   const getNavigationItems = () => {
+    if (currentUser?.role === 'ADMIN') {
+      return [
+        { id: 'dashboard', label: 'Stats', icon: BarChart3 },
+        { id: 'clubs', label: 'Manage Clubs', icon: Users },
+        { id: 'events', label: 'Manage Events', icon: Calendar },
+        { id: 'users', label: 'All Users', icon: Users },
+        { id: 'memberships', label: 'Requests', icon: UserPlus },
+      ];
+    } else if (currentUser?.role === 'TEACHER') {
+      return [
+        { id: 'dashboard', label: 'Stats', icon: BarChart3 },
+        { id: 'clubs', label: 'Assigned Clubs', icon: Users },
+        { id: 'events', label: 'Club Events', icon: Calendar },
+        { id: 'memberships', label: 'Requests', icon: UserPlus },
+      ];
+    } else if (currentUser?.role === 'STUDENT') {
+      return [
+        { id: 'dashboard', label: 'Stats', icon: BarChart3 },
+        { id: 'clubs', label: 'Join Clubs', icon: Users },
+        { id: 'events', label: 'All Events', icon: Calendar },
+      ];
+    }
+    
     return [
       { id: 'dashboard', label: 'Dashboard', icon: Home },
       { id: 'clubs', label: 'Clubs', icon: Users },

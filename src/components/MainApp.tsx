@@ -41,17 +41,34 @@ const MainApp: React.FC = () => {
   }
 
   const renderPage = () => {
-    // Role-based routing
-    if (currentUser.role === 'ADMIN' && currentPage === 'dashboard') {
-      return <AdminPanel onNavigate={handleNavigate} />;
+    // Role-based routing for Admin
+    if (currentUser.role === 'ADMIN') {
+      // Admin can access all these pages, and they all render AdminPanel
+      if (['dashboard', 'clubs', 'events', 'users', 'memberships'].includes(currentPage)) {
+        return <AdminPanel onNavigate={handleNavigate} currentPage={currentPage} />;
+      }
     }
 
-    if (currentUser.role === 'TEACHER' && currentPage === 'dashboard') {
-      return <TeacherDashboard onNavigate={handleNavigate} />;
+    // Role-based routing for Teacher
+    if (currentUser.role === 'TEACHER') {
+      if (['dashboard', 'clubs', 'events', 'memberships'].includes(currentPage)) {
+        return <TeacherDashboard onNavigate={handleNavigate} currentPage={currentPage} />;
+      }
     }
 
+    // Role-based routing for Student
+    if (currentUser.role === 'STUDENT') {
+      if (['dashboard', 'clubs', 'events'].includes(currentPage)) {
+        return <StudentDashboard onNavigate={handleNavigate} currentPage={currentPage} />;
+      }
+    }
+
+    // General page routing
     switch (currentPage) {
       case 'dashboard':
+        if (currentUser.role === 'STUDENT') {
+          return <StudentDashboard onNavigate={handleNavigate} />;
+        }
         return <StudentDashboard onNavigate={handleNavigate} />;
       case 'clubs':
         return <ClubsPage onNavigate={handleNavigate} />;
@@ -68,10 +85,17 @@ const MainApp: React.FC = () => {
       case 'profile':
         return <ProfilePage onNavigate={handleNavigate} />;
       case 'admin':
-        return <AdminPanel onNavigate={handleNavigate} />;
+        return <AdminPanel onNavigate={handleNavigate} currentPage={currentPage} />;
       case 'landing':
         return <LandingPage onNavigate={handleNavigate} />;
       default:
+        if (currentUser.role === 'STUDENT') {
+          return <StudentDashboard onNavigate={handleNavigate} />;
+        } else if (currentUser.role === 'TEACHER') {
+          return <TeacherDashboard onNavigate={handleNavigate} />;
+        } else if (currentUser.role === 'ADMIN') {
+          return <AdminPanel onNavigate={handleNavigate} currentPage={currentPage} />;
+        }
         return <StudentDashboard onNavigate={handleNavigate} />;
     }
   };
