@@ -160,6 +160,14 @@ class DataService {
     return this.updateClub(id, { isApproved: true, status: 'ACTIVE' });
   }
 
+  assignAdvisor(clubId: string, advisorId: string): Club | null {
+    return this.updateClub(clubId, { advisorId });
+  }
+
+  getTeachers(): User[] {
+    return this.data.users.filter((user: User) => user.role === 'TEACHER');
+  }
+
   // Event Management
   getAllEvents(): Event[] {
     return this.data.events;

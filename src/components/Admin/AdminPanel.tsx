@@ -1,12 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Users, Calendar, Plus, Edit, Trash2, CheckCircle, XCircle, 
-  Eye, UserPlus, Calendar as EventIcon, BarChart3 
+  Eye, UserPlus, Calendar as EventIcon, BarChart3, UserCheck 
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAuth } from '../../contexts/AuthContext';
 import dataService from '../../services/dataService';
 import type { Club, Event, User, Membership } from '../../services/dataService';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  LineChart,
+  Line
+} from 'recharts';
 
 interface AdminPanelProps {
   onNavigate: (page: string, data?: any) => void;
@@ -19,9 +34,12 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate }) => {
   const [events, setEvents] = useState<Event[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [memberships, setMemberships] = useState<Membership[]>([]);
+  const [teachers, setTeachers] = useState<User[]>([]);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [modalType, setModalType] = useState<'club' | 'event' | 'user'>('club');
   const [selectedItem, setSelectedItem] = useState<any>(null);
+  const [showAdvisorModal, setShowAdvisorModal] = useState(false);
+  const [selectedClub, setSelectedClub] = useState<Club | null>(null);
 
   useEffect(() => {
     loadData();
@@ -32,6 +50,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate }) => {
     setEvents(dataService.getAllEvents());
     setUsers(dataService.getAllUsers());
     setMemberships(dataService.getAllMemberships());
+    setTeachers(dataService.getTeachers());
   };
 
   const handleApproveClub = (clubId: string) => {
@@ -78,6 +97,16 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate }) => {
     }
   };
 
+  const handleAssignAdvisor = (clubId: string, advisorId: string) => {
+    const updatedClub = dataService.assignAdvisor(clubId, advisorId);
+    if (updatedClub) {
+      loadData();
+      setShowAdvisorModal(false);
+      setSelectedClub(null);
+      alert('Advisor assigned successfully!');
+    }
+  };
+
   const getStats = () => {
     const totalClubs = clubs.length;
     const activeClubs = clubs.filter(club => club.status === 'ACTIVE').length;
@@ -98,12 +127,61 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate }) => {
 
   const stats = getStats();
 
+  // Chart Data Preparation
+  const getChartData = () => {
+    // Club Status Distribution
+    const clubStatusData = [
+      { name: 'Active', value: clubs.filter(c => c.status === 'ACTIVE').length, color: '#10B981' },
+      { name: 'Pending', value: clubs.filter(c => c.status === 'PENDING').length, color: '#F59E0B' },
+      { name: 'Inactive', value: clubs.filter(c => c.status === 'INACTIVE').length, color: '#EF4444' }
+    ];
+
+    // Monthly Events
+    const monthlyEvents = events.reduce((acc: any, event) => {
+      const month = new Date(event.date).toLocaleDateString('en-US', { month: 'short' });
+      acc[month] = (acc[month] || 0) + 1;
+      return acc;
+    }, {});
+
+    const monthlyEventsData = Object.entries(monthlyEvents).map(([month, count]) => ({
+      month,
+      events: count
+    }));
+
+    // User Role Distribution
+    const userRoleData = [
+      { name: 'Students', value: users.filter(u => u.role === 'STUDENT').length, color: '#3B82F6' },
+      { name: 'Teachers', value: users.filter(u => u.role === 'TEACHER').length, color: '#8B5CF6' },
+      { name: 'Admins', value: users.filter(u => u.role === 'ADMIN').length, color: '#EF4444' }
+    ];
+
+    // Club Categories
+    const categoryData = clubs.reduce((acc: any, club) => {
+      acc[club.category] = (acc[club.category] || 0) + 1;
+      return acc;
+    }, {});
+
+    const categoryChartData = Object.entries(categoryData).map(([category, count]) => ({
+      category,
+      clubs: count
+    }));
+
+    return {
+      clubStatusData,
+      monthlyEventsData,
+      userRoleData,
+      categoryChartData
+    };
+  };
+
+  const chartData = getChartData();
+
   const tabs = [
-    { id: 'overview', label: 'Overview', icon: BarChart3 },
-    { id: 'clubs', label: 'Clubs', icon: Users },
-    { id: 'events', label: 'Events', icon: EventIcon },
-    { id: 'users', label: 'Users', icon: Users },
-    { id: 'memberships', label: 'Memberships', icon: UserPlus },
+    { id: 'overview', label: 'Stats', icon: BarChart3 },
+    { id: 'clubs', label: 'Manage Clubs', icon: Users },
+    { id: 'events', label: 'Manage Events', icon: EventIcon },
+    { id: 'users', label: 'All Users', icon: Users },
+    { id: 'memberships', label: 'Requests', icon: UserPlus },
   ];
 
   return (
@@ -123,74 +201,162 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate }) => {
           </p>
         </motion.div>
 
-        {/* Stats Overview */}
-        {activeTab === 'overview' && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8"
-          >
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-              <div className="flex items-center">
-                <Users className="h-8 w-8 text-blue-600 dark:text-blue-400" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Clubs</p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.totalClubs}</p>
-                </div>
-              </div>
-            </div>
+                 {/* Stats Overview */}
+         {activeTab === 'overview' && (
+           <>
+             {/* Stats Cards */}
+             <motion.div
+               initial={{ opacity: 0, y: 20 }}
+               animate={{ opacity: 1, y: 0 }}
+               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8"
+             >
+               <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                 <div className="flex items-center">
+                   <Users className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+                   <div className="ml-4">
+                     <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Clubs</p>
+                     <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.totalClubs}</p>
+                   </div>
+                 </div>
+               </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-              <div className="flex items-center">
-                <EventIcon className="h-8 w-8 text-green-600 dark:text-green-400" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Events</p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.totalEvents}</p>
-                </div>
-              </div>
-            </div>
+               <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                 <div className="flex items-center">
+                   <EventIcon className="h-8 w-8 text-green-600 dark:text-green-400" />
+                   <div className="ml-4">
+                     <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Events</p>
+                     <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.totalEvents}</p>
+                   </div>
+                 </div>
+               </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-              <div className="flex items-center">
-                <Users className="h-8 w-8 text-purple-600 dark:text-purple-400" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Users</p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.totalUsers}</p>
-                </div>
-              </div>
-            </div>
+               <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                 <div className="flex items-center">
+                   <Users className="h-8 w-8 text-purple-600 dark:text-purple-400" />
+                   <div className="ml-4">
+                     <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Users</p>
+                     <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.totalUsers}</p>
+                   </div>
+                 </div>
+               </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-              <div className="flex items-center">
-                <CheckCircle className="h-8 w-8 text-green-600 dark:text-green-400" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Active Clubs</p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.activeClubs}</p>
-                </div>
-              </div>
-            </div>
+               <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                 <div className="flex items-center">
+                   <CheckCircle className="h-8 w-8 text-green-600 dark:text-green-400" />
+                   <div className="ml-4">
+                     <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Active Clubs</p>
+                     <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.activeClubs}</p>
+                   </div>
+                 </div>
+               </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-              <div className="flex items-center">
-                <XCircle className="h-8 w-8 text-yellow-600 dark:text-yellow-400" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Pending Clubs</p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.pendingClubs}</p>
-                </div>
-              </div>
-            </div>
+               <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                 <div className="flex items-center">
+                   <XCircle className="h-8 w-8 text-yellow-600 dark:text-yellow-400" />
+                   <div className="ml-4">
+                     <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Pending Clubs</p>
+                     <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.pendingClubs}</p>
+                   </div>
+                 </div>
+               </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-              <div className="flex items-center">
-                <UserPlus className="h-8 w-8 text-orange-600 dark:text-orange-400" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Pending Memberships</p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.pendingMemberships}</p>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        )}
+               <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                 <div className="flex items-center">
+                   <UserPlus className="h-8 w-8 text-orange-600 dark:text-orange-400" />
+                   <div className="ml-4">
+                     <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Pending Memberships</p>
+                     <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.pendingMemberships}</p>
+                   </div>
+                 </div>
+               </div>
+             </motion.div>
+
+             {/* Charts Section */}
+             <motion.div
+               initial={{ opacity: 0, y: 20 }}
+               animate={{ opacity: 1, y: 0 }}
+               className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8"
+             >
+               {/* Club Status Distribution */}
+                                <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Club Status Distribution</h3>
+                   <ResponsiveContainer width="100%" height={300}>
+                     <PieChart>
+                       <Pie
+                         data={chartData.clubStatusData}
+                         cx="50%"
+                         cy="50%"
+                         labelLine={false}
+                         label={({ name, percent }) => `${name} ${((percent || 0) * 100).toFixed(0)}%`}
+                         outerRadius={80}
+                         fill="#8884d8"
+                         dataKey="value"
+                       >
+                         {chartData.clubStatusData.map((entry, index) => (
+                           <Cell key={`cell-${index}`} fill={entry.color} />
+                         ))}
+                       </Pie>
+                       <Tooltip />
+                     </PieChart>
+                   </ResponsiveContainer>
+                 </div>
+
+               {/* User Role Distribution */}
+                                <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">User Role Distribution</h3>
+                   <ResponsiveContainer width="100%" height={300}>
+                     <PieChart>
+                       <Pie
+                         data={chartData.userRoleData}
+                         cx="50%"
+                         cy="50%"
+                         labelLine={false}
+                         label={({ name, percent }) => `${name} ${((percent || 0) * 100).toFixed(0)}%`}
+                         outerRadius={80}
+                         fill="#8884d8"
+                         dataKey="value"
+                       >
+                         {chartData.userRoleData.map((entry, index) => (
+                           <Cell key={`cell-${index}`} fill={entry.color} />
+                         ))}
+                       </Pie>
+                       <Tooltip />
+                     </PieChart>
+                   </ResponsiveContainer>
+                 </div>
+
+               {/* Monthly Events */}
+               <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Monthly Events</h3>
+                 <ResponsiveContainer width="100%" height={300}>
+                   <BarChart data={chartData.monthlyEventsData}>
+                     <CartesianGrid strokeDasharray="3 3" />
+                     <XAxis dataKey="month" />
+                     <YAxis />
+                     <Tooltip />
+                     <Legend />
+                     <Bar dataKey="events" fill="#3B82F6" />
+                   </BarChart>
+                 </ResponsiveContainer>
+               </div>
+
+               {/* Club Categories */}
+               <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Clubs by Category</h3>
+                 <ResponsiveContainer width="100%" height={300}>
+                   <BarChart data={chartData.categoryChartData}>
+                     <CartesianGrid strokeDasharray="3 3" />
+                     <XAxis dataKey="category" />
+                     <YAxis />
+                     <Tooltip />
+                     <Legend />
+                     <Bar dataKey="clubs" fill="#10B981" />
+                   </BarChart>
+                 </ResponsiveContainer>
+               </div>
+             </motion.div>
+           </>
+         )}
 
         {/* Tabs */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow mb-6">
@@ -249,12 +415,15 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate }) => {
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                         Status
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                        Members
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                        Actions
-                      </th>
+                                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                         Members
+                       </th>
+                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                         Advisor
+                       </th>
+                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                         Actions
+                       </th>
                     </tr>
                   </thead>
                   <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
@@ -291,10 +460,16 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate }) => {
                             {club.status}
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                          {club.memberCount}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                           {club.memberCount}
+                         </td>
+                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                           {(() => {
+                             const advisor = dataService.getUserById(club.advisorId);
+                             return advisor ? advisor.fullName : 'No Advisor';
+                           })()}
+                         </td>
+                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                           <button
                             onClick={() => onNavigate('club-detail', { clubId: club.id })}
                             className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300"
@@ -309,12 +484,22 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate }) => {
                               <CheckCircle className="h-4 w-4" />
                             </button>
                           )}
-                          <button
-                            onClick={() => handleDeleteClub(club.id)}
-                            className="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </button>
+                                                     <button
+                             onClick={() => {
+                               setSelectedClub(club);
+                               setShowAdvisorModal(true);
+                             }}
+                             className="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300"
+                             title="Assign Advisor"
+                           >
+                             <UserCheck className="h-4 w-4" />
+                           </button>
+                           <button
+                             onClick={() => handleDeleteClub(club.id)}
+                             className="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300"
+                           >
+                             <Trash2 className="h-4 w-4" />
+                           </button>
                         </td>
                       </tr>
                     ))}
@@ -600,10 +785,56 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate }) => {
               </div>
             </div>
           )}
-        </div>
-      </div>
-    </div>
-  );
-};
+                 </div>
+       </div>
+
+       {/* Advisor Assignment Modal */}
+       {showAdvisorModal && selectedClub && (
+         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md">
+             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+               Assign Advisor to {selectedClub.name}
+             </h3>
+             
+             <div className="space-y-4">
+               <div>
+                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                   Select Teacher
+                 </label>
+                 <select
+                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                   onChange={(e) => {
+                     if (e.target.value) {
+                       handleAssignAdvisor(selectedClub.id, e.target.value);
+                     }
+                   }}
+                 >
+                   <option value="">Select a teacher...</option>
+                   {teachers.map((teacher) => (
+                     <option key={teacher.id} value={teacher.id}>
+                       {teacher.fullName}
+                     </option>
+                   ))}
+                 </select>
+               </div>
+             </div>
+             
+             <div className="flex justify-end space-x-3 mt-6">
+               <button
+                 onClick={() => {
+                   setShowAdvisorModal(false);
+                   setSelectedClub(null);
+                 }}
+                 className="px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+               >
+                 Cancel
+               </button>
+             </div>
+           </div>
+         </div>
+       )}
+     </div>
+   );
+ };
 
 export default AdminPanel;

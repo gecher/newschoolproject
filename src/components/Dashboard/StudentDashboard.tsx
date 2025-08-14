@@ -116,9 +116,9 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate }) => {
   const stats = getStats();
 
   const tabs = [
-    { id: 'overview', label: 'Overview', icon: BarChart3 },
-    { id: 'clubs', label: 'Clubs', icon: Users },
-    { id: 'events', label: 'Events', icon: Calendar },
+    { id: 'overview', label: 'Stats', icon: BarChart3 },
+    { id: 'clubs', label: 'Join Clubs', icon: Users },
+    { id: 'events', label: 'All Events', icon: Calendar },
   ];
 
   return (

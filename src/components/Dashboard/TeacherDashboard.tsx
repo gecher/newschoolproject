@@ -28,6 +28,7 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onNavigate }) => {
   const loadTeacherData = () => {
     if (!currentUser) return;
     
+    // Only get clubs where the current teacher is assigned as advisor
     const clubs = dataService.getClubsByAdvisor(currentUser.id);
     setMyClubs(clubs);
     
@@ -106,10 +107,10 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onNavigate }) => {
   const stats = getStats();
 
   const tabs = [
-    { id: 'overview', label: 'Overview', icon: BarChart3 },
-    { id: 'clubs', label: 'Clubs', icon: Users },
-    { id: 'events', label: 'Events', icon: Calendar },
-    { id: 'memberships', label: 'Memberships', icon: UserPlus },
+    { id: 'overview', label: 'Stats', icon: BarChart3 },
+    { id: 'clubs', label: 'Assigned Clubs', icon: Users },
+    { id: 'events', label: 'Club Events', icon: Calendar },
+    { id: 'memberships', label: 'Requests', icon: UserPlus },
   ];
 
   return (
@@ -124,9 +125,9 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onNavigate }) => {
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
             Teacher Dashboard
           </h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            Welcome back, {currentUser?.fullName}. Manage your clubs and activities.
-          </p>
+                     <p className="text-gray-600 dark:text-gray-400">
+             Welcome back, {currentUser?.fullName}. Manage your assigned clubs and activities.
+           </p>
         </motion.div>
 
         {/* Stats Overview */}
@@ -218,7 +219,7 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onNavigate }) => {
           {/* My Clubs */}
           {activeTab === 'clubs' && (
             <div className="p-6">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">My Clubs</h2>
+                             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">Assigned Clubs</h2>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {myClubs.map((club) => (
@@ -284,7 +285,7 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onNavigate }) => {
           {/* Events */}
           {activeTab === 'events' && (
             <div className="p-6">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">My Events</h2>
+                             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">Club Events</h2>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {myEvents.map((event) => {
