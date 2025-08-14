@@ -77,10 +77,14 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate, current
     }
   };
 
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [confirmMembershipId, setConfirmMembershipId] = useState<string | null>(null);
+  const [confirmMessage, setConfirmMessage] = useState('');
+
   const handleLeaveClub = (membershipId: string) => {
-    if (dataService.deleteMembership(membershipId)) {
-      loadStudentData();
-    }
+    setConfirmMembershipId(membershipId);
+    setConfirmMessage('Are you sure you want to leave this club?');
+    setShowConfirmModal(true);
   };
 
   const getChartData = () => {
@@ -332,6 +336,40 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate, current
 
         {/* Content */}
         {renderContent()}
+
+        {showConfirmModal && (
+          <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+            <div className="relative top-20 mx-auto p-5 border w-full max-w-md shadow-lg rounded-md bg-white dark:bg-gray-800">
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">Confirm</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-300 mb-6">{confirmMessage}</p>
+              <div className="flex justify-end space-x-3">
+                <button
+                  onClick={() => {
+                    setShowConfirmModal(false);
+                    setConfirmMembershipId(null);
+                  }}
+                  className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => {
+                    if (confirmMembershipId) {
+                      if (dataService.deleteMembership(confirmMembershipId)) {
+                        loadStudentData();
+                      }
+                    }
+                    setShowConfirmModal(false);
+                    setConfirmMembershipId(null);
+                  }}
+                  className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded"
+                >
+                  Leave Club
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -48,6 +48,46 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate, currentPage = 'dash
   const [teachers, setTeachers] = useState<User[]>([]);
   const [showAdvisorModal, setShowAdvisorModal] = useState(false);
   const [selectedClub, setSelectedClub] = useState<Club | null>(null);
+  const [showMembersModal, setShowMembersModal] = useState(false);
+  const [membersModalClub, setMembersModalClub] = useState<Club | null>(null);
+
+  const defaultAvatar = 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=96&h=96&fit=crop&crop=face';
+  const defaultClubImage = 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=80&h=80&fit=crop';
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [confirmMessage, setConfirmMessage] = useState('');
+  const [onConfirmAction, setOnConfirmAction] = useState<(() => void) | null>(null);
+
+  // Club modal state
+  const [showClubModal, setShowClubModal] = useState(false);
+  const [editingClub, setEditingClub] = useState<Club | null>(null);
+  const [clubForm, setClubForm] = useState({
+    name: '',
+    description: '',
+    category: ''
+  });
+
+  // Event modal state
+  const [showEventModal, setShowEventModal] = useState(false);
+  const [editingEvent, setEditingEvent] = useState<Event | null>(null);
+  const [eventForm, setEventForm] = useState({
+    title: '',
+    clubId: '',
+    description: '',
+    location: '',
+    date: '',
+    rsvpLimit: '' as string | number
+  });
+
+  // User modal state
+  const [showUserModal, setShowUserModal] = useState(false);
+  const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [userForm, setUserForm] = useState({
+    fullName: '',
+    email: '',
+    password: '',
+    role: 'STUDENT' as User['role'],
+    phone: ''
+  });
 
   useEffect(() => {
     loadAdminData();
@@ -62,17 +102,168 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate, currentPage = 'dash
   };
 
   const handleDeleteClub = (id: string) => {
+    setConfirmMessage('Deleting a club will also remove its events and memberships. Continue?');
+    setOnConfirmAction(() => () => {
     if (dataService.deleteClub(id)) {
       loadAdminData();
     }
+    });
+    setShowConfirmModal(true);
   };
 
   const handleDeleteEvent = (id: string) => {
+    setConfirmMessage('Are you sure you want to delete this event? This action cannot be undone.');
+    setOnConfirmAction(() => () => {
     if (dataService.deleteEvent(id)) {
       loadAdminData();
     }
+    });
+    setShowConfirmModal(true);
   };
 
+  const handleDeleteUser = (id: string) => {
+    setConfirmMessage('Deleting a user will remove their memberships and event attendance. Continue?');
+    setOnConfirmAction(() => () => {
+      if (dataService.deleteUser(id)) {
+        loadAdminData();
+      }
+    });
+    setShowConfirmModal(true);
+  };
+
+  const openAddClub = () => {
+    setEditingClub(null);
+    setClubForm({ name: '', description: '', category: '' });
+    setShowClubModal(true);
+  };
+
+  const openEditClub = (club: Club) => {
+    setEditingClub(club);
+    setClubForm({ name: club.name, description: club.description, category: club.category });
+    setShowClubModal(true);
+  };
+
+  const saveClub = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!clubForm.name) return;
+    if (editingClub) {
+      dataService.updateClub(editingClub.id, {
+        name: clubForm.name,
+        description: clubForm.description,
+        category: clubForm.category
+      });
+    } else {
+      dataService.createClub({
+        name: clubForm.name,
+        description: clubForm.description,
+        logoUrl: '',
+        coverImageUrl: '',
+        category: clubForm.category,
+        status: 'PENDING',
+        advisorId: '',
+        isApproved: false,
+        memberCount: 0,
+        documents: [],
+        gallery: []
+      });
+    }
+    setShowClubModal(false);
+    setEditingClub(null);
+    loadAdminData();
+  };
+
+  const openAddEvent = () => {
+    setEditingEvent(null);
+    setEventForm({ title: '', clubId: clubs[0]?.id || '', description: '', location: '', date: '', rsvpLimit: '' });
+    setShowEventModal(true);
+  };
+
+  const openEditEvent = (event: Event) => {
+    setEditingEvent(event);
+    const dt = new Date(event.date);
+    const isoLocal = new Date(dt.getTime() - dt.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+    setEventForm({
+      title: event.title,
+      clubId: event.clubId,
+      description: event.description,
+      location: event.location,
+      date: isoLocal,
+      rsvpLimit: event.rsvpLimit ?? ''
+    });
+    setShowEventModal(true);
+  };
+
+  const saveEvent = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!eventForm.title || !eventForm.clubId) return;
+    const rsvp = eventForm.rsvpLimit === '' ? 0 : Number(eventForm.rsvpLimit);
+    const iso = eventForm.date ? new Date(eventForm.date as string).toISOString() : new Date().toISOString();
+    if (editingEvent) {
+      dataService.updateEvent(editingEvent.id, {
+        title: eventForm.title,
+        clubId: eventForm.clubId,
+        description: eventForm.description,
+        location: eventForm.location,
+        date: iso,
+        imageUrl: editingEvent.imageUrl || '',
+        rsvpLimit: rsvp
+      });
+    } else {
+      dataService.createEvent({
+        title: eventForm.title,
+        clubId: eventForm.clubId,
+        description: eventForm.description,
+        location: eventForm.location,
+        date: iso,
+        imageUrl: '',
+        rsvpLimit: rsvp
+      });
+    }
+    setShowEventModal(false);
+    setEditingEvent(null);
+    loadAdminData();
+  };
+
+  const openAddUser = () => {
+    setEditingUser(null);
+    setUserForm({ fullName: '', email: '', password: '', role: 'STUDENT', phone: '' });
+    setShowUserModal(true);
+  };
+
+  const openEditUser = (user: User) => {
+    setEditingUser(user);
+    setUserForm({ fullName: user.fullName, email: user.email, password: user.password, role: user.role, phone: user.phone || '' });
+    setShowUserModal(true);
+  };
+
+  const saveUser = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!userForm.fullName || !userForm.email || !userForm.password) return;
+    if (editingUser) {
+      dataService.updateUser(editingUser.id, {
+        fullName: userForm.fullName,
+        email: userForm.email,
+        password: userForm.password,
+        role: userForm.role,
+        phone: userForm.phone
+      });
+    } else {
+      dataService.createUser({
+        fullName: userForm.fullName,
+        email: userForm.email,
+        password: userForm.password,
+        role: userForm.role,
+        phone: userForm.phone,
+        profilePhoto: '',
+        coverPhoto: '',
+        bio: '',
+        isActive: true
+      });
+    }
+    setShowUserModal(false);
+    setEditingUser(null);
+    loadAdminData();
+  };
 
 
   const handleApproveClub = (id: string) => {
@@ -251,7 +442,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate, currentPage = 'dash
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Manage Clubs</h2>
-          <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors">
+          <button onClick={openAddClub} className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors">
             <Plus className="h-5 w-5" />
             <span>Add Club</span>
           </button>
@@ -275,14 +466,20 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate, currentPage = 'dash
                   <tr key={club.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
-                        <div className="h-10 w-10 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center">
-                          <span className="text-indigo-600 dark:text-indigo-400 font-semibold text-sm">
-                            {club.name.charAt(0).toUpperCase()}
-                          </span>
-                        </div>
+                        <img
+                          src={club.logoUrl || club.coverImageUrl || defaultClubImage}
+                          alt={club.name}
+                          className="h-10 w-10 rounded-full object-cover"
+                          onError={(e) => { (e.currentTarget as HTMLImageElement).src = defaultClubImage; }}
+                        />
                         <div className="ml-4">
                           <div className="text-sm font-medium text-gray-900 dark:text-white">{club.name}</div>
-                          <div className="text-sm text-gray-500 dark:text-gray-400">{club.description}</div>
+                          <button
+                            onClick={() => openEditClub(club)}
+                            className="text-xs text-indigo-600 dark:text-indigo-400 hover:underline mt-1"
+                          >
+                            View Description
+                          </button>
                         </div>
                       </div>
                     </td>
@@ -302,9 +499,20 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate, currentPage = 'dash
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {club.advisorId ? (
+                        <div className="flex items-center space-x-3">
                         <span className="text-sm text-gray-900 dark:text-white">
                           {users.find(u => u.id === club.advisorId)?.fullName || 'Unknown'}
                         </span>
+                          <button
+                            onClick={() => {
+                              setSelectedClub(club);
+                              setShowAdvisorModal(true);
+                            }}
+                            className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 text-xs font-medium"
+                          >
+                            Change
+                          </button>
+                        </div>
                       ) : (
                         <button
                           onClick={() => {
@@ -318,7 +526,13 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate, currentPage = 'dash
                       )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                      <button
+                        onClick={() => { setMembersModalClub(club); setShowMembersModal(true); }}
+                        className="underline text-indigo-600 dark:text-indigo-400 hover:text-indigo-800"
+                        title="View Members"
+                      >
                       {memberships.filter(m => m.clubId === club.id && m.status === 'APPROVED').length}
+                      </button>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                       {club.status === 'PENDING' && (
@@ -329,7 +543,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate, currentPage = 'dash
                           <CheckCircle className="h-5 w-5" />
                         </button>
                       )}
-                      <button className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">
+                      <button onClick={() => openEditClub(club)} className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">
                         <Edit className="h-5 w-5" />
                       </button>
                       <button
@@ -354,7 +568,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate, currentPage = 'dash
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Manage Events</h2>
-          <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors">
+          <button onClick={openAddEvent} className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors">
             <Plus className="h-5 w-5" />
             <span>Add Event</span>
           </button>
@@ -390,7 +604,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate, currentPage = 'dash
                  </div>
 
                 <div className="flex space-x-2">
-                  <button className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 text-sm font-medium">
+                  <button onClick={() => openEditEvent(event)} className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 text-sm font-medium">
                     <Edit className="h-4 w-4" />
                   </button>
                   <button
@@ -413,7 +627,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate, currentPage = 'dash
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white">All Users</h2>
-          <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors">
+          <button onClick={openAddUser} className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors">
             <Plus className="h-5 w-5" />
             <span>Add User</span>
           </button>
@@ -436,12 +650,21 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate, currentPage = 'dash
                   <tr key={user.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
-                        <div className="h-10 w-10 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center">
-                          <span className="text-indigo-600 dark:text-indigo-400 font-semibold text-sm">
-                            {user.fullName.charAt(0).toUpperCase()}
-                          </span>
-                        </div>
-                                                 <div className="ml-4">
+                        {user.profilePhoto ? (
+                          <img
+                            src={user.profilePhoto}
+                            alt={user.fullName}
+                            className="h-10 w-10 rounded-full object-cover"
+                            onError={(e) => { (e.currentTarget as HTMLImageElement).src = defaultAvatar; }}
+                          />
+                        ) : (
+                          <div className="h-10 w-10 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center">
+                            <span className="text-indigo-600 dark:text-indigo-400 font-semibold text-sm">
+                              {user.fullName.charAt(0).toUpperCase()}
+                            </span>
+                          </div>
+                        )}
+                        <div className="ml-4">
                            <div className="text-sm font-medium text-gray-900 dark:text-white">{user.fullName}</div>
                            <div className="text-sm text-gray-500 dark:text-gray-400">{user.email}</div>
                          </div>
@@ -465,10 +688,10 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate, currentPage = 'dash
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                      <button className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">
+                      <button onClick={() => openEditUser(user)} className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">
                         <Edit className="h-5 w-5" />
                       </button>
-                                             <button className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">
+                      <button onClick={() => handleDeleteUser(user.id)} className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">
                          <Trash2 className="h-5 w-5" />
                        </button>
                     </td>
@@ -619,6 +842,188 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate, currentPage = 'dash
                   </button>
                 </div>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* Members Modal */}
+        {showMembersModal && membersModalClub && (
+          <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+            <div className="relative top-20 mx-auto p-5 border w-full max-w-md shadow-lg rounded-md bg-white dark:bg-gray-800">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white">Members of {membersModalClub.name}</h3>
+                <button onClick={() => { setShowMembersModal(false); setMembersModalClub(null); }} className="text-gray-500 hover:text-gray-700">Close</button>
+              </div>
+              <div className="space-y-3 max-h-80 overflow-y-auto">
+                {memberships
+                  .filter(m => m.clubId === membersModalClub.id && m.status === 'APPROVED')
+                  .map(m => {
+                    const member = users.find(u => u.id === m.userId);
+                    if (!member) return null;
+                    return (
+                      <div key={m.id} className="flex items-center space-x-3 p-2 rounded border border-gray-200 dark:border-gray-700">
+                        <img
+                          src={member.profilePhoto || defaultAvatar}
+                          alt={member.fullName}
+                          className="h-8 w-8 rounded-full object-cover"
+                          onError={(e) => { (e.currentTarget as HTMLImageElement).src = defaultAvatar; }}
+                        />
+                        <div className="flex-1">
+                          <div className="text-sm font-medium text-gray-900 dark:text-white">{member.fullName}</div>
+                          <div className="text-xs text-gray-500 dark:text-gray-400">{member.email}</div>
+                        </div>
+                        <span className="text-xs px-2 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300">{m.role}</span>
+                      </div>
+                    );
+                  })}
+                {memberships.filter(m => m.clubId === membersModalClub.id && m.status === 'APPROVED').length === 0 && (
+                  <div className="text-sm text-gray-500 dark:text-gray-400">No approved members</div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Confirm Delete Modal */}
+        {showConfirmModal && (
+          <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+            <div className="relative top-20 mx-auto p-5 border w-full max-w-md shadow-lg rounded-md bg-white dark:bg-gray-800">
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">Confirm Delete</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-300 mb-6">{confirmMessage}</p>
+              <div className="flex justify-end space-x-3">
+                <button
+                  onClick={() => {
+                    setShowConfirmModal(false);
+                    setOnConfirmAction(null);
+                  }}
+                  className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => {
+                    if (onConfirmAction) onConfirmAction();
+                    setShowConfirmModal(false);
+                    setOnConfirmAction(null);
+                  }}
+                  className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Club Modal */}
+        {showClubModal && (
+          <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+            <div className="relative top-20 mx-auto p-5 border w-full max-w-lg shadow-lg rounded-md bg-white dark:bg-gray-800">
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">{editingClub ? 'Edit Club' : 'Add Club'}</h3>
+              <form onSubmit={saveClub} className="space-y-4">
+                <div>
+                  <label className="block text-sm text-gray-600 dark:text-gray-300 mb-1">Name</label>
+                  <input value={clubForm.name} onChange={e => setClubForm({ ...clubForm, name: e.target.value })} className="w-full border rounded px-3 py-2 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white" />
+                </div>
+                <div>
+                  <label className="block text-sm text-gray-600 dark:text-gray-300 mb-1">Description</label>
+                  <textarea value={clubForm.description} onChange={e => setClubForm({ ...clubForm, description: e.target.value })} className="w-full border rounded px-3 py-2 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white" />
+                </div>
+                <div>
+                  <label className="block text-sm text-gray-600 dark:text-gray-300 mb-1">Category</label>
+                  <input value={clubForm.category} onChange={e => setClubForm({ ...clubForm, category: e.target.value })} className="w-full border rounded px-3 py-2 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white" />
+                </div>
+                <div className="flex justify-end space-x-3 pt-2">
+                  <button type="button" onClick={() => { setShowClubModal(false); setEditingClub(null); }} className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200">Cancel</button>
+                  <button type="submit" className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded">Save</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* Event Modal */}
+        {showEventModal && (
+          <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+            <div className="relative top-20 mx-auto p-5 border w-full max-w-lg shadow-lg rounded-md bg-white dark:bg-gray-800">
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">{editingEvent ? 'Edit Event' : 'Add Event'}</h3>
+              <form onSubmit={saveEvent} className="space-y-4">
+                <div>
+                  <label className="block text-sm text-gray-600 dark:text-gray-300 mb-1">Title</label>
+                  <input value={eventForm.title} onChange={e => setEventForm({ ...eventForm, title: e.target.value })} className="w-full border rounded px-3 py-2 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white" />
+                </div>
+                <div>
+                  <label className="block text-sm text-gray-600 dark:text-gray-300 mb-1">Club</label>
+                  <select value={eventForm.clubId} onChange={e => setEventForm({ ...eventForm, clubId: e.target.value })} className="w-full border rounded px-3 py-2 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white">
+                    {clubs.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm text-gray-600 dark:text-gray-300 mb-1">Description</label>
+                  <textarea value={eventForm.description} onChange={e => setEventForm({ ...eventForm, description: e.target.value })} className="w-full border rounded px-3 py-2 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white" />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm text-gray-600 dark:text-gray-300 mb-1">Location</label>
+                    <input value={eventForm.location} onChange={e => setEventForm({ ...eventForm, location: e.target.value })} className="w-full border rounded px-3 py-2 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white" />
+                  </div>
+                  <div>
+                    <label className="block text-sm text-gray-600 dark:text-gray-300 mb-1">Date</label>
+                    <input type="datetime-local" value={eventForm.date} onChange={e => setEventForm({ ...eventForm, date: e.target.value })} className="w-full border rounded px-3 py-2 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white" />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm text-gray-600 dark:text-gray-300 mb-1">RSVP Limit</label>
+                  <input type="number" min="0" value={eventForm.rsvpLimit} onChange={e => setEventForm({ ...eventForm, rsvpLimit: e.target.value })} className="w-full border rounded px-3 py-2 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white" />
+                </div>
+                <div className="flex justify-end space-x-3 pt-2">
+                  <button type="button" onClick={() => { setShowEventModal(false); setEditingEvent(null); }} className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200">Cancel</button>
+                  <button type="submit" className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded">Save</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* User Modal */}
+        {showUserModal && (
+          <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+            <div className="relative top-20 mx-auto p-5 border w-full max-w-lg shadow-lg rounded-md bg-white dark:bg-gray-800">
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">{editingUser ? 'Edit User' : 'Add User'}</h3>
+              <form onSubmit={saveUser} className="space-y-4">
+                <div>
+                  <label className="block text-sm text-gray-600 dark:text-gray-300 mb-1">Full Name</label>
+                  <input value={userForm.fullName} onChange={e => setUserForm({ ...userForm, fullName: e.target.value })} className="w-full border rounded px-3 py-2 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white" />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm text-gray-600 dark:text-gray-300 mb-1">Email</label>
+                    <input type="email" value={userForm.email} onChange={e => setUserForm({ ...userForm, email: e.target.value })} className="w-full border rounded px-3 py-2 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white" />
+                  </div>
+                  <div>
+                    <label className="block text-sm text-gray-600 dark:text-gray-300 mb-1">Password</label>
+                    <input type="password" value={userForm.password} onChange={e => setUserForm({ ...userForm, password: e.target.value })} className="w-full border rounded px-3 py-2 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white" />
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm text-gray-600 dark:text-gray-300 mb-1">Role</label>
+                    <select value={userForm.role} onChange={e => setUserForm({ ...userForm, role: e.target.value as User['role'] })} className="w-full border rounded px-3 py-2 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white">
+                      <option value="ADMIN">ADMIN</option>
+                      <option value="TEACHER">TEACHER</option>
+                      <option value="STUDENT">STUDENT</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm text-gray-600 dark:text-gray-300 mb-1">Phone</label>
+                    <input value={userForm.phone} onChange={e => setUserForm({ ...userForm, phone: e.target.value })} className="w-full border rounded px-3 py-2 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white" />
+                  </div>
+                </div>
+                <div className="flex justify-end space-x-3 pt-2">
+                  <button type="button" onClick={() => { setShowUserModal(false); setEditingUser(null); }} className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200">Cancel</button>
+                  <button type="submit" className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded">Save</button>
+                </div>
+              </form>
             </div>
           </div>
         )}

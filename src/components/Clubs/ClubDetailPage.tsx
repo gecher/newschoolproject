@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   ArrowLeft, Users, Calendar, MapPin, Star, 
-  Plus, MessageSquare, Award, Share2, Heart,
+  Plus, Share2, Heart,
   Edit, Settings, UserPlus, Image as ImageIcon,
   ChevronLeft, ChevronRight
 } from 'lucide-react';
@@ -24,6 +24,17 @@ const ClubDetailPage: React.FC<ClubDetailPageProps> = ({ onNavigate, clubId }) =
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'about' | 'events' | 'members' | 'gallery'>('about');
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  // Event create/edit for managers (admin/advisor/president)
+  const [showEventModal, setShowEventModal] = useState(false);
+  const [editingEvent, setEditingEvent] = useState<Event | null>(null);
+  const [eventForm, setEventForm] = useState({
+    title: '',
+    description: '',
+    location: '',
+    date: '',
+    rsvpLimit: '' as string | number
+  });
 
   useEffect(() => {
     loadClubData();
@@ -94,6 +105,57 @@ const ClubDetailPage: React.FC<ClubDetailPageProps> = ({ onNavigate, clubId }) =
     return currentUser.role === 'ADMIN' || 
            currentUser.id === club.advisorId ||
            (membership && membership.role === 'PRESIDENT');
+  };
+
+  const openAddEvent = () => {
+    setEditingEvent(null);
+    setEventForm({ title: '', description: '', location: '', date: '', rsvpLimit: '' });
+    setShowEventModal(true);
+  };
+
+  const openEditEvent = (event: Event) => {
+    setEditingEvent(event);
+    const dt = new Date(event.date);
+    const isoLocal = new Date(dt.getTime() - dt.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+    setEventForm({
+      title: event.title,
+      description: event.description || '',
+      location: event.location || '',
+      date: isoLocal,
+      rsvpLimit: event.rsvpLimit ?? ''
+    });
+    setShowEventModal(true);
+  };
+
+  const saveEvent = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!club) return;
+    const iso = eventForm.date ? new Date(eventForm.date as string).toISOString() : new Date().toISOString();
+    const rsvp = eventForm.rsvpLimit === '' ? 0 : Number(eventForm.rsvpLimit);
+    if (editingEvent) {
+      dataService.updateEvent(editingEvent.id, {
+        title: eventForm.title,
+        clubId: club.id,
+        description: eventForm.description || undefined,
+        location: eventForm.location || undefined,
+        date: iso,
+        rsvpLimit: rsvp
+      });
+    } else {
+      dataService.createEvent({
+        title: eventForm.title,
+        clubId: club.id,
+        description: eventForm.description || undefined,
+        location: eventForm.location || undefined,
+        date: iso,
+        imageUrl: '',
+        rsvpLimit: rsvp
+      });
+    }
+    setShowEventModal(false);
+    setEditingEvent(null);
+    // refresh events list
+    setEvents(dataService.getEventsByClub(club.id));
   };
 
   const formatDate = (dateString: string) => {
@@ -333,7 +395,7 @@ const ClubDetailPage: React.FC<ClubDetailPageProps> = ({ onNavigate, clubId }) =
                   <div className="flex items-center justify-between">
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Club Events</h3>
                     {canManageClub() && (
-                      <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm flex items-center">
+                      <button onClick={openAddEvent} className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm flex items-center">
                         <Plus className="h-4 w-4 mr-2" />
                         Create Event
                       </button>
@@ -373,6 +435,13 @@ const ClubDetailPage: React.FC<ClubDetailPageProps> = ({ onNavigate, clubId }) =
                               />
                             )}
                           </div>
+                          {canManageClub() && (
+                            <div className="flex items-center justify-end space-x-2 mt-3">
+                              <button onClick={(e) => { e.stopPropagation(); openEditEvent(event); }} className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 text-sm font-medium">
+                                Edit
+                              </button>
+                            </div>
+                          )}
                         </div>
                       ))}
                     </div>
@@ -507,25 +576,11 @@ const ClubDetailPage: React.FC<ClubDetailPageProps> = ({ onNavigate, clubId }) =
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Quick Actions</h3>
               <div className="space-y-3">
                 <button
-                  onClick={() => onNavigate('forums')}
-                  className="w-full flex items-center p-3 text-left bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
-                >
-                  <MessageSquare className="h-5 w-5 text-indigo-600 dark:text-indigo-400 mr-3" />
-                  <span className="text-sm font-medium text-gray-900 dark:text-white">Join Discussion</span>
-                </button>
-                <button
                   onClick={() => onNavigate('events')}
                   className="w-full flex items-center p-3 text-left bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
                 >
                   <Calendar className="h-5 w-5 text-green-600 dark:text-green-400 mr-3" />
                   <span className="text-sm font-medium text-gray-900 dark:text-white">View Events</span>
-                </button>
-                <button
-                  onClick={() => onNavigate('badges')}
-                  className="w-full flex items-center p-3 text-left bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
-                >
-                  <Award className="h-5 w-5 text-purple-600 dark:text-purple-400 mr-3" />
-                  <span className="text-sm font-medium text-gray-900 dark:text-white">Earn Badges</span>
                 </button>
               </div>
             </div>
@@ -602,3 +657,8 @@ const ClubDetailPage: React.FC<ClubDetailPageProps> = ({ onNavigate, clubId }) =
 };
 
 export default ClubDetailPage;
+/**
+ * Event modal for managers
+ */
+// Render the modal at the end to avoid cluttering the main JSX above
+// Note: Keeping minimal to avoid large refactors

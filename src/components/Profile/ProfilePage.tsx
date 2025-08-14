@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { User, Edit, Camera, Save, X, Eye, EyeOff } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
 import { dataService } from '../../services/dataService';
+import { Edit, Camera, Save, X, Eye, EyeOff } from 'lucide-react';
+//
+import { useAuth } from '../../contexts/AuthContext';
 import { User as UserType } from '../../types';
 
 interface ProfilePageProps {
@@ -8,7 +10,9 @@ interface ProfilePageProps {
 }
 
 const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate }) => {
+  const { currentUser, updateProfile } = useAuth();
   const [user, setUser] = useState<UserType | null>(null);
+  const profilePhotoFieldRef = useRef<HTMLInputElement | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
@@ -20,35 +24,32 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate }) => {
     phone: '',
     bio: '',
     interests: '',
+    profilePhoto: '',
     password: '',
     confirmPassword: ''
   });
 
   useEffect(() => {
-    const loadUserProfile = async () => {
-      try {
-        const currentUser = dataService.getCurrentUser();
-        if (currentUser) {
-          setUser(currentUser);
-                                setFormData({
-                        fullName: currentUser.fullName,
-                        email: currentUser.email,
-                        phone: currentUser.phone || '',
-                        bio: currentUser.bio || '',
-                        interests: currentUser.interests?.join(', ') || '',
-                        password: '',
-                        confirmPassword: ''
-                      });
-        }
-      } catch (error) {
-        console.error('Error loading user profile:', error);
-      } finally {
-        setIsLoading(false);
+    try {
+      if (currentUser) {
+        setUser(currentUser as unknown as UserType);
+        setFormData({
+          fullName: currentUser.fullName,
+          email: currentUser.email,
+          phone: (currentUser as any).phone || '',
+          bio: (currentUser as any).bio || '',
+          interests: ((currentUser as any).interests || []).join(', ') || '',
+          profilePhoto: (currentUser as any).profilePhoto || '',
+          password: '',
+          confirmPassword: ''
+        });
       }
-    };
-
-    loadUserProfile();
-  }, []);
+    } catch (error) {
+      console.error('Error loading user profile:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [currentUser]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -65,17 +66,20 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate }) => {
     }
 
     try {
-      // In a real app, you would call an API to update the user
-      const updatedUser = {
-        ...user!,
+      const updates: any = {
         fullName: formData.fullName,
         email: formData.email,
         phone: formData.phone,
         bio: formData.bio,
-        interests: formData.interests.split(',').map(i => i.trim()).filter(i => i)
+        profilePhoto: formData.profilePhoto
       };
-
-      setUser(updatedUser);
+      if (formData.password) {
+        updates.password = formData.password;
+      }
+      const updatedUser = await updateProfile(updates);
+      if (updatedUser) {
+        setUser(updatedUser as UserType);
+      }
       setIsEditing(false);
       alert('Profile updated successfully!');
     } catch (error) {
@@ -92,6 +96,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate }) => {
         phone: user.phone || '',
         bio: user.bio || '',
         interests: '',
+        profilePhoto: (user as any).profilePhoto || '',
         password: '',
         confirmPassword: ''
       });
@@ -139,10 +144,23 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate }) => {
               <div className="text-center">
                 {/* Profile Picture */}
                 <div className="relative inline-block mb-4">
-                  <div className="w-32 h-32 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-4xl font-bold">
-                    {user.fullName.charAt(0)}
-                  </div>
-                  <button className="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-md hover:shadow-lg transition-shadow">
+                  {formData.profilePhoto ? (
+                    <img src={formData.profilePhoto} alt={user.fullName} className="w-32 h-32 rounded-full object-cover border" />
+                  ) : (
+                    <div className="w-32 h-32 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-4xl font-bold">
+                      {user.fullName.charAt(0)}
+                    </div>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      // switch to edit mode and focus the profile photo URL field
+                      if (!isEditing) setIsEditing(true);
+                      setTimeout(() => profilePhotoFieldRef.current?.focus(), 0);
+                    }}
+                    className="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-md hover:shadow-lg transition-shadow"
+                    title="Set profile photo URL"
+                  >
                     <Camera className="w-4 h-4 text-gray-600" />
                   </button>
                 </div>
@@ -161,10 +179,6 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate }) => {
                   <div className="text-center">
                     <div className="text-2xl font-bold text-gray-900">5</div>
                     <div className="text-sm text-gray-600">Clubs</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-gray-900">12</div>
-                    <div className="text-sm text-gray-600">Badges</div>
                   </div>
                 </div>
               </div>
@@ -203,6 +217,15 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate }) => {
                     </button>
                   </div>
                 )}
+                {user?.role === 'ADMIN' && !isEditing && (
+                  <button
+                    onClick={() => dataService.exportDataToFile('school-app-data.json')}
+                    className="ml-2 inline-flex items-center px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+                    title="Download current app data as JSON"
+                  >
+                    Export JSON
+                  </button>
+                )}
               </div>
 
               {/* Form */}
@@ -222,6 +245,25 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate }) => {
                       className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100"
                     />
                   </div>
+
+                  {/* Profile Photo URL */}
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Profile Photo URL
+                    </label>
+                    <input
+                      type="url"
+                      name="profilePhoto"
+                      value={formData.profilePhoto}
+                      onChange={handleInputChange}
+                      disabled={!isEditing}
+                      placeholder="https://example.com/photo.jpg"
+                      ref={profilePhotoFieldRef}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100"
+                    />
+                  </div>
+
+                  
 
                   {/* Email */}
                   <div>

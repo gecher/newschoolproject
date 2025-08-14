@@ -6,8 +6,6 @@ import StudentDashboard from './Dashboard/StudentDashboard';
 import TeacherDashboard from './Dashboard/TeacherDashboard';
 import ClubsPage from './Clubs/ClubsPage';
 import EventsPage from './Events/EventsPage';
-import ForumsPage from './Forums/ForumsPage';
-import BadgesPage from './Badges/BadgesPage';
 import ProfilePage from './Profile/ProfilePage';
 import AdminPanel from './Admin/AdminPanel';
 import LandingPage from './Landing/LandingPage';
@@ -78,10 +76,6 @@ const MainApp: React.FC = () => {
         return <EventsPage onNavigate={handleNavigate} />;
       case 'event-detail':
         return <EventDetailPage onNavigate={handleNavigate} eventId={pageData?.eventId} />;
-      case 'forums':
-        return <ForumsPage onNavigate={handleNavigate} />;
-      case 'badges':
-        return <BadgesPage onNavigate={handleNavigate} />;
       case 'profile':
         return <ProfilePage onNavigate={handleNavigate} />;
       case 'admin':

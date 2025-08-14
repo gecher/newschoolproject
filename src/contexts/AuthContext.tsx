@@ -7,6 +7,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
   isLoading: boolean;
+  updateProfile: (updates: Partial<User>) => Promise<User | null>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -65,11 +66,28 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     localStorage.removeItem('currentUser');
   };
 
+  const updateProfile = async (updates: Partial<User>): Promise<User | null> => {
+    if (!currentUser) return null;
+    try {
+      const updated = dataService.updateUser(currentUser.id, updates);
+      if (updated) {
+        setCurrentUser(updated);
+        localStorage.setItem('currentUser', JSON.stringify(updated));
+        return updated;
+      }
+      return null;
+    } catch (error) {
+      console.error('Update profile error:', error);
+      return null;
+    }
+  };
+
   const value = {
     currentUser,
     login,
     logout,
-    isLoading
+    isLoading,
+    updateProfile
   };
 
   return (

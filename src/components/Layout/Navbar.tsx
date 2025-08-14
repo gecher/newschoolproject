@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   Search, Bell, User, Menu, X, Sun, Moon, 
   Home, Users, Calendar, MessageSquare, Award, BarChart3, UserPlus
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
+import { dataService } from '../../services/dataService';
 
 interface NavbarProps {
   onNavigate: (page: string) => void;
@@ -16,6 +17,20 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
   const { theme, toggleTheme } = useTheme();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [notifications, setNotifications] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (!currentUser) return;
+    const refresh = () => {
+      setUnreadCount(dataService.getUnreadNotificationsCount(currentUser.id));
+      setNotifications(dataService.getNotificationsByUser(currentUser.id));
+    };
+    refresh();
+    const interval = setInterval(refresh, 2000);
+    return () => clearInterval(interval);
+  }, [currentUser]);
 
   const getNavigationItems = () => {
     if (currentUser?.role === 'ADMIN') {
@@ -114,10 +129,63 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
             </button>
 
             {/* Notifications */}
-            <button className="p-2 rounded-md text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-700 relative">
-              <Bell className="h-5 w-5" />
-              <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-400 ring-2 ring-white dark:ring-gray-800"></span>
-            </button>
+            <div className="relative">
+              <button onClick={() => setNotificationsOpen(!notificationsOpen)} className="p-2 rounded-md text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-700 relative">
+                <Bell className="h-5 w-5" />
+                {unreadCount > 0 && (
+                  <span className="absolute -top-1 -right-1 min-w-[18px] h-4 px-1 rounded-full bg-red-500 text-white text-[10px] flex items-center justify-center">
+                    {unreadCount}
+                  </span>
+                )}
+              </button>
+              {notificationsOpen && (
+                <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 z-50">
+                  <div className="flex items-center justify-between px-4 py-2 border-b border-gray-200 dark:border-gray-700">
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Notifications</span>
+                    <button
+                      onClick={() => {
+                        if (currentUser) {
+                          dataService.markAllNotificationsRead(currentUser.id);
+                          setUnreadCount(0);
+                          setNotifications(dataService.getNotificationsByUser(currentUser.id));
+                        }
+                      }}
+                      className="text-xs text-indigo-600 dark:text-indigo-400 hover:underline"
+                    >
+                      Mark all as read
+                    </button>
+                  </div>
+                  <div className="max-h-80 overflow-y-auto">
+                    {notifications.length === 0 ? (
+                      <div className="p-4 text-sm text-gray-500 dark:text-gray-400">No notifications</div>
+                    ) : (
+                      notifications.map((n) => (
+                        <div key={n.id} className={`px-4 py-3 text-sm border-b border-gray-100 dark:border-gray-700 ${n.isRead ? 'text-gray-500 dark:text-gray-400' : 'text-gray-800 dark:text-gray-200'}`}>
+                          <div className="flex items-start justify-between">
+                            <p className="pr-2">{n.message}</p>
+                            {!n.isRead && (
+                              <button
+                                onClick={() => {
+                                  dataService.markNotificationRead(n.id);
+                                  if (currentUser) {
+                                    setUnreadCount(dataService.getUnreadNotificationsCount(currentUser.id));
+                                    setNotifications(dataService.getNotificationsByUser(currentUser.id));
+                                  }
+                                }}
+                                className="text-xs text-indigo-600 dark:text-indigo-400 hover:underline ml-2"
+                              >
+                                Read
+                              </button>
+                            )}
+                          </div>
+                          <div className="mt-1 text-[10px] text-gray-400">{new Date(n.createdAt).toLocaleString()}</div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
 
             {/* User Menu */}
             <div className="relative">
