@@ -65,6 +65,19 @@ export interface EventAttendee {
   checkedIn: boolean;
 }
 
+export interface Announcement {
+  id: string;
+  title: string;
+  content: string;
+  clubId?: string;
+  target: 'GLOBAL' | 'CLUB';
+  imageUrl?: string;
+  attachments?: any[];
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 // Data Service Class
 class DataService {
   private data: any;
@@ -592,8 +605,8 @@ class DataService {
 
     const currentMembership = this.data.memberships[membershipIndex];
 
-    // Ensure unique leadership roles per club: PRESIDENT, VICE_PRESIDENT, SECRETARY
-    if (updates.role && ['PRESIDENT', 'VICE_PRESIDENT', 'SECRETARY'].includes(updates.role)) {
+    // Ensure unique leadership roles per club: PRESIDENT, VICE_PRESIDENT, SECRETARY, CAPTAIN
+    if (updates.role && ['PRESIDENT', 'VICE_PRESIDENT', 'SECRETARY', 'CAPTAIN'].includes(updates.role)) {
       const targetRole = updates.role;
       const targetClubId = currentMembership.clubId;
       this.data.memberships = this.data.memberships.map((m: Membership) => {
@@ -718,6 +731,78 @@ class DataService {
     this.persist();
   }
 
+  // Announcement Management
+  getAnnouncements(): Announcement[] {
+    return this.data.announcements || [];
+  }
+
+  getAnnouncementById(id: string): Announcement | null {
+    return (this.data.announcements || []).find((a: Announcement) => a.id === id) || null;
+  }
+
+  createAnnouncement(announcementData: {
+    title: string;
+    content: string;
+    target: 'GLOBAL' | 'CLUB';
+    clubId?: string;
+    imageUrl?: string;
+    createdBy: string;
+  }): Announcement {
+    const newAnnouncement: Announcement = {
+      id: `announcement-${Date.now()}`,
+      ...announcementData,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    if (!this.data.announcements) this.data.announcements = [];
+    this.data.announcements.push(newAnnouncement);
+    this.persist();
+
+    // Create notifications for users
+    const now = new Date().toISOString();
+    if (announcementData.target === 'GLOBAL') {
+      // Notify all users
+      (this.data.users || []).forEach((user: User) => {
+        this.createNotification({
+          userId: user.id,
+          message: `New announcement: ${announcementData.title}`,
+          type: 'ANNOUNCEMENT',
+          isRead: false,
+          createdAt: now
+        });
+      });
+    } else if (announcementData.clubId) {
+      // Notify club members
+      this.notifyClubMembers(announcementData.clubId, `New club announcement: ${announcementData.title}`, 'ANNOUNCEMENT');
+    }
+
+    return newAnnouncement;
+  }
+
+  updateAnnouncement(id: string, updates: Partial<Announcement>): Announcement | null {
+    const announcementIndex = (this.data.announcements || []).findIndex((a: Announcement) => a.id === id);
+    if (announcementIndex === -1) return null;
+
+    this.data.announcements[announcementIndex] = {
+      ...this.data.announcements[announcementIndex],
+      ...updates,
+      updatedAt: new Date().toISOString()
+    };
+
+    this.persist();
+    return this.data.announcements[announcementIndex];
+  }
+
+  deleteAnnouncement(id: string): boolean {
+    const announcementIndex = (this.data.announcements || []).findIndex((a: Announcement) => a.id === id);
+    if (announcementIndex === -1) return false;
+
+    this.data.announcements.splice(announcementIndex, 1);
+    this.persist();
+    return true;
+  }
+
   // Search functionality
   searchClubs(query: string): Club[] {
     const lowercaseQuery = query.toLowerCase();
@@ -750,7 +835,7 @@ class DataService {
   createNotification(notificationData: {
     userId: string;
     message: string;
-    type: 'ANNOUNCEMENT' | 'EVENT' | 'BADGE' | 'OTHER' | string;
+    type: 'ANNOUNCEMENT' | 'EVENT' | 'OTHER' | string;
     isRead: boolean;
     createdAt: string;
   }): { id: string } & typeof notificationData {

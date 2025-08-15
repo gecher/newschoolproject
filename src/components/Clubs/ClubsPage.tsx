@@ -186,24 +186,26 @@ const ClubsPage: React.FC<ClubsPageProps> = ({ onNavigate }) => {
         </div>
 
         {/* Category Filters */}
-        <div className="flex flex-wrap gap-2">
-          {categories.map((category) => {
-            const Icon = category.icon;
-            return (
-              <button
-                key={category.name}
-                onClick={() => setSelectedCategory(category.name)}
-                className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  selectedCategory === category.name
-                    ? `bg-${category.color}-100 dark:bg-${category.color}-900 text-${category.color}-700 dark:text-${category.color}-300`
-                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
-                }`}
-              >
-                <Icon className="h-4 w-4" />
-                <span>{category.name}</span>
-              </button>
-            );
-          })}
+        <div className="flex flex-wrap gap-4 items-center">
+          <div className="relative">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Category
+            </label>
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent min-w-[200px]"
+            >
+              {categories.map((category) => {
+                const Icon = category.icon;
+                return (
+                  <option key={category.name} value={category.name}>
+                    {category.name}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
         </div>
 
         {/* View Toggle */}

@@ -1,11 +1,11 @@
 export type Role = 'ADMIN' | 'TEACHER' | 'STUDENT'
 export type ClubStatus = 'ACTIVE' | 'INACTIVE'
-export type MembershipRole = 'MEMBER' | 'PRESIDENT' | 'VICE_PRESIDENT' | 'CAPTAIN'
+export type MembershipRole = 'MEMBER' | 'PRESIDENT' | 'VICE_PRESIDENT' | 'SECRETARY' | 'CAPTAIN'
 export type MembershipStatus = 'PENDING' | 'APPROVED' | 'REJECTED'
 export type RSVPStatus = 'PENDING' | 'ACCEPTED' | 'REJECTED' | 'CHECKED_IN'
 export type AnnouncementTarget = 'GLOBAL' | 'CLUB'
 export type Visibility = 'PUBLIC' | 'MEMBERS_ONLY'
-export type NotificationType = 'ANNOUNCEMENT' | 'EVENT' | 'BADGE' | 'OTHER'
+export type NotificationType = 'ANNOUNCEMENT' | 'EVENT' | 'OTHER'
 export type FileType = 'IMAGE' | 'DOCUMENT' | 'VIDEO' | 'AUDIO'
 
 export interface User {
@@ -101,6 +101,7 @@ export interface Event {
   imageUrl?: string
   documents?: EventDocument[]
   rsvpLimit?: number
+  createdBy?: string
   createdAt: string
   updatedAt: string
   deletedAt?: string
@@ -146,55 +147,7 @@ export interface AnnouncementAttachment {
   uploadedAt: string
 }
 
-export interface Badge {
-  id: string
-  name: string
-  description?: string
-  iconUrl?: string
-  autoAssign: boolean
-  condition?: string
-  createdAt: string
-  updatedAt: string
-}
 
-export interface UserBadge {
-  id: string
-  userId: string
-  badgeId: string
-  assignedAt: string
-}
-
-export interface Forum {
-  id: string
-  clubId: string
-  title: string
-  isPrivate: boolean
-  createdBy: string
-  createdAt: string
-  updatedAt: string
-}
-
-export interface ForumPost {
-  id: string
-  forumId: string
-  content: string
-  postedBy: string
-  likes: number
-  isFlagged: boolean
-  attachments?: PostAttachment[]
-  createdAt: string
-  updatedAt: string
-  deletedAt?: string
-}
-
-export interface PostAttachment {
-  id: string
-  name: string
-  url: string
-  type: FileType
-  size: number
-  uploadedAt: string
-}
 
 export interface Notification {
   id: string

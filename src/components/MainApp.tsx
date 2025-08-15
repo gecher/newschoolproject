@@ -11,6 +11,7 @@ import AdminPanel from './Admin/AdminPanel';
 import LandingPage from './Landing/LandingPage';
 import ClubDetailPage from './Clubs/ClubDetailPage';
 import EventDetailPage from './Events/EventDetailPage';
+import AnnouncementsPage from './Announcements/AnnouncementsPage';
 
 const MainApp: React.FC = () => {
   const { currentUser, isLoading } = useAuth();
@@ -76,6 +77,8 @@ const MainApp: React.FC = () => {
         return <EventsPage onNavigate={handleNavigate} />;
       case 'event-detail':
         return <EventDetailPage onNavigate={handleNavigate} eventId={pageData?.eventId} />;
+      case 'announcements':
+        return <AnnouncementsPage onNavigate={handleNavigate} />;
       case 'profile':
         return <ProfilePage onNavigate={handleNavigate} />;
       case 'admin':

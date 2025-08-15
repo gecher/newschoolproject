@@ -30,48 +30,6 @@
     },
     {
       "id": "user-3",
-      "fullName": "Michael Chen",
-      "email": "michael.chen@school.edu",
-      "password": "teacher123",
-      "role": "TEACHER",
-      "phone": "+1234567892",
-      "profilePhoto": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
-      "coverPhoto": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=200&fit=crop",
-      "bio": "Art teacher and creative arts club mentor. Helping students express themselves through art.",
-      "isActive": true,
-      "createdAt": "2024-01-01T00:00:00Z",
-      "updatedAt": "2024-01-01T00:00:00Z"
-    },
-    {
-      "id": "user-4",
-      "fullName": "Emily Rodriguez",
-      "email": "emily.rodriguez@school.edu",
-      "password": "teacher123",
-      "role": "TEACHER",
-      "phone": "+1234567893",
-      "profilePhoto": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
-      "coverPhoto": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=200&fit=crop",
-      "bio": "English teacher and debate club coach. Encouraging critical thinking and public speaking.",
-      "isActive": true,
-      "createdAt": "2024-01-01T00:00:00Z",
-      "updatedAt": "2024-01-01T00:00:00Z"
-    },
-    {
-      "id": "user-5",
-      "fullName": "David Thompson",
-      "email": "david.thompson@school.edu",
-      "password": "teacher123",
-      "role": "TEACHER",
-      "phone": "+1234567894",
-      "profilePhoto": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
-      "coverPhoto": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=200&fit=crop",
-      "bio": "Physical education teacher and sports coordinator. Promoting healthy lifestyles and teamwork.",
-      "isActive": true,
-      "createdAt": "2024-01-01T00:00:00Z",
-      "updatedAt": "2024-01-01T00:00:00Z"
-    },
-    {
-      "id": "user-6",
       "fullName": "Alex Smith",
       "email": "alex.smith@student.school.edu",
       "password": "student123",
@@ -85,7 +43,7 @@
       "updatedAt": "2024-01-01T00:00:00Z"
     },
     {
-      "id": "user-7",
+      "id": "user-4",
       "fullName": "Emma Wilson",
       "email": "emma.wilson@student.school.edu",
       "password": "student123",
@@ -99,7 +57,7 @@
       "updatedAt": "2024-01-01T00:00:00Z"
     },
     {
-      "id": "user-8",
+      "id": "user-5",
       "fullName": "James Brown",
       "email": "james.brown@student.school.edu",
       "password": "student123",
@@ -113,7 +71,7 @@
       "updatedAt": "2024-01-01T00:00:00Z"
     },
     {
-      "id": "user-9",
+      "id": "user-6",
       "fullName": "Sophia Davis",
       "email": "sophia.davis@student.school.edu",
       "password": "student123",
@@ -127,7 +85,7 @@
       "updatedAt": "2024-01-01T00:00:00Z"
     },
     {
-      "id": "user-10",
+      "id": "user-7",
       "fullName": "Lucas Garcia",
       "email": "lucas.garcia@student.school.edu",
       "password": "student123",
@@ -136,6 +94,91 @@
       "profilePhoto": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
       "coverPhoto": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=200&fit=crop",
       "bio": "Senior student and basketball team captain. Leading by example on and off the court.",
+      "isActive": true,
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "user-8",
+      "fullName": "Maya Patel",
+      "email": "maya.patel@student.school.edu",
+      "password": "student123",
+      "role": "STUDENT",
+      "phone": "+1234567900",
+      "profilePhoto": "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
+      "coverPhoto": "https://images.unsplash.com/photo-1523240798139-8c4fc0f5c3a4?w=800&h=200&fit=crop",
+      "bio": "Junior student passionate about computer science and programming. Tech enthusiast.",
+      "isActive": true,
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "user-9",
+      "fullName": "Ryan Chen",
+      "email": "ryan.chen@student.school.edu",
+      "password": "student123",
+      "role": "STUDENT",
+      "phone": "+1234567901",
+      "profilePhoto": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
+      "coverPhoto": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=200&fit=crop",
+      "bio": "Sophomore student interested in music and performing arts. Guitar player.",
+      "isActive": true,
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "user-10",
+      "fullName": "Isabella Rodriguez",
+      "email": "isabella.rodriguez@student.school.edu",
+      "password": "student123",
+      "role": "STUDENT",
+      "phone": "+1234567902",
+      "profilePhoto": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
+      "coverPhoto": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=200&fit=crop",
+      "bio": "Senior student passionate about journalism and writing. Editor of school newspaper.",
+      "isActive": true,
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "user-11",
+      "fullName": "Ethan Thompson",
+      "email": "ethan.thompson@student.school.edu",
+      "password": "student123",
+      "role": "STUDENT",
+      "phone": "+1234567903",
+      "profilePhoto": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
+      "coverPhoto": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=200&fit=crop",
+      "bio": "Junior student interested in photography and visual arts. Creative mind.",
+      "isActive": true,
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "user-12",
+      "fullName": "Ava Johnson",
+      "email": "ava.johnson@student.school.edu",
+      "password": "student123",
+      "role": "STUDENT",
+      "phone": "+1234567904",
+      "profilePhoto": "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
+      "coverPhoto": "https://images.unsplash.com/photo-1523240798139-8c4fc0f5c3a4?w=800&h=200&fit=crop",
+      "bio": "Freshman student passionate about environmental activism and sustainability.",
+      "isActive": true,
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "user-13",
+      "fullName": "Noah Williams",
+      "email": "noah.williams@student.school.edu",
+      "password": "student123",
+      "role": "STUDENT",
+      "phone": "+1234567905",
+      "profilePhoto": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
+      "coverPhoto": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=200&fit=crop",
+      "bio": "Senior student and soccer team captain. Sports enthusiast and team leader.",
+      "isActive": true,
       "createdAt": "2024-01-01T00:00:00Z",
       "updatedAt": "2024-01-01T00:00:00Z"
     }
@@ -177,31 +220,67 @@
   "userGrades": [
     {
       "id": "user-grade-1",
-      "userId": "user-6",
+      "userId": "user-3",
       "gradeId": "grade-12",
       "startDate": "2024-01-01T00:00:00Z"
     },
     {
       "id": "user-grade-2",
-      "userId": "user-7",
+      "userId": "user-4",
       "gradeId": "grade-11",
       "startDate": "2024-01-01T00:00:00Z"
     },
     {
       "id": "user-grade-3",
-      "userId": "user-8",
+      "userId": "user-5",
       "gradeId": "grade-10",
       "startDate": "2024-01-01T00:00:00Z"
     },
     {
       "id": "user-grade-4",
-      "userId": "user-9",
+      "userId": "user-6",
       "gradeId": "grade-9",
       "startDate": "2024-01-01T00:00:00Z"
     },
     {
       "id": "user-grade-5",
+      "userId": "user-7",
+      "gradeId": "grade-12",
+      "startDate": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "user-grade-6",
+      "userId": "user-8",
+      "gradeId": "grade-11",
+      "startDate": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "user-grade-7",
+      "userId": "user-9",
+      "gradeId": "grade-10",
+      "startDate": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "user-grade-8",
       "userId": "user-10",
+      "gradeId": "grade-12",
+      "startDate": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "user-grade-9",
+      "userId": "user-11",
+      "gradeId": "grade-11",
+      "startDate": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "user-grade-10",
+      "userId": "user-12",
+      "gradeId": "grade-9",
+      "startDate": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "user-grade-11",
+      "userId": "user-13",
       "gradeId": "grade-12",
       "startDate": "2024-01-01T00:00:00Z"
     }
@@ -246,7 +325,7 @@
       "coverImageUrl": "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=800&h=300&fit=crop",
       "category": "Arts",
       "status": "ACTIVE",
-      "advisorId": "user-3",
+      "advisorId": "user-2",
       "isApproved": true,
       "memberCount": 12,
       "documents": [],
@@ -277,7 +356,7 @@
       "coverImageUrl": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&h=300&fit=crop",
       "category": "Academic",
       "status": "ACTIVE",
-      "advisorId": "user-4",
+      "advisorId": "user-2",
       "isApproved": true,
       "memberCount": 8,
       "documents": [],
@@ -308,7 +387,7 @@
       "coverImageUrl": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=300&fit=crop",
       "category": "Community Service",
       "status": "ACTIVE",
-      "advisorId": "user-5",
+      "advisorId": "user-2",
       "isApproved": true,
       "memberCount": 10,
       "documents": [],
@@ -339,7 +418,7 @@
       "coverImageUrl": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=300&fit=crop",
       "category": "Sports",
       "status": "ACTIVE",
-      "advisorId": "user-5",
+      "advisorId": "user-2",
       "isApproved": true,
       "memberCount": 18,
       "documents": [],
@@ -366,7 +445,87 @@
   "memberships": [
     {
       "id": "membership-1",
-      "userId": "user-6",
+      "userId": "user-1",
+      "clubId": "club-1",
+      "role": "MEMBER",
+      "status": "APPROVED",
+      "gradeId": "grade-12",
+      "joinedAt": "2024-01-01T00:00:00Z",
+      "startDate": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "membership-2",
+      "userId": "user-1",
+      "clubId": "club-2",
+      "role": "MEMBER",
+      "status": "APPROVED",
+      "gradeId": "grade-12",
+      "joinedAt": "2024-01-01T00:00:00Z",
+      "startDate": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "membership-3",
+      "userId": "user-1",
+      "clubId": "club-3",
+      "role": "MEMBER",
+      "status": "APPROVED",
+      "gradeId": "grade-12",
+      "joinedAt": "2024-01-01T00:00:00Z",
+      "startDate": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "membership-4",
+      "userId": "user-1",
+      "clubId": "club-4",
+      "role": "MEMBER",
+      "status": "APPROVED",
+      "gradeId": "grade-12",
+      "joinedAt": "2024-01-01T00:00:00Z",
+      "startDate": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "membership-5",
+      "userId": "user-1",
+      "clubId": "club-5",
+      "role": "MEMBER",
+      "status": "APPROVED",
+      "gradeId": "grade-12",
+      "joinedAt": "2024-01-01T00:00:00Z",
+      "startDate": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "membership-6",
+      "userId": "user-2",
+      "clubId": "club-1",
+      "role": "MEMBER",
+      "status": "APPROVED",
+      "gradeId": "grade-12",
+      "joinedAt": "2024-01-01T00:00:00Z",
+      "startDate": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "membership-7",
+      "userId": "user-2",
+      "clubId": "club-2",
+      "role": "MEMBER",
+      "status": "APPROVED",
+      "gradeId": "grade-12",
+      "joinedAt": "2024-01-01T00:00:00Z",
+      "startDate": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "membership-8",
+      "userId": "user-2",
+      "clubId": "club-3",
+      "role": "MEMBER",
+      "status": "APPROVED",
+      "gradeId": "grade-12",
+      "joinedAt": "2024-01-01T00:00:00Z",
+      "startDate": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "membership-9",
+      "userId": "user-3",
       "clubId": "club-1",
       "role": "PRESIDENT",
       "status": "APPROVED",
@@ -375,8 +534,48 @@
       "startDate": "2024-01-01T00:00:00Z"
     },
     {
-      "id": "membership-2",
-      "userId": "user-7",
+      "id": "membership-10",
+      "userId": "user-3",
+      "clubId": "club-2",
+      "role": "VICE_PRESIDENT",
+      "status": "APPROVED",
+      "gradeId": "grade-12",
+      "joinedAt": "2024-01-01T00:00:00Z",
+      "startDate": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "membership-11",
+      "userId": "user-3",
+      "clubId": "club-3",
+      "role": "SECRETARY",
+      "status": "APPROVED",
+      "gradeId": "grade-12",
+      "joinedAt": "2024-01-01T00:00:00Z",
+      "startDate": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "membership-12",
+      "userId": "user-3",
+      "clubId": "club-4",
+      "role": "MEMBER",
+      "status": "APPROVED",
+      "gradeId": "grade-12",
+      "joinedAt": "2024-01-01T00:00:00Z",
+      "startDate": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "membership-13",
+      "userId": "user-3",
+      "clubId": "club-5",
+      "role": "CAPTAIN",
+      "status": "APPROVED",
+      "gradeId": "grade-12",
+      "joinedAt": "2024-01-01T00:00:00Z",
+      "startDate": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "membership-14",
+      "userId": "user-4",
       "clubId": "club-2",
       "role": "MEMBER",
       "status": "APPROVED",
@@ -385,8 +584,8 @@
       "startDate": "2024-01-01T00:00:00Z"
     },
     {
-      "id": "membership-3",
-      "userId": "user-8",
+      "id": "membership-15",
+      "userId": "user-5",
       "clubId": "club-3",
       "role": "MEMBER",
       "status": "APPROVED",
@@ -395,8 +594,8 @@
       "startDate": "2024-01-01T00:00:00Z"
     },
     {
-      "id": "membership-4",
-      "userId": "user-9",
+      "id": "membership-16",
+      "userId": "user-6",
       "clubId": "club-4",
       "role": "PRESIDENT",
       "status": "APPROVED",
@@ -405,8 +604,8 @@
       "startDate": "2024-01-01T00:00:00Z"
     },
     {
-      "id": "membership-5",
-      "userId": "user-10",
+      "id": "membership-17",
+      "userId": "user-7",
       "clubId": "club-5",
       "role": "CAPTAIN",
       "status": "APPROVED",
@@ -425,6 +624,7 @@
       "date": "2024-02-15T14:00:00Z",
       "imageUrl": "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=600&h=300&fit=crop",
       "rsvpLimit": 25,
+      "createdBy": "user-2",
       "createdAt": "2024-01-15T00:00:00Z",
       "updatedAt": "2024-01-15T00:00:00Z"
     },
@@ -437,6 +637,7 @@
       "date": "2024-02-20T18:00:00Z",
       "imageUrl": "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=600&h=300&fit=crop",
       "rsvpLimit": 50,
+      "createdBy": "user-2",
       "createdAt": "2024-01-20T00:00:00Z",
       "updatedAt": "2024-01-20T00:00:00Z"
     },
@@ -449,6 +650,7 @@
       "date": "2024-02-25T09:00:00Z",
       "imageUrl": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&h=300&fit=crop",
       "rsvpLimit": 30,
+      "createdBy": "user-2",
       "createdAt": "2024-01-25T00:00:00Z",
       "updatedAt": "2024-01-25T00:00:00Z"
     },
@@ -461,6 +663,7 @@
       "date": "2024-03-01T10:00:00Z",
       "imageUrl": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&h=300&fit=crop",
       "rsvpLimit": 40,
+      "createdBy": "user-2",
       "createdAt": "2024-01-30T00:00:00Z",
       "updatedAt": "2024-01-30T00:00:00Z"
     },
@@ -473,8 +676,35 @@
       "date": "2024-03-05T16:00:00Z",
       "imageUrl": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=300&fit=crop",
       "rsvpLimit": 100,
+      "createdBy": "user-2",
       "createdAt": "2024-02-05T00:00:00Z",
       "updatedAt": "2024-02-05T00:00:00Z"
+    },
+    {
+      "id": "event-6",
+      "clubId": "club-1",
+      "title": "Advanced Programming Workshop",
+      "description": "Advanced programming concepts and hands-on coding challenges. Perfect for experienced students.",
+      "location": "Computer Lab 203",
+      "date": "2024-02-28T15:00:00Z",
+      "imageUrl": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&h=300&fit=crop",
+      "rsvpLimit": 20,
+      "createdBy": "user-2",
+      "createdAt": "2024-01-28T00:00:00Z",
+      "updatedAt": "2024-01-28T00:00:00Z"
+    },
+    {
+      "id": "event-7",
+      "clubId": "club-1",
+      "title": "Tech Innovation Fair",
+      "description": "Showcase your innovative tech projects and compete for prizes. Open to all tech enthusiasts!",
+      "location": "Main Hall",
+      "date": "2024-03-10T10:00:00Z",
+      "imageUrl": "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=600&h=300&fit=crop",
+      "rsvpLimit": 60,
+      "createdBy": "user-2",
+      "createdAt": "2024-02-01T00:00:00Z",
+      "updatedAt": "2024-02-01T00:00:00Z"
     }
   ],
   "announcements": [
@@ -503,150 +733,311 @@
       "content": "Calling all artists! Registration for our annual art exhibition is now open. Submit your artwork by next Friday to participate in this amazing showcase.",
       "target": "CLUB",
       "clubId": "club-2",
-      "createdBy": "user-3",
+      "createdBy": "user-2",
       "createdAt": "2024-01-15T14:00:00Z",
       "updatedAt": "2024-01-15T14:00:00Z"
-    }
-  ],
-  "badges": [
-    {
-      "id": "badge-1",
-      "name": "First Event",
-      "description": "Attended your first club event",
-      "iconUrl": "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=50&h=50&fit=crop",
-      "autoAssign": true,
-      "condition": "attended_first_event",
-      "createdAt": "2024-01-01T00:00:00Z",
-      "updatedAt": "2024-01-01T00:00:00Z"
     },
     {
-      "id": "badge-2",
-      "name": "Club Leader",
-      "description": "Became a club president or captain",
-      "iconUrl": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=50&h=50&fit=crop",
-      "autoAssign": true,
-      "condition": "became_leader",
-      "createdAt": "2024-01-01T00:00:00Z",
-      "updatedAt": "2024-01-01T00:00:00Z"
+      "id": "announcement-4",
+      "title": "Important: Club Registration Deadline",
+      "content": "All students must complete their club registrations by the end of this week. Please visit the admin panel to review and approve pending applications.",
+      "target": "GLOBAL",
+      "createdBy": "user-1",
+      "createdAt": "2024-01-20T09:00:00Z",
+      "updatedAt": "2024-01-20T09:00:00Z"
     },
     {
-      "id": "badge-3",
-      "name": "Event Organizer",
-      "description": "Helped organize a successful event",
-      "iconUrl": "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=50&h=50&fit=crop",
-      "autoAssign": true,
-      "condition": "organized_event",
-      "createdAt": "2024-01-01T00:00:00Z",
-      "updatedAt": "2024-01-01T00:00:00Z"
-    }
-  ],
-  "userBadges": [
-    {
-      "id": "user-badge-1",
-      "userId": "user-6",
-      "badgeId": "badge-1",
-      "assignedAt": "2024-01-15T00:00:00Z"
-    },
-    {
-      "id": "user-badge-2",
-      "userId": "user-6",
-      "badgeId": "badge-2",
-      "assignedAt": "2024-01-01T00:00:00Z"
-    },
-    {
-      "id": "user-badge-3",
-      "userId": "user-9",
-      "badgeId": "badge-2",
-      "assignedAt": "2024-01-01T00:00:00Z"
-    },
-    {
-      "id": "user-badge-4",
-      "userId": "user-10",
-      "badgeId": "badge-2",
-      "assignedAt": "2024-01-01T00:00:00Z"
-    }
-  ],
-  "forums": [
-    {
-      "id": "forum-1",
-      "clubId": "club-1",
-      "title": "Tech Discussion",
-      "isPrivate": false,
+      "id": "announcement-5",
+      "title": "Debate Tournament Preparation",
+      "content": "Debate team members, please attend the mandatory preparation meeting this Thursday at 3 PM in the auditorium. We'll be discussing strategies for the upcoming tournament.",
+      "target": "CLUB",
+      "clubId": "club-3",
       "createdBy": "user-2",
-      "createdAt": "2024-01-01T00:00:00Z",
-      "updatedAt": "2024-01-01T00:00:00Z"
+      "createdAt": "2024-01-22T11:00:00Z",
+      "updatedAt": "2024-01-22T11:00:00Z"
     },
     {
-      "id": "forum-2",
-      "clubId": "club-2",
-      "title": "Art Inspiration",
-      "isPrivate": false,
-      "createdBy": "user-3",
-      "createdAt": "2024-01-01T00:00:00Z",
-      "updatedAt": "2024-01-01T00:00:00Z"
-    }
-  ],
-  "forumPosts": [
-    {
-      "id": "post-1",
-      "forumId": "forum-1",
-      "content": "What programming languages should we focus on for the robotics competition?",
-      "postedBy": "user-6",
-      "likes": 5,
-      "isFlagged": false,
-      "createdAt": "2024-01-05T10:00:00Z",
-      "updatedAt": "2024-01-05T10:00:00Z"
+      "id": "announcement-6",
+      "title": "Sports Club Tryouts",
+      "content": "Interested in joining our sports teams? Tryouts for basketball, soccer, and swimming will be held next week. Check the schedule posted in the gym.",
+      "target": "CLUB",
+      "clubId": "club-5",
+      "createdBy": "user-2",
+      "createdAt": "2024-01-25T14:00:00Z",
+      "updatedAt": "2024-01-25T14:00:00Z"
     },
     {
-      "id": "post-2",
-      "forumId": "forum-2",
-      "content": "Check out this amazing digital art technique I learned!",
-      "postedBy": "user-7",
-      "likes": 8,
-      "isFlagged": false,
-      "createdAt": "2024-01-08T14:00:00Z",
-      "updatedAt": "2024-01-08T14:00:00Z"
+      "id": "announcement-7",
+      "title": "Environmental Awareness Week",
+      "content": "Join us for Environmental Awareness Week starting Monday. The Eco Warriors club will be organizing various activities including tree planting and recycling drives.",
+      "target": "CLUB",
+      "clubId": "club-4",
+      "createdBy": "user-6",
+      "createdAt": "2024-01-28T10:00:00Z",
+      "updatedAt": "2024-01-28T10:00:00Z"
     }
   ],
   "notifications": [
     {
       "id": "notification-1",
-      "userId": "user-6",
-      "message": "Your membership to Tech Innovators has been approved!",
+      "userId": "user-1",
+      "message": "New club registration request from Tech Innovators",
       "type": "ANNOUNCEMENT",
       "isRead": false,
       "createdAt": "2024-01-01T09:00:00Z"
     },
     {
       "id": "notification-2",
-      "userId": "user-7",
-      "message": "New event: Art Exhibition on February 20th",
+      "userId": "user-1",
+      "message": "Event RSVP update: 15 people attending Robotics Workshop",
       "type": "EVENT",
       "isRead": false,
       "createdAt": "2024-01-20T15:00:00Z"
     },
     {
       "id": "notification-3",
-      "userId": "user-8",
-      "message": "You've earned the 'First Event' badge!",
-      "type": "BADGE",
-      "isRead": true,
-      "createdAt": "2024-01-15T16:00:00Z"
+      "userId": "user-2",
+      "message": "New member joined your club: Alex Smith",
+      "type": "ANNOUNCEMENT",
+      "isRead": false,
+      "createdAt": "2024-01-02T10:00:00Z"
+    },
+    {
+      "id": "notification-4",
+      "userId": "user-2",
+      "message": "Event reminder: Robotics Workshop starts in 2 hours",
+      "type": "EVENT",
+      "isRead": false,
+      "createdAt": "2024-01-15T12:00:00Z"
+    },
+    {
+      "id": "notification-5",
+      "userId": "user-3",
+      "message": "Your membership to Tech Innovators has been approved!",
+      "type": "ANNOUNCEMENT",
+      "isRead": false,
+      "createdAt": "2024-01-01T09:00:00Z"
+    },
+    {
+      "id": "notification-6",
+      "userId": "user-3",
+      "message": "New event: Art Exhibition on February 20th",
+      "type": "EVENT",
+      "isRead": false,
+      "createdAt": "2024-01-20T15:00:00Z"
+    },
+    {
+      "id": "notification-7",
+      "userId": "user-3",
+      "message": "You've been assigned as President of Tech Innovators",
+      "type": "ANNOUNCEMENT",
+      "isRead": false,
+      "createdAt": "2024-01-05T14:00:00Z"
+    },
+    {
+      "id": "notification-8",
+      "userId": "user-3",
+      "message": "Event check-in: You've been checked in for Robotics Workshop",
+      "type": "EVENT",
+      "isRead": false,
+      "createdAt": "2024-01-15T14:30:00Z"
     }
   ],
   "eventAttendees": [
     {
       "id": "attendee-1",
       "eventId": "event-1",
-      "userId": "user-6",
+      "userId": "user-1",
       "rsvpStatus": "ACCEPTED",
       "checkedIn": true
     },
     {
       "id": "attendee-2",
-      "eventId": "event-2",
-      "userId": "user-7",
+      "eventId": "event-1",
+      "userId": "user-2",
       "rsvpStatus": "ACCEPTED",
+      "checkedIn": false
+    },
+    {
+      "id": "attendee-3",
+      "eventId": "event-1",
+      "userId": "user-3",
+      "rsvpStatus": "ACCEPTED",
+      "checkedIn": true
+    },
+    {
+      "id": "attendee-4",
+      "eventId": "event-1",
+      "userId": "user-4",
+      "rsvpStatus": "PENDING",
+      "checkedIn": false
+    },
+    {
+      "id": "attendee-5",
+      "eventId": "event-1",
+      "userId": "user-5",
+      "rsvpStatus": "REJECTED",
+      "checkedIn": false
+    },
+    {
+      "id": "attendee-6",
+      "eventId": "event-2",
+      "userId": "user-1",
+      "rsvpStatus": "ACCEPTED",
+      "checkedIn": false
+    },
+    {
+      "id": "attendee-7",
+      "eventId": "event-2",
+      "userId": "user-2",
+      "rsvpStatus": "ACCEPTED",
+      "checkedIn": true
+    },
+    {
+      "id": "attendee-8",
+      "eventId": "event-2",
+      "userId": "user-3",
+      "rsvpStatus": "ACCEPTED",
+      "checkedIn": false
+    },
+    {
+      "id": "attendee-9",
+      "eventId": "event-2",
+      "userId": "user-6",
+      "rsvpStatus": "PENDING",
+      "checkedIn": false
+    },
+    {
+      "id": "attendee-10",
+      "eventId": "event-3",
+      "userId": "user-1",
+      "rsvpStatus": "ACCEPTED",
+      "checkedIn": true
+    },
+    {
+      "id": "attendee-11",
+      "eventId": "event-3",
+      "userId": "user-2",
+      "rsvpStatus": "ACCEPTED",
+      "checkedIn": false
+    },
+    {
+      "id": "attendee-12",
+      "eventId": "event-3",
+      "userId": "user-3",
+      "rsvpStatus": "ACCEPTED",
+      "checkedIn": true
+    },
+    {
+      "id": "attendee-13",
+      "eventId": "event-3",
+      "userId": "user-4",
+      "rsvpStatus": "REJECTED",
+      "checkedIn": false
+    },
+    {
+      "id": "attendee-14",
+      "eventId": "event-4",
+      "userId": "user-1",
+      "rsvpStatus": "ACCEPTED",
+      "checkedIn": false
+    },
+    {
+      "id": "attendee-15",
+      "eventId": "event-4",
+      "userId": "user-2",
+      "rsvpStatus": "PENDING",
+      "checkedIn": false
+    },
+    {
+      "id": "attendee-16",
+      "eventId": "event-4",
+      "userId": "user-3",
+      "rsvpStatus": "ACCEPTED",
+      "checkedIn": true
+    },
+    {
+      "id": "attendee-17",
+      "eventId": "event-5",
+      "userId": "user-1",
+      "rsvpStatus": "ACCEPTED",
+      "checkedIn": false
+    },
+    {
+      "id": "attendee-18",
+      "eventId": "event-5",
+      "userId": "user-2",
+      "rsvpStatus": "ACCEPTED",
+      "checkedIn": true
+    },
+    {
+      "id": "attendee-19",
+      "eventId": "event-5",
+      "userId": "user-3",
+      "rsvpStatus": "ACCEPTED",
+      "checkedIn": false
+    },
+    {
+      "id": "attendee-20",
+      "eventId": "event-6",
+      "userId": "user-1",
+      "rsvpStatus": "ACCEPTED",
+      "checkedIn": false
+    },
+    {
+      "id": "attendee-21",
+      "eventId": "event-6",
+      "userId": "user-2",
+      "rsvpStatus": "ACCEPTED",
+      "checkedIn": true
+    },
+    {
+      "id": "attendee-22",
+      "eventId": "event-6",
+      "userId": "user-3",
+      "rsvpStatus": "PENDING",
+      "checkedIn": false
+    },
+    {
+      "id": "attendee-23",
+      "eventId": "event-6",
+      "userId": "user-4",
+      "rsvpStatus": "ACCEPTED",
+      "checkedIn": false
+    },
+    {
+      "id": "attendee-24",
+      "eventId": "event-7",
+      "userId": "user-1",
+      "rsvpStatus": "ACCEPTED",
+      "checkedIn": false
+    },
+    {
+      "id": "attendee-25",
+      "eventId": "event-7",
+      "userId": "user-2",
+      "rsvpStatus": "ACCEPTED",
+      "checkedIn": false
+    },
+    {
+      "id": "attendee-26",
+      "eventId": "event-7",
+      "userId": "user-3",
+      "rsvpStatus": "ACCEPTED",
+      "checkedIn": false
+    },
+    {
+      "id": "attendee-27",
+      "eventId": "event-7",
+      "userId": "user-5",
+      "rsvpStatus": "PENDING",
+      "checkedIn": false
+    },
+    {
+      "id": "attendee-28",
+      "eventId": "event-7",
+      "userId": "user-6",
+      "rsvpStatus": "REJECTED",
       "checkedIn": false
     }
   ],

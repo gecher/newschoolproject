@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { 
   Search, Bell, User, Menu, X, Sun, Moon, 
-  Home, Users, Calendar, MessageSquare, Award, BarChart3, UserPlus
+  Home, Users, Calendar, MessageSquare, Award, BarChart3, UserPlus, Megaphone
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
@@ -38,6 +38,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
         { id: 'dashboard', label: 'Stats', icon: BarChart3 },
         { id: 'clubs', label: 'Manage Clubs', icon: Users },
         { id: 'events', label: 'Manage Events', icon: Calendar },
+        { id: 'announcements', label: 'Announcements', icon: Megaphone },
         { id: 'users', label: 'All Users', icon: Users },
         { id: 'memberships', label: 'Requests', icon: UserPlus },
       ];
@@ -46,6 +47,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
         { id: 'dashboard', label: 'Stats', icon: BarChart3 },
         { id: 'clubs', label: 'Assigned Clubs', icon: Users },
         { id: 'events', label: 'Club Events', icon: Calendar },
+        { id: 'announcements', label: 'Announcements', icon: Megaphone },
         { id: 'memberships', label: 'Requests', icon: UserPlus },
       ];
     } else if (currentUser?.role === 'STUDENT') {
@@ -53,6 +55,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
         { id: 'dashboard', label: 'Stats', icon: BarChart3 },
         { id: 'clubs', label: 'Join Clubs', icon: Users },
         { id: 'events', label: 'All Events', icon: Calendar },
+        { id: 'announcements', label: 'Announcements', icon: Megaphone },
       ];
     }
     
@@ -60,6 +63,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
       { id: 'dashboard', label: 'Dashboard', icon: Home },
       { id: 'clubs', label: 'Clubs', icon: Users },
       { id: 'events', label: 'Events', icon: Calendar },
+      { id: 'announcements', label: 'Announcements', icon: Megaphone },
     ];
   };
 

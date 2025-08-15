@@ -28,6 +28,7 @@ const EventsPage: React.FC<EventsPageProps> = ({ onNavigate: _onNavigate }) => {
     description: '',
     location: '',
     date: '',
+    imageUrl: '',
     rsvpLimit: '' as number | ''
   });
 
@@ -133,13 +134,13 @@ const EventsPage: React.FC<EventsPageProps> = ({ onNavigate: _onNavigate }) => {
       description: createForm.description || undefined,
       location: createForm.location || undefined,
       date: new Date(createForm.date).toISOString(),
-      imageUrl: undefined,
+      imageUrl: createForm.imageUrl || undefined,
       documents: [],
       rsvpLimit: createForm.rsvpLimit === '' ? undefined : Number(createForm.rsvpLimit)
     });
     setEvents([...events, newEvent]);
     setShowCreateModal(false);
-    setCreateForm({ title: '', clubId: '', description: '', location: '', date: '', rsvpLimit: '' });
+    setCreateForm({ title: '', clubId: '', description: '', location: '', date: '', imageUrl: '', rsvpLimit: '' });
   };
 
   return (
@@ -236,8 +237,8 @@ const EventsPage: React.FC<EventsPageProps> = ({ onNavigate: _onNavigate }) => {
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <Calendar className="h-16 w-16 text-indigo-400 dark:text-indigo-500" />
+                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-indigo-500 to-purple-600">
+                      <Calendar className="h-16 w-16 text-white opacity-80" />
                     </div>
                   )}
                   
@@ -329,12 +330,16 @@ const EventsPage: React.FC<EventsPageProps> = ({ onNavigate: _onNavigate }) => {
               </div>
 
               <div className="space-y-6">
-                {selectedEvent.imageUrl && (
+                {selectedEvent.imageUrl ? (
                   <img
                     src={selectedEvent.imageUrl}
                     alt={selectedEvent.title}
                     className="w-full h-48 object-cover rounded-lg"
                   />
+                ) : (
+                  <div className="w-full h-48 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+                    <Calendar className="h-16 w-16 text-white opacity-80" />
+                  </div>
                 )}
 
                 <div>
@@ -485,6 +490,20 @@ const EventsPage: React.FC<EventsPageProps> = ({ onNavigate: _onNavigate }) => {
                     onChange={(e) => setCreateForm({ ...createForm, description: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Image URL (optional)</label>
+                  <input
+                    type="url"
+                    placeholder="https://example.com/image.jpg"
+                    value={createForm.imageUrl}
+                    onChange={(e) => setCreateForm({ ...createForm, imageUrl: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  />
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    Provide a URL to an image for the event. If left empty, a default image will be used.
+                  </p>
                 </div>
 
                 <div>

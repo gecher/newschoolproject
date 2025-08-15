@@ -931,7 +931,14 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate, currentPage = 'dash
                 </div>
                 <div>
                   <label className="block text-sm text-gray-600 dark:text-gray-300 mb-1">Category</label>
-                  <input value={clubForm.category} onChange={e => setClubForm({ ...clubForm, category: e.target.value })} className="w-full border rounded px-3 py-2 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white" />
+                  <select value={clubForm.category} onChange={e => setClubForm({ ...clubForm, category: e.target.value })} className="w-full border rounded px-3 py-2 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white">
+                    <option value="">Select a category</option>
+                    <option value="Technology">Technology</option>
+                    <option value="Arts">Arts</option>
+                    <option value="Academic">Academic</option>
+                    <option value="Sports">Sports</option>
+                    <option value="Community Service">Community Service</option>
+                  </select>
                 </div>
                 <div className="flex justify-end space-x-3 pt-2">
                   <button type="button" onClick={() => { setShowClubModal(false); setEditingClub(null); }} className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200">Cancel</button>

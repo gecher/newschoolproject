@@ -20,6 +20,15 @@ const EventDetailPage: React.FC<EventDetailPageProps> = ({ onNavigate, eventId }
   const [attendees, setAttendees] = useState<EventAttendee[]>([]);
   const [userAttendance, setUserAttendance] = useState<EventAttendee | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editForm, setEditForm] = useState({
+    title: '',
+    description: '',
+    location: '',
+    date: '',
+    imageUrl: '',
+    rsvpLimit: '' as number | ''
+  });
 
   useEffect(() => {
     loadEventData();
@@ -58,12 +67,23 @@ const EventDetailPage: React.FC<EventDetailPageProps> = ({ onNavigate, eventId }
   const handleRSVP = async (status: 'ACCEPTED' | 'REJECTED') => {
     if (!currentUser || !event) return;
 
+    // Check RSVP limit
+    if (status === 'ACCEPTED' && event.rsvpLimit) {
+      const currentAttendees = attendees.filter(a => a.rsvpStatus === 'ACCEPTED').length;
+      if (currentAttendees >= event.rsvpLimit) {
+        alert('Sorry, this event is at full capacity.');
+        return;
+      }
+    }
+
     try {
       if (userAttendance) {
         // Update existing RSVP
         const updated = dataService.updateEventAttendee(userAttendance.id, { rsvpStatus: status });
         if (updated) {
           setUserAttendance(updated);
+          // Update attendees list
+          setAttendees(attendees.map(a => a.id === updated.id ? updated : a));
         }
       } else {
         // Create new RSVP
@@ -82,10 +102,61 @@ const EventDetailPage: React.FC<EventDetailPageProps> = ({ onNavigate, eventId }
     }
   };
 
+  const handleCheckIn = (attendeeId: string, checkedIn: boolean) => {
+    try {
+      const updated = dataService.updateEventAttendee(attendeeId, { checkedIn });
+      if (updated) {
+        setAttendees(attendees.map(a => a.id === updated.id ? updated : a));
+      }
+    } catch (error) {
+      console.error('Error updating check-in status:', error);
+      alert('Failed to update check-in status. Please try again.');
+    }
+  };
+
   const canManageEvent = () => {
     if (!currentUser || !event || !club) return false;
     return currentUser.role === 'ADMIN' || 
            currentUser.id === club.advisorId;
+  };
+
+  const handleEditEvent = () => {
+    if (!event) return;
+    
+    // Convert ISO date to datetime-local format
+    const date = new Date(event.date);
+    const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000)
+      .toISOString()
+      .slice(0, 16);
+    
+    setEditForm({
+      title: event.title,
+      description: event.description || '',
+      location: event.location || '',
+      date: localDate,
+      imageUrl: event.imageUrl || '',
+      rsvpLimit: event.rsvpLimit || ''
+    });
+    setShowEditModal(true);
+  };
+
+  const handleUpdateEvent = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!event) return;
+
+    const updatedEvent = dataService.updateEvent(event.id, {
+      title: editForm.title,
+      description: editForm.description || undefined,
+      location: editForm.location || undefined,
+      date: new Date(editForm.date).toISOString(),
+      imageUrl: editForm.imageUrl || undefined,
+      rsvpLimit: editForm.rsvpLimit === '' ? undefined : Number(editForm.rsvpLimit)
+    });
+
+    if (updatedEvent) {
+      setEvent(updatedEvent);
+      setShowEditModal(false);
+    }
   };
 
   const formatDate = (dateString: string) => {
@@ -162,8 +233,8 @@ const EventDetailPage: React.FC<EventDetailPageProps> = ({ onNavigate, eventId }
               className="w-full h-full object-cover"
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center">
-              <Calendar className="h-24 w-24 text-white opacity-50" />
+            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-indigo-600 to-purple-700">
+              <Calendar className="h-24 w-24 text-white opacity-70" />
             </div>
           )}
           <div className="absolute inset-0 bg-black bg-opacity-30"></div>
@@ -278,7 +349,10 @@ const EventDetailPage: React.FC<EventDetailPageProps> = ({ onNavigate, eventId }
               </button>
 
               {canManageEvent() && (
-                <button className="border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 px-6 py-2 rounded-lg flex items-center transition-colors">
+                <button 
+                  onClick={handleEditEvent}
+                  className="border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 px-6 py-2 rounded-lg flex items-center transition-colors"
+                >
                   <Edit className="h-5 w-5 mr-2" />
                   Edit Event
                 </button>
@@ -288,7 +362,7 @@ const EventDetailPage: React.FC<EventDetailPageProps> = ({ onNavigate, eventId }
             {/* Event Details */}
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 mb-8">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">About This Event</h2>
-              
+               
               {event.description && (
                 <div className="mb-6">
                   <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
@@ -351,6 +425,146 @@ const EventDetailPage: React.FC<EventDetailPageProps> = ({ onNavigate, eventId }
               </div>
             </div>
 
+            {/* Attendee Management Section for Organizers */}
+            {canManageEvent() && (
+              <div className="mt-8">
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">Attendee Management</h2>
+                   
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+                      <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100">Total RSVPs</h3>
+                      <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                        {attendees.filter(a => a.rsvpStatus === 'ACCEPTED').length}
+                      </p>
+                      {event.rsvpLimit && (
+                        <p className="text-sm text-blue-600 dark:text-blue-400">
+                          of {event.rsvpLimit} capacity
+                        </p>
+                      )}
+                    </div>
+                    
+                    <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
+                      <h3 className="text-lg font-semibold text-green-900 dark:text-green-100">Checked In</h3>
+                      <p className="text-2xl font-bold text-green-600 dark:text-green-400">
+                        {attendees.filter(a => a.checkedIn).length}
+                      </p>
+                      <p className="text-sm text-green-600 dark:text-green-400">
+                        {eventStatus?.status === 'past' ? 'Final count' : 'So far'}
+                      </p>
+                    </div>
+                    
+                    <div className="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg">
+                      <h3 className="text-lg font-semibold text-yellow-900 dark:text-yellow-100">Pending</h3>
+                      <p className="text-2xl font-bold text-yellow-600 dark:text-yellow-400">
+                        {attendees.filter(a => a.rsvpStatus === 'PENDING').length}
+                      </p>
+                      <p className="text-sm text-yellow-600 dark:text-yellow-400">
+                        Awaiting response
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Attendees List */}
+                  <div className="overflow-x-auto">
+                    <table className="w-full">
+                      <thead>
+                        <tr className="border-b border-gray-200 dark:border-gray-700">
+                          <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-white">Attendee</th>
+                          <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-white">RSVP Status</th>
+                          <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-white">Check-in</th>
+                          <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-white">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {attendees.map((attendee) => {
+                          const user = dataService.getUserById(attendee.userId);
+                          if (!user) return null;
+                          
+                          return (
+                            <tr key={attendee.id} className="border-b border-gray-100 dark:border-gray-800">
+                              <td className="py-3 px-4">
+                                <div className="flex items-center space-x-3">
+                                  <img
+                                    src={user.profilePhoto || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face'}
+                                    alt={user.fullName}
+                                    className="h-8 w-8 rounded-full object-cover"
+                                  />
+                                  <div>
+                                    <p className="font-medium text-gray-900 dark:text-white">{user.fullName}</p>
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">{user.email}</p>
+                                  </div>
+                                </div>
+                              </td>
+                              <td className="py-3 px-4">
+                                <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
+                                  attendee.rsvpStatus === 'ACCEPTED' ? 'bg-green-100 text-green-800' :
+                                  attendee.rsvpStatus === 'REJECTED' ? 'bg-red-100 text-red-800' :
+                                  'bg-yellow-100 text-yellow-800'
+                                }`}>
+                                  {attendee.rsvpStatus}
+                                </span>
+                              </td>
+                              <td className="py-3 px-4">
+                                {attendee.rsvpStatus === 'ACCEPTED' ? (
+                                  attendee.checkedIn ? (
+                                    <span className="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">
+                                      <CheckCircle className="h-3 w-3 mr-1" />
+                                      Checked In
+                                    </span>
+                                  ) : (
+                                    <button
+                                      onClick={() => handleCheckIn(attendee.id, true)}
+                                      className="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-700 hover:bg-green-100 hover:text-green-800 transition-colors"
+                                    >
+                                      <UserPlus className="h-3 w-3 mr-1" />
+                                      Check In
+                                    </button>
+                                  )
+                                ) : (
+                                  <span className="text-gray-400 text-sm">-</span>
+                                )}
+                              </td>
+                              <td className="py-3 px-4">
+                                <div className="flex space-x-2">
+                                  {attendee.rsvpStatus === 'PENDING' && (
+                                    <>
+                                      <button
+                                        onClick={() => {
+                                          const updated = dataService.updateEventAttendee(attendee.id, { rsvpStatus: 'ACCEPTED' });
+                                          if (updated) {
+                                            setAttendees(attendees.map(a => a.id === updated.id ? updated : a));
+                                          }
+                                        }}
+                                        className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded hover:bg-green-200 transition-colors"
+                                      >
+                                        Accept
+                                      </button>
+                                      <button
+                                        onClick={() => {
+                                          const updated = dataService.updateEventAttendee(attendee.id, { rsvpStatus: 'REJECTED' });
+                                          if (updated) {
+                                            setAttendees(attendees.map(a => a.id === updated.id ? updated : a));
+                                          }
+                                        }}
+                                        className="text-xs bg-red-100 text-red-700 px-2 py-1 rounded hover:bg-red-200 transition-colors"
+                                      >
+                                        Reject
+                                      </button>
+                                    </>
+                                  )}
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Event Documents */}
             {event.documents && event.documents.length > 0 && (
               <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
@@ -394,13 +608,7 @@ const EventDetailPage: React.FC<EventDetailPageProps> = ({ onNavigate, eventId }
                     <span className="text-sm font-medium text-gray-900 dark:text-white">View Club</span>
                   </button>
                 )}
-                <button
-                  onClick={() => onNavigate('forums')}
-                  className="w-full flex items-center p-3 text-left bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
-                >
-                  <MessageSquare className="h-5 w-5 text-green-600 dark:text-green-400 mr-3" />
-                  <span className="text-sm font-medium text-gray-900 dark:text-white">Discuss Event</span>
-                </button>
+
                 <button className="w-full flex items-center p-3 text-left bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
                   <UserPlus className="h-5 w-5 text-purple-600 dark:text-purple-400 mr-3" />
                   <span className="text-sm font-medium text-gray-900 dark:text-white">Invite Friends</span>
@@ -413,7 +621,7 @@ const EventDetailPage: React.FC<EventDetailPageProps> = ({ onNavigate, eventId }
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                 Who's Going ({getAttendeeCount()})
               </h3>
-              
+               
               {attendees.filter(a => a.rsvpStatus === 'ACCEPTED').length > 0 ? (
                 <div className="space-y-3">
                   {attendees
@@ -424,20 +632,40 @@ const EventDetailPage: React.FC<EventDetailPageProps> = ({ onNavigate, eventId }
                       if (!user) return null;
                       
                       return (
-                        <div key={attendee.id} className="flex items-center space-x-3">
-                          <img
-                            src={user.profilePhoto || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face'}
-                            alt={user.fullName}
-                            className="h-8 w-8 rounded-full object-cover"
-                          />
-                          <div>
-                            <p className="text-sm font-medium text-gray-900 dark:text-white">{user.fullName}</p>
-                            <p className="text-xs text-gray-500 dark:text-gray-400">{user.role}</p>
+                        <div key={attendee.id} className="flex items-center justify-between">
+                          <div className="flex items-center space-x-3">
+                            <img
+                              src={user.profilePhoto || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face'}
+                              alt={user.fullName}
+                              className="h-8 w-8 rounded-full object-cover"
+                            />
+                            <div>
+                              <p className="text-sm font-medium text-gray-900 dark:text-white">{user.fullName}</p>
+                              <p className="text-xs text-gray-500 dark:text-gray-400">{user.role}</p>
+                            </div>
                           </div>
+                          
+                          {/* Check-in status for organizers */}
+                          {canManageEvent() && (
+                            <div className="flex items-center space-x-2">
+                              {attendee.checkedIn ? (
+                                <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">
+                                  Checked In
+                                </span>
+                              ) : (
+                                <button
+                                  onClick={() => handleCheckIn(attendee.id, true)}
+                                  className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full hover:bg-green-100 hover:text-green-800 transition-colors"
+                                >
+                                  Check In
+                                </button>
+                              )}
+                            </div>
+                          )}
                         </div>
                       );
                     })}
-                  
+                   
                   {attendees.filter(a => a.rsvpStatus === 'ACCEPTED').length > 5 && (
                     <p className="text-sm text-gray-500 dark:text-gray-400 mt-3">
                       +{attendees.filter(a => a.rsvpStatus === 'ACCEPTED').length - 5} more
@@ -482,6 +710,107 @@ const EventDetailPage: React.FC<EventDetailPageProps> = ({ onNavigate, eventId }
           </div>
         </div>
       </div>
+
+      {/* Edit Event Modal */}
+      {showEditModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Edit Event</h2>
+                <button 
+                  onClick={() => setShowEditModal(false)} 
+                  className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                >
+                  <XCircle className="h-6 w-6" />
+                </button>
+              </div>
+
+              <form onSubmit={handleUpdateEvent} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Title</label>
+                  <input
+                    type="text"
+                    required
+                    value={editForm.title}
+                    onChange={(e) => setEditForm({ ...editForm, title: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Date & Time</label>
+                  <input
+                    type="datetime-local"
+                    required
+                    value={editForm.date}
+                    onChange={(e) => setEditForm({ ...editForm, date: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Location (optional)</label>
+                  <input
+                    type="text"
+                    value={editForm.location}
+                    onChange={(e) => setEditForm({ ...editForm, location: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Description (optional)</label>
+                  <textarea
+                    rows={3}
+                    value={editForm.description}
+                    onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Image URL (optional)</label>
+                  <input
+                    type="url"
+                    placeholder="https://example.com/image.jpg"
+                    value={editForm.imageUrl}
+                    onChange={(e) => setEditForm({ ...editForm, imageUrl: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  />
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    Provide a URL to an image for the event. If left empty, a default image will be used.
+                  </p>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">RSVP Limit (optional)</label>
+                  <input
+                    type="number"
+                    min={1}
+                    value={editForm.rsvpLimit}
+                    onChange={(e) => setEditForm({ ...editForm, rsvpLimit: e.target.value === '' ? '' : Number(e.target.value) })}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  />
+                </div>
+
+                <div className="flex space-x-3 pt-2">
+                  <button 
+                    type="button" 
+                    onClick={() => setShowEditModal(false)} 
+                    className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg"
+                  >
+                    Cancel
+                  </button>
+                  <button type="submit" className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg">
+                    Update Event
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
