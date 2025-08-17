@@ -209,11 +209,11 @@
   "clubs": [
     {
       "id": "club-1",
-      "name": "Science and Technology Club",
-      "description": "A dynamic club focused on exploring cutting-edge technology, programming, and robotics. Students work on real-world projects and participate in competitions.",
+      "name": "Technology, Coding and Programming Club",
+      "description": "A hub for students to explore technology, sharpen coding skills, and collaborate on innovative programming projects.",
       "logoUrl": "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=200&h=200&fit=crop",
       "coverImageUrl": "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800&h=300&fit=crop",
-      "category": "Technology",
+      "category": "Academic & STEM",
       "status": "ACTIVE",
       "advisorId": "user-2",
       "isApproved": true,
@@ -240,11 +240,11 @@
     },
     {
       "id": "club-2",
-      "name": "Creative Arts Collective",
-      "description": "A vibrant community of artists, designers, and creative minds. We explore various art forms including painting, digital art, photography, and mixed media.",
+      "name": "Science Club",
+      "description": "Discover, experiment, and innovate.",
       "logoUrl": "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=200&h=200&fit=crop",
       "coverImageUrl": "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=800&h=300&fit=crop",
-      "category": "Arts",
+      "category": "Academic & STEM",
       "status": "ACTIVE",
       "advisorId": "user-3",
       "isApproved": true,
@@ -271,11 +271,11 @@
     },
     {
       "id": "club-3",
-      "name": "Debate Champions",
-      "description": "Develop critical thinking, public speaking, and argumentation skills. Our team competes in regional and national debate tournaments.",
+      "name": "Drama and Dance Club",
+      "description": "A creative stage where students express themselves, learn, and shine through the art of drama and dance—blending tradition, modernity, and passion.",
       "logoUrl": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=200&h=200&fit=crop",
       "coverImageUrl": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&h=300&fit=crop",
-      "category": "Academic",
+      "category": "Arts & Culture",
       "status": "ACTIVE",
       "advisorId": "user-4",
       "isApproved": true,
@@ -302,11 +302,11 @@
     },
     {
       "id": "club-4",
-      "name": "Eco Warriors",
-      "description": "Dedicated to environmental conservation and sustainability. We organize clean-up drives, awareness campaigns, and green initiatives.",
+      "name": "Football Club",
+      "description": "A dynamic team where students train, compete, and build teamwork through the spirit of football.",
       "logoUrl": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=200&h=200&fit=crop",
       "coverImageUrl": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=300&fit=crop",
-      "category": "Community Service",
+      "category": "Sports & Fitness",
       "status": "ACTIVE",
       "advisorId": "user-5",
       "isApproved": true,
@@ -333,11 +333,166 @@
     },
     {
       "id": "club-5",
-      "name": "Sports Legends",
-      "description": "Promoting physical fitness, teamwork, and sportsmanship. We organize tournaments, training sessions, and fitness challenges.",
+      "name": "Basketball Team",
+      "description": "A spirited club where students develop skills, teamwork, and passion for basketball on and off the court.",
       "logoUrl": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=200&h=200&fit=crop",
       "coverImageUrl": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=300&fit=crop",
-      "category": "Sports",
+      "category": "Sports & Fitness",
+      "status": "ACTIVE",
+      "advisorId": "user-5",
+      "isApproved": true,
+      "memberCount": 18,
+      "documents": [],
+      "gallery": [
+        {
+          "id": "gallery-9",
+          "url": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop",
+          "caption": "Basketball Tournament",
+          "uploadedBy": "user-5",
+          "uploadedAt": "2024-01-08T16:00:00Z"
+        },
+        {
+          "id": "gallery-10",
+          "url": "https://images.unsplash.com/photo-1526676037777-05a232554f77?w=400&h=300&fit=crop",
+          "caption": "Fitness Challenge",
+          "uploadedBy": "user-10",
+          "uploadedAt": "2024-01-28T14:00:00Z"
+        }
+      ],
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "club-6",
+      "name": "Red Cross",
+      "description": "A humanitarian club where students serve communities, promote health, and support those in need through Red Cross values.",
+      "logoUrl": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=200&h=200&fit=crop",
+      "coverImageUrl": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=300&fit=crop",
+      "category": "Community Service Club",
+      "status": "ACTIVE",
+      "advisorId": "user-5",
+      "isApproved": true,
+      "memberCount": 18,
+      "documents": [],
+      "gallery": [
+        {
+          "id": "gallery-9",
+          "url": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop",
+          "caption": "Basketball Tournament",
+          "uploadedBy": "user-5",
+          "uploadedAt": "2024-01-08T16:00:00Z"
+        },
+        {
+          "id": "gallery-10",
+          "url": "https://images.unsplash.com/photo-1526676037777-05a232554f77?w=400&h=300&fit=crop",
+          "caption": "Fitness Challenge",
+          "uploadedBy": "user-10",
+          "uploadedAt": "2024-01-28T14:00:00Z"
+        }
+      ],
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "club-7",
+      "name": "English Language Club",
+      "description": "A vibrant club where students practice, improve, and enjoy the English language through fun and interactive activities.",
+      "logoUrl": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=200&h=200&fit=crop",
+      "coverImageUrl": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=300&fit=crop",
+      "category": "Languge Club",
+      "status": "ACTIVE",
+      "advisorId": "user-5",
+      "isApproved": true,
+      "memberCount": 18,
+      "documents": [],
+      "gallery": [
+        {
+          "id": "gallery-9",
+          "url": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop",
+          "caption": "Basketball Tournament",
+          "uploadedBy": "user-5",
+          "uploadedAt": "2024-01-08T16:00:00Z"
+        },
+        {
+          "id": "gallery-10",
+          "url": "https://images.unsplash.com/photo-1526676037777-05a232554f77?w=400&h=300&fit=crop",
+          "caption": "Fitness Challenge",
+          "uploadedBy": "user-10",
+          "uploadedAt": "2024-01-28T14:00:00Z"
+        }
+      ],
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "club-8",
+      "name": "Math Competition Club",
+      "description": "A club where students sharpen problem-solving skills, prepare for contests, and explore the fun side of mathematics.",
+      "logoUrl": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=200&h=200&fit=crop",
+      "coverImageUrl": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=300&fit=crop",
+      "category": "Competition Club",
+      "status": "ACTIVE",
+      "advisorId": "user-5",
+      "isApproved": true,
+      "memberCount": 18,
+      "documents": [],
+      "gallery": [
+        {
+          "id": "gallery-9",
+          "url": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop",
+          "caption": "Basketball Tournament",
+          "uploadedBy": "user-5",
+          "uploadedAt": "2024-01-08T16:00:00Z"
+        },
+        {
+          "id": "gallery-10",
+          "url": "https://images.unsplash.com/photo-1526676037777-05a232554f77?w=400&h=300&fit=crop",
+          "caption": "Fitness Challenge",
+          "uploadedBy": "user-10",
+          "uploadedAt": "2024-01-28T14:00:00Z"
+        }
+      ],
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "club-9",
+      "name": "Gender Club",
+      "description": "Empowering equality, embracing diversity.",
+      "logoUrl": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=200&h=200&fit=crop",
+      "coverImageUrl": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=300&fit=crop",
+      "category": "Other Club",
+      "status": "ACTIVE",
+      "advisorId": "user-5",
+      "isApproved": true,
+      "memberCount": 18,
+      "documents": [],
+      "gallery": [
+        {
+          "id": "gallery-9",
+          "url": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop",
+          "caption": "Basketball Tournament",
+          "uploadedBy": "user-5",
+          "uploadedAt": "2024-01-08T16:00:00Z"
+        },
+        {
+          "id": "gallery-10",
+          "url": "https://images.unsplash.com/photo-1526676037777-05a232554f77?w=400&h=300&fit=crop",
+          "caption": "Fitness Challenge",
+          "uploadedBy": "user-10",
+          "uploadedAt": "2024-01-28T14:00:00Z"
+        }
+      ],
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "club-10",
+      "name": "Student Parliament Club",
+      "description": "A club where students lead, voice opinions, and participate in decision-making to shape school life.",
+      "logoUrl": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=200&h=200&fit=crop",
+      "coverImageUrl": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=300&fit=crop",
+      "category": "Other Club",
       "status": "ACTIVE",
       "advisorId": "user-5",
       "isApproved": true,
@@ -362,6 +517,7 @@
       "createdAt": "2024-01-01T00:00:00Z",
       "updatedAt": "2024-01-01T00:00:00Z"
     }
+
   ],
   "memberships": [
     {
@@ -832,7 +988,7 @@
           "name": "Hager Enwok",
           "image": "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400&h=300&fit=crop",
           "members": 89,
-          "description": "A club where students read different types of books and share their knowledge. "
+          "description": "Let's Discover New things about Ethiopia."
         }
       ]
     } 
