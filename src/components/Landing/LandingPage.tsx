@@ -23,27 +23,27 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {  //Questio
   // Auto-play slides
   const slides = [
     {
-      image: "https://images.unsplash.com/photo-1523240798132-8757214e76ba?w=1200&h=600&fit=crop",
+      image: "https://i.imgur.com/NT3OQKz.jpeg",
       title: "Student Collaboration",
       subtitle: "Connect with peers and build lasting friendships"
     },
     {
-      image: "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=1200&h=600&fit=crop",
+      image: "https://i.imgur.com/ddR9wyS.jpeg",
       title: "Academic Excellence",
       subtitle: "Enhance your learning through extracurricular activities"
     },
     {
-      image: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=1200&h=600&fit=crop",
+      image: "https://i.imgur.com/8zj3BQd.jpeg",
       title: "Leadership Development",
       subtitle: "Develop essential skills for your future career"
     }
-  ];
+  ];https://i.imgur.com/NT3OQKz.jpeg
 
   // Auto-play slides effect
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 4000); // Change slide every 4 seconds
+    }, 3000); // Change slide every 3 seconds
 
     return () => clearInterval(interval);
   }, [slides.length]);
@@ -52,7 +52,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {  //Questio
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentCategory((prev) => (prev + 1) % clubCategories.length);
-    }, 5000); // Change category every 5 seconds
+    }, 3000); // Change category every 3 seconds
 
     return () => clearInterval(interval);
   }, []);
@@ -71,14 +71,14 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {  //Questio
   const features = [
     {
       icon: Users,
-      title: "Club Management",
-      description: "Create, join, and manage student clubs with ease. Track memberships and organize activities.",
-      color: "blue"
+      title: "Club Discovery & Management",
+      description: "Find and join clubs that match your interests. Create, manage student clubs with ease. Track memberships and organize activities.",
+      color: "Purple"
     },
     {
       icon: Calendar,
-      title: "Event Organization",
-      description: "Schedule events, manage RSVPs, and track attendance for all your club activities.",
+      title: "Event Management & Organization",
+      description: "Schedule events, manage RSVPs, and track attendance for all your club activities. Organize and attend exciting events.",
       color: "green"
     },
     {

@@ -14,7 +14,7 @@ export interface User {
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
-}
+} 
 
 export interface Club {
   id: string;
