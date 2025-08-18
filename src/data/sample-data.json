@@ -271,8 +271,8 @@
     },
     {
       "id": "club-3",
-      "name": "Drama and Dance Club",
-      "description": "A creative stage where students express themselves, learn, and shine through the art of drama and dance—blending tradition, modernity, and passion.",
+      "name": "Art and Painting Club",
+      "description": "A creative stage where students express themselves, learn, and shine through Art, modernity, and passion.",
       "logoUrl": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=200&h=200&fit=crop",
       "coverImageUrl": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&h=300&fit=crop",
       "category": "Arts & Culture",
@@ -575,9 +575,9 @@
     {
       "id": "event-1",
       "clubId": "club-1",
-      "title": "Robotics Workshop",
-      "description": "Learn the basics of robotics and programming. Build your own robot and compete in challenges.",
-      "location": "Science Lab 101",
+      "title": "Programming Seminar",
+      "description": "Get ready to level up your coding skills! 🎉 Join our Programming Seminar designed for high school students—learn cool coding tricks, explore real-world applications, and discover how fun programming can be!",
+      "location": "ICT Lab 101",
       "date": "2024-02-15T14:00:00Z",
       "imageUrl": "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=600&h=300&fit=crop",
       "rsvpLimit": 25,
@@ -587,9 +587,9 @@
     {
       "id": "event-2",
       "clubId": "club-2",
-      "title": "Art Exhibition",
-      "description": "Showcase your creative talents in our annual art exhibition. All art forms welcome!",
-      "location": "Art Gallery",
+      "title": "Science Museum Tour",
+      "description": "Step into the world of discovery! Join our Science Museum Tour and explore amazing exhibits, hands-on experiments, and the wonders of science—all in one unforgettable trip.",
+      "location": "Science Museum",
       "date": "2024-02-20T18:00:00Z",
       "imageUrl": "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=600&h=300&fit=crop",
       
@@ -599,9 +599,9 @@
     },
     {
       "id": "event-3",
-      "clubId": "club-3",
-      "title": "Debate Tournament",
-      "description": "Annual inter-school debate tournament. Compete against other schools and win prizes.",
+      "clubId": "club-10",
+      "title": "Student Parliament Selection",
+      "description": "Your voice matters—be part of the Student Parliament and shape our school’s future!",
       "location": "Auditorium",
       "date": "2024-02-25T09:00:00Z",
       "imageUrl": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&h=300&fit=crop",
@@ -612,9 +612,9 @@
     {
       "id": "event-4",
       "clubId": "club-4",
-      "title": "Environmental Clean-up",
-      "description": "Join us for a community clean-up drive. Help make our environment cleaner and greener.",
-      "location": "Local Park",
+      "title": "Football Match",
+      "description": "Cheer loud, play hard! Don’t miss the thrilling football match full of school spirit and energy!",
+      "location": "In the School Compound",
       "date": "2024-03-01T10:00:00Z",
       "imageUrl": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&h=300&fit=crop",
       "rsvpLimit": 40,
@@ -632,6 +632,19 @@
       "rsvpLimit": 100,
       "createdAt": "2024-02-05T00:00:00Z",
       "updatedAt": "2024-02-05T00:00:00Z"
+    },
+    {
+      "id": "event-6",
+      "clubId": "club-3",
+      "title": "Art Exhibition Registration Open",
+      "description": "Showcase your creative talents in our annual art exhibition. All art forms welcome!",
+      "location": "Art Gallery",
+      "date": "2024-02-20T18:00:00Z",
+      "imageUrl": "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=600&h=300&fit=crop",
+      
+      "rsvpLimit": 50,
+      "createdAt": "2024-01-20T00:00:00Z",
+      "updatedAt": "2024-01-20T00:00:00Z"
     }
   ],
   "announcements": [
@@ -644,10 +657,26 @@
       "createdAt": "2024-01-01T08:00:00Z",
       "updatedAt": "2024-01-01T08:00:00Z"
     },
+    {"id": "announcement-2",
+      "title": "Celebrating Nations and Nationalites Day",
+      "content": "We’re excited to celebrate Nations and Nationalities Day! This is a day to honor the rich cultures, languages, and traditions of all Ethiopian nations and nationalities.",
+      "target": "GLOBAL",
+      "createdBy": "user-1",
+      "createdAt": "2024-01-01T08:00:00Z",
+      "updatedAt": "2024-01-01T08:00:00Z"
+    },
+    {"id": "announcement-3",
+      "title": "Meeting with Parents",
+      "content": "We invite you to attend a Parent-Teacher Meeting in the school hall. This is a great opportunity to discuss your child’s progress, address any concerns, and strengthen our school-community partnership.",
+      "target": "GLOBAL",
+      "createdBy": "user-1",
+      "createdAt": "2024-01-01T08:00:00Z",
+      "updatedAt": "2024-01-01T08:00:00Z"
+    },
     {
-      "id": "announcement-2",
-      "title": "Tech Club Meeting This Week",
-      "content": "Attention all Tech Innovators! We have an exciting robotics workshop planned for this Saturday. Don't miss out on this hands-on learning experience.",
+      "id": "announcement-4",
+      "title": "Coding Course This Month",
+      "content": "Join us for an exciting coding course happening this month! 🚀Learn the basics of programming, sharpen your coding skills, and work on real projects with peers. Open to all students—beginners and advanced learners welcome!",
       "target": "CLUB",
       "clubId": "club-1",
       "createdBy": "user-2",
@@ -655,11 +684,40 @@
       "updatedAt": "2024-01-10T10:00:00Z"
     },
     {
-      "id": "announcement-3",
-      "title": "Art Exhibition Registration Open",
-      "content": "Calling all artists! Registration for our annual art exhibition is now open. Submit your artwork by next Friday to participate in this amazing showcase.",
+      "id": "announcement-5",
+      "title": "Student Parliament Selection",
+      "content": "Your voice matters—be part of the Student Parliament and shape our school’s future!",
       "target": "CLUB",
-      "clubId": "club-2",
+      "clubId": "club-10",
+      "createdBy": "user-3",
+      "createdAt": "2024-01-15T14:00:00Z",
+      "updatedAt": "2024-01-15T14:00:00Z"
+    },
+    {
+      "id": "announcement-6",
+      "title": "Football Match",
+      "content": "Get ready, students! An exciting football match will be held this week. Come cheer for your classmates and enjoy the spirit of teamwork and sportsmanship! 🎉",
+      "target": "CLUB",
+      "clubId": "club-4",
+      "createdBy": "user-4",
+      "createdAt": "2024-01-15T14:00:00Z",
+      "updatedAt": "2024-01-15T14:00:00Z"
+    },
+    {
+      "id": "announcement-7",
+      "title": "Art Exhibition Registration Open",
+      "content": "Calling all creative minds! Registration for this year’s Art Exhibition is now open. Showcase your talent in painting, drawing, or crafts and let your artwork shine. 🖌️✨",
+      "target": "CLUB",
+      "clubId": "club-5",
+      "createdBy": "user-3",
+      "createdAt": "2024-01-15T14:00:00Z",
+      "updatedAt": "2024-01-15T14:00:00Z"
+    },
+    {
+      "id": "announcement-8",
+      "title": "Blood Donating Day",
+      "content": "Our school is organizing a Blood Donation Drive to help save lives. If you are eligible, we encourage you to participate and be a hero to someone in need. Even if you can’t donate, you can still support by spreading the word and volunteering at the event.",
+      "clubId": "club-5",
       "createdBy": "user-3",
       "createdAt": "2024-01-15T14:00:00Z",
       "updatedAt": "2024-01-15T14:00:00Z"
@@ -880,48 +938,28 @@
         }
       ]
     },
-    {
+        {
       "id": 4,
-      "name": "Debate Club",
-      "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&h=600&fit=crop",
-      "description": "Community service and leadership development",
-      "clubs": [
-        {
-          "name": "English Debate Competition",
-          "image": "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=400&h=300&fit=crop",
-          "members": 12,
-          "description": "Student government and leadership"
-        },
-        {
-          "name": "Amharic Debate Competiton",
-          "image": "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400&h=300&fit=crop",
-          "members": 89,
-          "description": "Community service and volunteering"
-        }
-        ]
-      },
-        {
-      "id": 5,
       "name": "Community Service Club",
       "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&h=600&fit=crop",
-      "description": "Community service and leadership development",
+      "description": "A club where students engage in service projects, help communities, and make a positive impact.",
       "clubs": [
         {
-          "name": "Red Cross",
+          "name": "Red Cross Club",
           "image": "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=400&h=300&fit=crop",
           "members": 12,
-          "description": "Student government and leadership"
+          "description": "A club where students serve communities, promote health, and support those in need."
         },
         {
           "name": "Help the Community Club",
           "image": "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400&h=300&fit=crop",
           "members": 89,
-          "description": "Community service and volunteering"
+          "description": "Students volunteering to support and uplift the community."
         }
       ]
     },
     {
-      "id": 6,
+      "id": 5,
       "name": "Language Club",
       "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&h=600&fit=crop",
       "description": "A place where students improve their communication skills",
@@ -930,38 +968,44 @@
           "name": "English Language Club",
           "image": "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=400&h=300&fit=crop",
           "members": 12,
-          "description": "Students imporve their English Skills through English mini-media programms"
+          "description": "Master English, Speak Confidently, Shine Bright."
+        },
+        {
+          "name": "Debate Club",
+          "image": "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=400&h=300&fit=crop",
+          "members": 12,
+          "description":  "A club where students sharpen their critical thinking, public speaking, and persuasive skills through engaging debates and discussions."
         },
         {
           "name": "Afaan Orommo Language and Litrature Club",
           "image": "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400&h=300&fit=crop",
           "members": 89,
-          "description": "Improve communication skill through Afaan Oromoo"
+          "description": "Explore, Celebrate, and Express the Beauty of Afaan Oromo."
         }
       ]
     },
     {
-      "id": 7,
+      "id": 6,
       "name": "Competition Clubs",
       "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&h=600&fit=crop",
-      "description": "",
+      "description": "Challenge Yourself, Compete Fairly, Achieve Greatness.",
       "clubs": [
         {
-          "name": "Math Learn and Compete",
+          "name": "Math Competition Club",
           "image": "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=400&h=300&fit=crop",
           "members": 12,
-          "description": "Student government and leadership"
+          "description": "Sharpen Minds, Solve Problems, Excel in Math"
         },
         {
           "name": "Chess Club",
           "image": "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400&h=300&fit=crop",
           "members": 89,
-          "description": "Lets learn Chess and compete"
+          "description": "Think Strategically, Plan Ahead, Win the Game."
         }
           ]
         },
     {
-      "id": 8,
+      "id": 7,
       "name": "Other Clubs",
       "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&h=600&fit=crop",
       "description": "Additonal Clubs as Extracurricular Activities.",
@@ -970,10 +1014,10 @@
           "name": "Gender Club",
           "image": "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=400&h=300&fit=crop",
           "members": 12,
-          "description": "A club to empower and upgrade women's knowledge"
+          "description": "Promote Equality, Raise Awareness, Empower Women's Involvement"
         },
         {
-          "name": "Student Parlament Club",
+          "name": "Student Parliament Club",
           "image": "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400&h=300&fit=crop",
           "members": 89,
           "description": "Students will simulate and involve in different Parlament meetings"
