@@ -17,7 +17,7 @@
     {
       "id": "user-2",
       "fullName": "Sarah Johnson",
-      "email": "sarah.johnson@school.edu",
+      "email": "Daniya.johnson@school.edu",
       "password": "teacher123",
       "role": "TEACHER",
       "phone": "+1234567891",
@@ -1045,20 +1045,20 @@
     {
       "id": 1,
       "name": "Academic & STEM",
-      "image": "https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=800&h=600&fit=crop",
+      "image": "https://i.imgur.com/FgcL9f9.jpeg",
       "description": "Science, Technology, Engineering, and Mathematics clubs",
       "clubs": [
         {
           "name": "Robotics Club",
-          "image": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=400&h=300&fit=crop",
+          "image": "https://i.imgur.com/SKJzPgI.jpeg",
           "members": 45,
           "description": "Build and program robots for competitions"
         },
         {
-          "name": "Math Olympiad",
-          "image": "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=400&h=300&fit=crop",
+          "name": "Technology, coding and programing Club ",
+          "image": "https://i.imgur.com/MzIggZp.jpeg",
           "members": 32,
-          "description": "Advanced mathematics and problem solving"
+          "description": "Discover , build ,and innovate with tech and code"
         },
         {
           "name": "Science Lab",
@@ -1071,24 +1071,24 @@
     {
       "id": 2,
       "name": "Arts & Culture",
-      "image": "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=800&h=600&fit=crop",
+      "image": "https://i.imgur.com/jgDEyF0.jpeg",
       "description": "Creative expression through various art forms",
       "clubs": [
         {
-          "name": "Photography Club",
-          "image": "https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=400&h=300&fit=crop",
+          "name": "Poem and Dance club Club",
+          "image": "https://i.imgur.com/yavKuVh.jpeg",
           "members": 38,
-          "description": "Capture moments and learn photography skills"
+          "description": "Hands on experiments and research projects"
         },
         {
           "name": "Drama Club",
-          "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop",
+          "image": "https://i.imgur.com/DK7OmNc.jpeg",
           "members": 52,
           "description": "Theater performances and acting workshops"
         },
         {
-          "name": "Art Studio",
-          "image": "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8a?w=400&h=300&fit=crop",
+          "name": "Art and painting Club",
+          "image": "https://i.imgur.com/fkumYyh.jpeg",
           "members": 41,
           "description": "Painting, drawing, and creative expression"
         }
@@ -1097,54 +1097,126 @@
     {
       "id": 3,
       "name": "Sports & Fitness",
-      "image": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop",
-      "description": "Physical activities and team sports",
+      "image": "https://i.imgur.com/8aYbVAp.jpeg",
+      "description": "Help students who have talent and skill in Athletics.",
       "clubs": [
         {
-          "name": "Basketball Team",
-          "image": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=400&h=300&fit=crop",
+          "name": "Football Team",
+          "image": "https://i.imgur.com/MwAJH36.jpeg",
           "members": 15,
+          "description": "Improve your health by playing football"
+        },
+        {
+          "name": "Basketball Team",
+          "image": "https://i.imgur.com/8n2xcTE.jpeg",
+          "members": 67,
           "description": "Competitive basketball and training"
         },
         {
-          "name": "Yoga Club",
-          "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=300&fit=crop",
-          "members": 67,
-          "description": "Mindfulness and physical wellness"
-        },
-        {
-          "name": "Swimming Club",
+          "name": "Other sports",
           "image": "https://images.unsplash.com/photo-1530549387789-4c1017266635?w=400&h=300&fit=crop",
           "members": 23,
-          "description": "Swimming techniques and water sports"
+          "description": "like swimming , Tennis ,Tekuando"
         }
       ]
     },
     {
       "id": 4,
-      "name": "Leadership & Service",
+      "name": "Community Service Club",
       "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&h=600&fit=crop",
-      "description": "Community service and leadership development",
+      "description": "A club where students engage in service projects, help communities, and make a positive impact.",
       "clubs": [
         {
-          "name": "Student Council",
+          "name": "Red Cross Club",
           "image": "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=400&h=300&fit=crop",
           "members": 12,
-          "description": "Student government and leadership"
+          "description": "A club where students serve communities, promote health, and support those in need."
         },
         {
-          "name": "Volunteer Club",
+          "name": "Help the Community Club",
           "image": "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400&h=300&fit=crop",
           "members": 89,
-          "description": "Community service and volunteering"
-        },
-        {
-          "name": "Debate Team",
-          "image": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=300&fit=crop",
-          "members": 34,
-          "description": "Public speaking and debate competitions"
+          "description": "Students volunteering to support and uplift the community."
         }
       ]
-    }
+    },
+    {
+      "id": 5,
+      "name": "Language Club",
+      "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&h=600&fit=crop",
+      "description": "A place where students improve their communication skills",
+      "clubs": [
+        {
+          "name": "English Language Club",
+          "image": "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=400&h=300&fit=crop",
+          "members": 12,
+          "description": "Master English, Speak Confidently, Shine Bright."
+        },
+        {
+          "name": "Debate Club",
+          "image": "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=400&h=300&fit=crop",
+          "members": 12,
+          "description":  "A club where students sharpen their critical thinking, public speaking, and persuasive skills through engaging debates and discussions."
+        },
+        {
+          "name": "Afaan Orommo Language and Litrature Club",
+          "image": "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400&h=300&fit=crop",
+          "members": 89,
+          "description": "Explore, Celebrate, and Express the Beauty of Afaan Oromo."
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Competition Clubs",
+      "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&h=600&fit=crop",
+      "description": "Challenge Yourself, Compete Fairly, Achieve Greatness.",
+      "clubs": [
+        {
+          "name": "Math Competition Club",
+          "image": "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=400&h=300&fit=crop",
+          "members": 12,
+          "description": "Sharpen Minds, Solve Problems, Excel in Math"
+        },
+        {
+          "name": "Chess Club",
+          "image": "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400&h=300&fit=crop",
+          "members": 89,
+          "description": "Think Strategically, Plan Ahead, Win the Game."
+        }
+          ]
+        },
+    {
+      "id": 7,
+      "name": "Other Clubs",
+      "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&h=600&fit=crop",
+      "description": "Additonal Clubs as Extracurricular Activities.",
+      "clubs": [
+        {
+          "name": "Gender Club",
+          "image": "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=400&h=300&fit=crop",
+          "members": 12,
+          "description": "Promote Equality, Raise Awareness, Empower Women's Involvement"
+        },
+        {
+          "name": "Student Parliament Club",
+          "image": "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400&h=300&fit=crop",
+          "members": 89,
+          "description": "Students will simulate and involve in different Parlament meetings"
+        },
+        {
+          "name": "Book Club",
+          "image": "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400&h=300&fit=crop",
+          "members": 89,
+          "description": "A club where students read different types of books and share their knowledge. "
+        },
+        {
+          "name": "Hager Enwok",
+          "image": "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400&h=300&fit=crop",
+          "members": 89,
+          "description": "Let's Discover New things about Ethiopia."
+        }
+      ]
+    } 
   ]
-}
+ }
