@@ -367,8 +367,6 @@
       "updatedAt": "2025-08-17T19:44:27.902Z"
     }
   ],
-
-
   "clubs": [
     {
       "id": "club-1",
@@ -741,11 +739,11 @@
       "title": "Programming Seminar",
       "description": "Get ready to level up your coding skills! 🎉 Join our Programming Seminar designed for high school students—learn cool coding tricks, explore real-world applications, and discover how fun programming can be!",
       "location": "ICT Lab 101",
-      "date": "2024-02-15T14:00:00Z",
+      "date": "2025-11-15T00:00:00Z",
       "imageUrl": "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=600&h=300&fit=crop",
       "rsvpLimit": 25,
-      "createdAt": "2024-01-15T00:00:00Z",
-      "updatedAt": "2024-01-15T00:00:00Z"
+      "createdAt": "2025-11-15T00:00:00Z",
+      "updatedAt": "2025-11-15T00:00:00Z"
     },
     {
       "id": "event-2",
@@ -753,12 +751,12 @@
       "title": "Science Museum Tour",
       "description": "Step into the world of discovery! Join our Science Museum Tour and explore amazing exhibits, hands-on experiments, and the wonders of science—all in one unforgettable trip.",
       "location": "Science Museum",
-      "date": "2024-02-20T18:00:00Z",
+      "date": "2025-10-20T00:00:00Z",
       "imageUrl": "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=600&h=300&fit=crop",
       
       "rsvpLimit": 50,
-      "createdAt": "2024-01-20T00:00:00Z",
-      "updatedAt": "2024-01-20T00:00:00Z"
+      "createdAt": "2025-10-20T00:00:00Z",
+      "updatedAt": "2025-10-20T00:00:00Z"
     },
     {
       "id": "event-3",
@@ -766,11 +764,11 @@
       "title": "Student Parliament Selection",
       "description": "Your voice matters—be part of the Student Parliament and shape our school’s future!",
       "location": "Auditorium",
-      "date": "2024-02-25T09:00:00Z",
+      "date": "2025-10-07T00:00:00Z",
       "imageUrl": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&h=300&fit=crop",
       "rsvpLimit": 30,
-      "createdAt": "2024-01-25T00:00:00Z",
-      "updatedAt": "2024-01-25T00:00:00Z"
+      "createdAt": "2025-10-07T00:00:00Z",
+      "updatedAt": "2025-10-07T00:00:00Z"
     },
     {
       "id": "event-4",
@@ -778,11 +776,11 @@
       "title": "Football Match",
       "description": "Cheer loud, play hard! Don’t miss the thrilling football match full of school spirit and energy!",
       "location": "In the School Compound",
-      "date": "2024-03-01T10:00:00Z",
+      "date": "2025-11-15T14:00:00Z",
       "imageUrl": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&h=300&fit=crop",
       "rsvpLimit": 40,
-      "createdAt": "2024-01-30T00:00:00Z",
-      "updatedAt": "2024-01-30T00:00:00Z"
+      "createdAt": "2025-11-15T14:00:00Z",
+      "updatedAt": "2025-11-15T14:00:00Z"
     },
     {
       "id": "event-5",
@@ -790,11 +788,11 @@
       "title": "Basketball Championship",
       "description": "Annual basketball championship. Teams from all grades compete for the trophy.",
       "location": "School Gymnasium",
-      "date": "2024-03-05T16:00:00Z",
+      "date": "2025-11-20T00:00:00Z",
       "imageUrl": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=300&fit=crop",
       "rsvpLimit": 100,
-      "createdAt": "2024-02-05T00:00:00Z",
-      "updatedAt": "2024-02-05T00:00:00Z"
+      "createdAt": "2025-11-20T00:00:00Z",
+      "updatedAt": "2025-11-20T00:00:00Z"
     },
     {
       "id": "event-6",
@@ -802,12 +800,12 @@
       "title": "Art Exhibition Registration Open",
       "description": "Showcase your creative talents in our annual art exhibition. All art forms welcome!",
       "location": "Art Gallery",
-      "date": "2024-02-20T18:00:00Z",
+      "date": "2025-01-20T00:00:00Z",
       "imageUrl": "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=600&h=300&fit=crop",
       
       "rsvpLimit": 50,
-      "createdAt": "2024-01-20T00:00:00Z",
-      "updatedAt": "2024-01-20T00:00:00Z"
+      "createdAt": "2025-01-20T00:00:00Z",
+      "updatedAt": "2025-01-20T00:00:00Z"
     }
   ],
   "announcements": [
@@ -817,76 +815,75 @@
       "content": "Welcome back everyone! We're excited to start another amazing year filled with learning, growth, and fun activities. Check out our club fair this Friday to discover new opportunities.",
       "target": "GLOBAL",
       "createdBy": "user-1",
-      "createdAt": "2024-01-01T08:00:00Z",
-      "updatedAt": "2024-01-01T08:00:00Z"
+      "createdAt": "2025-09-14T08:00:00Z",
+      "updatedAt": "2025-09-14T08:00:00Z"
     },
-    {"id": "announcement-2",
-      "title": "Celebrating Nations and Nationalites Day",
-      "content": "We’re excited to celebrate Nations and Nationalities Day! This is a day to honor the rich cultures, languages, and traditions of all Ethiopian nations and nationalities.",
-      "target": "GLOBAL",
-      "createdBy": "user-1",
-      "createdAt": "2024-01-01T08:00:00Z",
-      "updatedAt": "2024-01-01T08:00:00Z"
+    {
+      "id": "announcement-2",
+      "title": "Blood Donating Day",
+      "content": "Our school is organizing a Blood Donation Drive to help save lives. If you are eligible, we encourage you to participate and be a hero to someone in need. Even if you can’t donate, you can still support by spreading the word and volunteering at the event.",
+      "clubId": "club-5",
+      "createdBy": "user-3",
+      "createdAt": "2025-09-28T14:00:00Z",
+      "updatedAt": "2025-09-28T14:00:00Z"
     },
     {"id": "announcement-3",
       "title": "Meeting with Parents",
       "content": "We invite you to attend a Parent-Teacher Meeting in the school hall. This is a great opportunity to discuss your child’s progress, address any concerns, and strengthen our school-community partnership.",
       "target": "GLOBAL",
       "createdBy": "user-1",
-      "createdAt": "2024-01-01T08:00:00Z",
-      "updatedAt": "2024-01-01T08:00:00Z"
+      "createdAt": "2025-10-01T08:00:00Z",
+      "updatedAt": "2025-10-01T08:00:00Z"
     },
     {
       "id": "announcement-4",
-      "title": "Coding Course This Month",
-      "content": "Join us for an exciting coding course happening this month! 🚀Learn the basics of programming, sharpen your coding skills, and work on real projects with peers. Open to all students—beginners and advanced learners welcome!",
-      "target": "CLUB",
-      "clubId": "club-1",
-      "createdBy": "user-2",
-      "createdAt": "2024-01-10T10:00:00Z",
-      "updatedAt": "2024-01-10T10:00:00Z"
-    },
-    {
-      "id": "announcement-5",
       "title": "Student Parliament Selection",
       "content": "Your voice matters—be part of the Student Parliament and shape our school’s future!",
       "target": "CLUB",
       "clubId": "club-10",
       "createdBy": "user-3",
-      "createdAt": "2024-01-15T14:00:00Z",
-      "updatedAt": "2024-01-15T14:00:00Z"
+      "createdAt": "2025-10-07T14:00:00Z",
+      "updatedAt": "2025-10-07T14:00:00Z"
+    },
+    {"id": "announcement-5",
+      "title": "Celebrating Nations and Nationalites Day",
+      "content": "We’re excited to celebrate Nations and Nationalities Day! This is a day to honor the rich cultures, languages, and traditions of all Ethiopian nations and nationalities.",
+      "target": "GLOBAL",
+      "createdBy": "user-1",
+      "createdAt": "2025-10-29T08:00:00Z",
+      "updatedAt": "2025-10-29T08:00:00Z"
     },
     {
       "id": "announcement-6",
+      "title": "Coding Course This Month",
+      "content": "Join us for an exciting coding course happening this month! 🚀Learn the basics of programming, sharpen your coding skills, and work on real projects with peers. Open to all students—beginners and advanced learners welcome!",
+      "target": "CLUB",
+      "clubId": "club-1",
+      "createdBy": "user-2",
+      "createdAt": "2025-11-10T10:00:00Z",
+      "updatedAt": "2025-11-10T10:00:00Z"
+    },
+    {
+      "id": "announcement-7",
       "title": "Football Match",
       "content": "Get ready, students! An exciting football match will be held this week. Come cheer for your classmates and enjoy the spirit of teamwork and sportsmanship! 🎉",
       "target": "CLUB",
       "clubId": "club-4",
       "createdBy": "user-4",
-      "createdAt": "2024-01-15T14:00:00Z",
-      "updatedAt": "2024-01-15T14:00:00Z"
+      "createdAt": "2025-11-15T14:00:00Z",
+      "updatedAt": "2025-11-15T14:00:00Z"
     },
     {
-      "id": "announcement-7",
+      "id": "announcement-8",
       "title": "Art Exhibition Registration Open",
       "content": "Calling all creative minds! Registration for this year’s Art Exhibition is now open. Showcase your talent in painting, drawing, or crafts and let your artwork shine. 🖌️✨",
       "target": "CLUB",
       "clubId": "club-5",
       "createdBy": "user-3",
-      "createdAt": "2024-01-15T14:00:00Z",
-      "updatedAt": "2024-01-15T14:00:00Z"
-    },
-    {
-      "id": "announcement-8",
-      "title": "Blood Donating Day",
-      "content": "Our school is organizing a Blood Donation Drive to help save lives. If you are eligible, we encourage you to participate and be a hero to someone in need. Even if you can’t donate, you can still support by spreading the word and volunteering at the event.",
-      "clubId": "club-5",
-      "createdBy": "user-3",
-      "createdAt": "2024-01-15T14:00:00Z",
-      "updatedAt": "2024-01-15T14:00:00Z"
+      "createdAt": "2025-12-08T14:00:00Z",
+      "updatedAt": "2025-12-08T14:00:00Z"
     }
   ],
-
   "notifications": [
     {
       "id": "notification-1",
