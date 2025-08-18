@@ -11,7 +11,7 @@ interface LandingPageProps {
   onNavigate: (page: string) => void;
 }
 
-const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
+const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {  //Question
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeFeature, setActiveFeature] = useState(0);
   const [currentSlide, setCurrentSlide] = useState(0);

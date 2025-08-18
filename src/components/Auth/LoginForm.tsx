@@ -23,9 +23,9 @@ const LoginForm: React.FC = () => {
   };
 
   const demoAccounts = [
-    { email: 'admin@school.edu', password: 'admin123', role: 'Admin' },
-    { email: 'sarah.johnson@school.edu', password: 'teacher123', role: 'Teacher' },
-    { email: 'alex.smith@student.school.edu', password: 'student123', role: 'Student' }
+    { email: 'dawit.mekonnen@school.edu', password: 'dawit123', role: 'Admin' },
+    { email: 'sara.gemechu@school.edu', password: 'sara123', role: 'Teacher' },
+    { email: 'alemayehu.mulatu@school.edu', password: 'alemayehu123', role: 'Student' }
   ];
 
   const loginWithDemo = async (demoEmail: string, demoPassword: string) => {
