@@ -97,7 +97,7 @@ class DataService {
       this.persist();
     }
     // Seed initial data for better UX
-    this.seedTeacherClubs();
+    //this.seedTeacherClubs();
     this.seedStudentMemberships();
     this.seedInitialMembershipRequests();
     this.seedInitialNotifications();
