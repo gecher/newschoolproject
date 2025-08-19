@@ -833,18 +833,18 @@
     {
       "id": 1,
       "name": "Academic & STEM",
-      "image": "https://i.imgur.com/FgcL9f9.jpeg",
+      "image": "https://i.imgur.com/OvcBLnb.jpeg",
       "description": "Science, Technology, Engineering, and Mathematics clubs",
       "clubs": [
         {
           "name": "Robotics Club",
-          "image": "https://i.imgur.com/SKJzPgI.jpeg",
+          "image": "https://i.imgur.com/81fjMcG.jpeg",
           "members": 45,
           "description": "Build and program robots for competitions"
         },
         {
           "name": "Technology, coding and programing Club ",
-          "image": "https://i.imgur.com/MzIggZp.jpeg",
+          "image": "https://i.imgur.com/RZPdu5s.jpeg",
           "members": 32,
           "description": "Discover , build ,and innovate with tech and code"
         },
@@ -864,7 +864,7 @@
       "clubs": [
         {
           "name": "Poem and Dance club Club",
-          "image": "https://i.imgur.com/yavKuVh.jpeg",
+          "image": "https://i.imgur.com/dbDAsYi.jpeg",
           "members": 38,
           "description": "Hands on experiments and research projects"
         },
@@ -876,7 +876,7 @@
         },
         {
           "name": "Art and painting Club",
-          "image": "https://i.imgur.com/fkumYyh.jpeg",
+          "image": "https://i.imgur.com/27GEv9G.jpeg",
           "members": 41,
           "description": "Painting, drawing, and creative expression"
         }
@@ -890,7 +890,7 @@
       "clubs": [
         {
           "name": "Football Team",
-          "image": "https://i.imgur.com/MwAJH36.jpeg",
+          "image": "https://i.imgur.com/TvTTocE.jpeg",
           "members": 15,
           "description": "Improve your health by playing football"
         },
@@ -911,27 +911,33 @@
     {
       "id": 4,
       "name": "Community Service Club",
-      "image": "https://i.imgur.com/R5Qfl4j.jpeg",
+      "image": "https://i.imgur.com/FYSkS9I.jpeg",
       "description": "A club where students engage in service projects, help communities, and make a positive impact.",
       "clubs": [
         {
           "name": "Red Cross Club",
-          "image": "https://i.imgur.com/iMTU6s3.jpeg",
+          "image": "https://i.imgur.com/r8nvw52.jpeg",
           "members": 12,
           "description": "A club where students serve communities, promote health, and support those in need."
         },
         {
           "name": "Help the Community Club",
-          "image": "https://i.imgur.com/4xi6ZkO.jpeg",
+          "image": "https://i.imgur.com/FweMA6k.jpeg",
           "members": 89,
           "description": "Students volunteering to support and uplift the community."
+        },
+        {
+          "name": "Blood Donation Club",
+          "image": "https://i.imgur.com/izyeuDX.jpeg",
+          "members": 89,
+          "description": " Starts from our Country Leader."
         }
       ]
     },
     {
       "id": 5,
       "name": "Language Club",
-      "image": "https://i.imgur.com/EPZNDFC.jpeg",
+      "image": "https://i.imgur.com/Hs5PMBq.jpeg",
       "description": "A place where students improve their communication skills",
       "clubs": [
         {
@@ -942,13 +948,13 @@
         },
         {
           "name": "Debate Club",
-          "image": "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=400&h=300&fit=crop",
+          "image": "https://i.imgur.com/2pYskDC.jpeg",
           "members": 12,
           "description":  "A club where students sharpen their critical thinking, public speaking, and persuasive skills through engaging debates and discussions."
         },
         {
           "name": "Afaan Orommo Language and Litrature Club",
-          "image": "https://i.imgur.com/xCpQypo.jpeg",
+          "image": "https://i.imgur.com/BcxDPDv.jpeg",
           "members": 89,
           "description": "Explore, Celebrate, and Express the Beauty of Afaan Oromo."
         }
@@ -957,18 +963,24 @@
     {
       "id": 6,
       "name": "Competition Clubs",
-      "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&h=600&fit=crop",
+      "image": "https://i.imgur.com/OohVBj9.jpeg",
       "description": "Challenge Yourself, Compete Fairly, Achieve Greatness.",
       "clubs": [
         {
           "name": "Math Competition Club",
-          "image": "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=400&h=300&fit=crop",
+          "image": "https://i.imgur.com/NkqrOtn.jpeg",
           "members": 12,
           "description": "Sharpen Minds, Solve Problems, Excel in Math"
         },
         {
+          "name": "Book Club",
+          "image": "https://i.imgur.com/pC92aTh.jpeg",
+          "members": 89,
+          "description": "A club where students read different types of books and share their knowledge. "
+        },
+        {
           "name": "Chess Club",
-          "image": "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400&h=300&fit=crop",
+          "image": "https://i.imgur.com/6WwWQOa.jpeg",
           "members": 89,
           "description": "Think Strategically, Plan Ahead, Win the Game."
         }
@@ -977,30 +989,25 @@
     {
       "id": 7,
       "name": "Other Clubs",
-      "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&h=600&fit=crop",
+      "image": "https://i.imgur.com/iLO430o.jpeg",
       "description": "Additonal Clubs as Extracurricular Activities.",
       "clubs": [
         {
           "name": "Gender Club",
-          "image": "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=400&h=300&fit=crop",
+          "image": "https://i.imgur.com/CWg1pFn.jpeg",
           "members": 12,
           "description": "Promote Equality, Raise Awareness, Empower Women's Involvement"
         },
         {
           "name": "Student Parliament Club",
-          "image": "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400&h=300&fit=crop",
+          "image": "https://i.imgur.com/obXMWNQ.jpeg",
           "members": 89,
           "description": "Students will simulate and involve in different Parlament meetings"
         },
-        {
-          "name": "Book Club",
-          "image": "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400&h=300&fit=crop",
-          "members": 89,
-          "description": "A club where students read different types of books and share their knowledge. "
-        },
+       
         {
           "name": "Hager Enwok",
-          "image": "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400&h=300&fit=crop",
+          "image": "https://i.imgur.com/z4Uda0e.jpeg",
           "members": 89,
           "description": "Let's Discover New things about Ethiopia."
         }
