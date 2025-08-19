@@ -12,6 +12,7 @@ import LandingPage from './Landing/LandingPage';
 import ClubDetailPage from './Clubs/ClubDetailPage';
 import EventDetailPage from './Events/EventDetailPage';
 import AnnouncementsPage from './Announcements/AnnouncementsPage';
+import AboutPage from './About/AboutPage';
 
 const MainApp: React.FC = () => {
   const { currentUser, isLoading } = useAuth();
@@ -31,12 +32,22 @@ const MainApp: React.FC = () => {
     );
   }
 
-  // Show landing page if no user is logged in
+  // Show public pages (with navbar) if no user is logged in
   if (!currentUser) {
-    if (currentPage === 'login') {
-      return <LoginForm />;
-    }
-    return <LandingPage onNavigate={handleNavigate} />;
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <Navbar onNavigate={handleNavigate} currentPage={currentPage} />
+        <main>
+          {currentPage === 'login' ? (
+            <LoginForm />
+          ) : currentPage === 'about' ? (
+            <AboutPage onNavigate={handleNavigate} />
+          ) : (
+            <LandingPage onNavigate={handleNavigate} />
+          )}
+        </main>
+      </div>
+    );
   }
 
   const renderPage = () => {
@@ -79,12 +90,10 @@ const MainApp: React.FC = () => {
         return <EventDetailPage onNavigate={handleNavigate} eventId={pageData?.eventId} />;
       case 'announcements':
         return <AnnouncementsPage onNavigate={handleNavigate} />;
+      case 'about':
+        return <AboutPage onNavigate={handleNavigate} />;
       case 'profile':
         return <ProfilePage onNavigate={handleNavigate} />;
-      case 'admin':
-        return <AdminPanel onNavigate={handleNavigate} currentPage={currentPage} />;
-      case 'landing':
-        return <LandingPage onNavigate={handleNavigate} />;
       default:
         if (currentUser.role === 'STUDENT') {
           return <StudentDashboard onNavigate={handleNavigate} />;

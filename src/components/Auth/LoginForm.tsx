@@ -24,8 +24,8 @@ const LoginForm: React.FC = () => {
 
   const demoAccounts = [
     { email: 'dawit.mekonnen@school.edu', password: 'dawit123', role: 'Admin' },
-    { email: 'sara.gemechu@school.edu', password: 'sara123', role: 'Teacher' },
-    { email: 'alemayehu.mulatu@school.edu', password: 'alemayehu123', role: 'Student' }
+    { email: 'bezawit.adane@school.edu', password: 'bezawit123', role: 'Teacher' },
+    { email: 'felege.birhan@school.edu', password: 'felege123', role: 'Student' }
   ];
 
   const loginWithDemo = async (demoEmail: string, demoPassword: string) => {

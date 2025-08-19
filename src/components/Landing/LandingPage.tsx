@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Users, Calendar, Award, TrendingUp, Shield,
-  BookOpen, MessageCircle, Star, ArrowRight,
-  CheckCircle, Play, ChevronDown, Menu, X
+  Users, Calendar,
+  MessageCircle, ArrowRight,
+  ChevronDown, Menu, X, User, Star
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import sampleData from '../../data/sample-data.json';
@@ -13,7 +13,6 @@ interface LandingPageProps {
 
 const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {  //Question
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activeFeature, setActiveFeature] = useState(0);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [currentCategory, setCurrentCategory] = useState(0);
   const [currentClub, setCurrentClub] = useState(0);
@@ -37,7 +36,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {  //Questio
       title: "Leadership Development",
       subtitle: "Develop essential skills for your future career"
     }
-  ];https://i.imgur.com/NT3OQKz.jpeg
+  ];
 
   // Auto-play slides effect
   useEffect(() => {
@@ -68,37 +67,41 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {  //Questio
 
   
 
-  const features = [
-    {
-      icon: Users,
-      title: "Club Discovery & Management",
-      description: "Find and join clubs that match your interests. Create, manage student clubs with ease. Track memberships and organize activities.",
-      color: "Purple"
-    },
-    {
-      icon: Calendar,
-      title: "Event Management & Organization",
-      description: "Schedule events, manage RSVPs, and track attendance for all your club activities. Organize and attend exciting events.",
-      color: "purple"
-    },
-    {
-      icon: Award,
-      title: "Achievement System",
-      description: "Earn badges and recognition for your contributions and participation in clubs.",
-      color: "purple"
-    },
-    {
-      icon: MessageCircle,
-      title: "Communication Hub",
-      description: "Stay connected with announcements, forums, and real-time notifications.",
-      color: "purple"
-    }
-  ];
+  // Removed features array as section was deleted
+  // const features = [
+  //   {
+  //     icon: Users,
+  //     title: "Club Discovery & Management",
+  //     description: "Find and join clubs that match your interests. Create, manage student clubs with ease. Track memberships and organize activities.",
+  //     color: "Purple"
+  //   },
+  //   {
+  //     icon: Calendar,
+  //     title: "Event Management & Organization",
+  //     description: "Schedule events, manage RSVPs, and track attendance for all your club activities. Organize and attend exciting events.",
+  //     color: "purple"
+  //   },
+  //   {
+  //     icon: MessageCircle,
+  //     title: "Communication Hub",
+  //     description: "Stay connected with announcements, forums, and real-time notifications.",
+  //     color: "purple"
+  //   }
+  // ];
 
   
 
      // Club Categories with clubs from JSON data
    const clubCategories = sampleData.clubCategories;
+
+  // Build testimonial items from sample data users
+  const testimonialItems = (sampleData.users || []).filter((u: any) => !!u.profilePhoto).slice(0, 3).map((u: any, idx: number) => ({
+    name: u.fullName,
+    role: u.role === 'TEACHER' ? 'Teacher' : u.role === 'ADMIN' ? 'Administrator' : 'Student',
+    quote: idx === 0 ? 'I found my voice and my people. The event tools are so easy!' : idx === 1 ? 'Managing signups and announcements is finally effortless.' : 'Badges and progress tracking keep our team motivated.',
+    rating: idx === 2 ? 4 : 5,
+    image: u.profilePhoto as string
+  }));
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
@@ -124,14 +127,22 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {  //Questio
             
 
             <div className="hidden md:block">
-              <motion.button
-                onClick={() => onNavigate('login')}
-                className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-                whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Get Started
-              </motion.button>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => onNavigate('about')}
+                  className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                >
+                  About
+                </button>
+                <motion.button
+                  onClick={() => onNavigate('login')}
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                  whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Get Started
+                </motion.button>
+              </div>
             </div>
 
             <div className="md:hidden">
@@ -156,6 +167,12 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {  //Questio
         >
                      {isMenuOpen && (
              <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
+               <button
+                 onClick={() => onNavigate('about')}
+                 className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400"
+               >
+                 About
+               </button>
                <motion.button
                 onClick={() => onNavigate('login')}
                 className="w-full text-left bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded-md text-base font-medium transition-colors"
@@ -250,7 +267,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {  //Questio
             transition={{ duration: 0.5, delay: 0.1 }}
           >
             <motion.h1
-              className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6"
+              className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-3"
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
@@ -259,13 +276,20 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {  //Questio
               <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent"> School Clubs</span>
             </motion.h1>
             <motion.p
-              className="text-xl text-gray-600 dark:text-gray-400 mb-8 max-w-3xl mx-auto"
+              className="text-xl md:text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.25 }}
+            >
+              Everything You Need to Succeed
+            </motion.p>
+            <motion.p
+              className="text-lg text-gray-600 dark:text-gray-400 mb-8 max-w-3xl mx-auto"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
-              The ultimate platform for managing student clubs, events, and activities.
-              Connect, collaborate, and create amazing experiences together.
+              The ultimate platform for managing student clubs, events, and activities. Connect, collaborate, and create amazing experiences together.
             </motion.p>
             <motion.div
               className="flex flex-col sm:flex-row gap-4 justify-center"
@@ -284,7 +308,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {  //Questio
             </motion.div>
           </motion.div>
 
-          {/* Hero Image */}
+          {/* Merged mini cards: features + testimonials */}
           <motion.div
             className="mt-16"
             initial={{ opacity: 0, y: 20 }}
@@ -293,38 +317,24 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {  //Questio
           >
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-indigo-600/20 to-purple-600/20 rounded-2xl blur-3xl"></div>
-              <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <motion.div
-                    className="bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-6"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.6 }}
-                  >
-                    <Users className="h-8 w-8 text-blue-600 dark:text-blue-400 mb-4" />
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Club Discovery</h3>
-                    <p className="text-gray-600 dark:text-gray-400">Find and join clubs that match your interests</p>
-                  </motion.div>
-                  <motion.div
-                    className="bg-gradient-to-br from-green-50 to-emerald-100 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl p-6"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.7 }}
-                  >
-                    <Calendar className="h-8 w-8 text-green-600 dark:text-green-400 mb-4" />
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Event Management</h3>
-                    <p className="text-gray-600 dark:text-gray-400">Organize and attend exciting events</p>
-                  </motion.div>
-                  <motion.div
-                    className="bg-gradient-to-br from-purple-50 to-pink-100 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl p-6"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.8 }}
-                  >
-                    <Award className="h-8 w-8 text-purple-600 dark:text-purple-400 mb-4" />
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Achievement Tracking</h3>
-                    <p className="text-gray-600 dark:text-gray-400">Earn badges and track your progress</p>
-                  </motion.div>
+              <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {/* Feature cards */}
+                  <div className="bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-5">
+                    <Users className="h-6 w-6 text-blue-600 dark:text-blue-400 mb-3" />
+                    <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-1">Club Discovery & Management</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Find and join clubs that match your interests.</p>
+                  </div>
+                  <div className="bg-gradient-to-br from-green-50 to-emerald-100 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl p-5">
+                    <Calendar className="h-6 w-6 text-green-600 dark:text-green-400 mb-3" />
+                    <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-1">Event Management & Organization</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Schedule events and track attendance.</p>
+                  </div>
+                  <div className="bg-gradient-to-br from-purple-50 to-pink-100 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl p-5">
+                    <MessageCircle className="h-6 w-6 text-purple-600 dark:text-purple-400 mb-3" />
+                    <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-1">Communication Hub</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Announcements, forums, and notifications.</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -333,73 +343,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {  //Questio
       </motion.section>
 
       
-
-      {/* Features Section */}
-      <motion.section
-        id="features"
-        className="py-16"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              Everything You Need to Succeed
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Our comprehensive platform provides all the tools students, teachers, and administrators need to create thriving school communities.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {features.map((feature, index) => (
-              <motion.div
-                key={index}
-                className={`p-8 rounded-2xl border-2 transition-all duration-300 cursor-pointer ${
-                  activeFeature === index
-                    ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20'
-                    : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-indigo-300 dark:hover:border-indigo-600'
-                }`}
-                onClick={() => setActiveFeature(index)}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 * index + 0.2 }}
-                whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <motion.div
-                  className={`inline-flex p-3 rounded-xl mb-6 ${
-                    feature.color === 'blue' ? 'bg-blue-100 dark:bg-blue-900/30' :
-                    feature.color === 'green' ? 'bg-green-100 dark:bg-green-900/30' :
-                    feature.color === 'yellow' ? 'bg-yellow-100 dark:bg-yellow-900/30' :
-                    'bg-purple-100 dark:bg-purple-900/30'
-                  }`}
-                  whileHover={{ scale: 1.1, rotate: 5, transition: { duration: 0.2 } }}
-                >
-                  <feature.icon className={`h-8 w-8 ${
-                    feature.color === 'blue' ? 'text-blue-600 dark:text-blue-400' :
-                    feature.color === 'green' ? 'text-green-600 dark:text-green-400' :
-                    feature.color === 'yellow' ? 'text-yellow-600 dark:text-yellow-400' :
-                    'text-purple-600 dark:text-purple-400'
-                  }`} />
-                </motion.div>
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400">
-                  {feature.description}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </motion.section>
 
       {/* Club Categories Section */}
       <motion.section
@@ -481,7 +424,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {  //Questio
                               transition={{ duration: 0.8, delay: 0.5 + clubIndex * 0.1 }}
                               whileHover={{ y: -5, transition: { duration: 0.2 } }}
                             >
-                              <div className="relative h-32 mb-3 rounded-lg overflow-hidden">
+                              <div className="relative h-40 md:h-48 mb-3 rounded-lg overflow-hidden">
                                 <img
                                   src={club.image}
                                   alt={club.name}
@@ -513,7 +456,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {  //Questio
                         }}
                         transition={{ duration: 0.8, delay: 0.3 }}
                       >
-                        <div className="relative h-96 rounded-2xl overflow-hidden shadow-2xl">
+                        <div className="relative h-[520px] md:h-[560px] rounded-2xl overflow-hidden shadow-2xl">
                           <img
                             src={category.image}
                             alt={category.name}
@@ -521,8 +464,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {  //Questio
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
                           <div className="absolute bottom-6 left-6 text-white">
-                            <h4 className="text-2xl font-bold mb-2">{category.name}</h4>
-                            <p className="text-lg opacity-90">{category.clubs.length} clubs available</p>
+                            <h4 className="text-3xl md:text-4xl font-bold mb-2">{category.name}</h4>
+                            <p className="text-xl opacity-90">{category.clubs.length} clubs available</p>
                           </div>
                         </div>
                       </motion.div>
@@ -566,6 +509,124 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {  //Questio
             >
               <ChevronDown className="h-6 w-6 text-gray-600 dark:text-gray-400 transform -rotate-90" />
             </motion.button>
+          </div>
+        </div>
+      </motion.section>
+
+      {/* Testimonials */}
+      <motion.section
+        className="py-16"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+              What People Say
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 mt-2">Real voices from students and teachers</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {testimonialItems.map((t: any, i: number) => {
+              const initials = t.name.split(' ').map((s: string) => s[0]).slice(0,2).join('');
+              return (
+                <motion.div
+                  key={t.name}
+                  className="relative rounded-2xl p-6 bg-white/80 dark:bg-gray-800/80 backdrop-blur border border-transparent shadow-sm"
+                  style={{ backgroundImage: 'linear-gradient(white, white), radial-gradient(circle at top left, #c7d2fe, #fbcfe8)' , backgroundOrigin: 'border-box', backgroundClip: 'padding-box, border-box' }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.1 * i }}
+                >
+                  <div className="flex items-start gap-3">
+                    {t.image ? (
+                      <img src={t.image} alt={t.name} className="h-10 w-10 rounded-full object-cover shadow-md" />
+                    ) : (
+                      <div className="h-10 w-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white shadow-md text-xs font-semibold">
+                        {initials}
+                      </div>
+                    )}
+                    <div className="flex-1">
+                      <div className="flex items-center gap-1 mb-2">
+                        {Array.from({ length: 5 }).map((_, idx) => (
+                          <Star
+                            key={idx}
+                            className={`h-4 w-4 ${idx < t.rating ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-700'}`}
+                            fill={idx < t.rating ? 'currentColor' : 'none'}
+                          />
+                        ))}
+                      </div>
+                      <p className="text-gray-800 dark:text-gray-100">“{t.quote}”</p>
+                      <div className="mt-4 text-sm text-gray-600 dark:text-gray-400">
+                        <span className="font-semibold text-gray-900 dark:text-white">{t.name}</span>
+                        <span className="ml-2">— {t.role}</span>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+            )})}
+          </div>
+        </div>
+      </motion.section>
+
+      {/* FAQ Section at the end */}
+      <motion.section
+        className="py-16 relative"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        {/* Decorative gradient blobs */}
+        <div className="pointer-events-none absolute -z-10 inset-0 overflow-hidden">
+          <div className="absolute -top-10 -left-10 h-56 w-56 rounded-full bg-indigo-500/10 blur-3xl" />
+          <div className="absolute bottom-0 right-10 h-56 w-56 rounded-full bg-purple-500/10 blur-3xl" />
+        </div>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+              Frequently Asked Questions
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 mt-2">Quick answers to common questions</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {[
+              { q: 'How do I join a club?', a: 'Browse categories, open a club, and tap Join. Your membership request will be sent to the club admins.', tag: 'Getting Started' },
+              { q: 'Can teachers manage multiple clubs?', a: 'Yes. Teachers can advise multiple clubs, manage events, memberships, and announcements in one place.', tag: 'Teachers' },
+              { q: 'Do you support event RSVPs and attendance?', a: 'Absolutely. Create events, collect RSVPs, set limits, and track attendance with ease.', tag: 'Events' },
+              { q: 'What about achievements and badges?', a: 'Students earn badges for participation, leadership, and milestones. Progress is visible on their profile.', tag: 'Achievements' }
+            ].map((item, idx) => (
+              <motion.div
+                key={idx}
+                className="rounded-2xl border bg-white/90 dark:bg-gray-800/90 backdrop-blur border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden"
+                whileHover={{ y: -2 }}
+              >
+                <details className="group" open={idx === 0}>
+                  <summary className="flex items-center justify-between px-5 py-4 cursor-pointer list-none select-none">
+                    <span className="flex items-center gap-3">
+                      <span className="inline-flex h-9 w-9 rounded-full bg-indigo-100 dark:bg-indigo-900/40 items-center justify-center">
+                        <User className="h-4 w-4 text-indigo-600" />
+                      </span>
+                      <span className="font-semibold text-gray-900 dark:text-white">{item.q}</span>
+                    </span>
+                    <span className="flex items-center gap-3">
+                      <span className="text-xs px-2 py-1 rounded-full bg-indigo-50 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-200 border border-indigo-100 dark:border-indigo-800">{item.tag}</span>
+                      <ChevronDown className="h-5 w-5 text-gray-500 transition-transform group-open:rotate-180" />
+                    </span>
+                  </summary>
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    transition={{ duration: 0.25 }}
+                    className="px-5 pb-5 border-t border-gray-100 dark:border-gray-700 bg-gradient-to-b from-white/70 to-white/40 dark:from-gray-800/70 dark:to-gray-800/40"
+                  >
+                    <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">{item.a}</p>
+                  </motion.div>
+                </details>
+              </motion.div>
+            ))}
           </div>
         </div>
       </motion.section>
