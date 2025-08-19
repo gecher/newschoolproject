@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Users, Calendar, TrendingUp, Shield,
+  Users, Calendar, Award, TrendingUp, Shield,
   BookOpen, MessageCircle, Star, ArrowRight,
   CheckCircle, Play, ChevronDown, Menu, X
 } from 'lucide-react';
@@ -11,7 +11,7 @@ interface LandingPageProps {
   onNavigate: (page: string) => void;
 }
 
-const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
+const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {  //Question
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeFeature, setActiveFeature] = useState(0);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -23,27 +23,27 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
   // Auto-play slides
   const slides = [
     {
-      image: "https://images.unsplash.com/photo-1523240798132-8757214e76ba?w=1200&h=600&fit=crop",
+      image: "https://i.imgur.com/NT3OQKz.jpeg",
       title: "Student Collaboration",
       subtitle: "Connect with peers and build lasting friendships"
     },
     {
-      image: "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=1200&h=600&fit=crop",
+      image: "https://i.imgur.com/ddR9wyS.jpeg",
       title: "Academic Excellence",
       subtitle: "Enhance your learning through extracurricular activities"
     },
     {
-      image: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=1200&h=600&fit=crop",
+      image: "https://i.imgur.com/8zj3BQd.jpeg",
       title: "Leadership Development",
       subtitle: "Develop essential skills for your future career"
     }
-  ];
+  ];https://i.imgur.com/NT3OQKz.jpeg
 
   // Auto-play slides effect
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 4000); // Change slide every 4 seconds
+    }, 3000); // Change slide every 3 seconds
 
     return () => clearInterval(interval);
   }, [slides.length]);
@@ -52,7 +52,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentCategory((prev) => (prev + 1) % clubCategories.length);
-    }, 5000); // Change category every 5 seconds
+    }, 3000); // Change category every 3 seconds
 
     return () => clearInterval(interval);
   }, []);
@@ -73,7 +73,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
       icon: Users,
       title: "Club Discovery & Management",
       description: "Find and join clubs that match your interests. Create, manage student clubs with ease. Track memberships and organize activities.",
-      color: "blue"
+      color: "Purple"
     },
     {
       icon: Calendar,
@@ -82,9 +82,15 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
       color: "green"
     },
     {
+      icon: Award,
+      title: "Achievement System",
+      description: "Earn badges and recognition for your contributions and participation in clubs.",
+      color: "yellow"
+    },
+    {
       icon: MessageCircle,
       title: "Communication Hub",
-      description: "Stay connected with announcements and real-time notifications.",
+      description: "Stay connected with announcements, forums, and real-time notifications.",
       color: "purple"
     }
   ];
@@ -278,7 +284,51 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
             </motion.div>
           </motion.div>
 
-          
+          {/* Hero Image */}
+          <motion.div
+            className="mt-16"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+          >
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-indigo-600/20 to-purple-600/20 rounded-2xl blur-3xl"></div>
+              <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <motion.div
+                    className="bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-6"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.6 }}
+                  >
+                    <Users className="h-8 w-8 text-blue-600 dark:text-blue-400 mb-4" />
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Club Discovery</h3>
+                    <p className="text-gray-600 dark:text-gray-400">Find and join clubs that match your interests</p>
+                  </motion.div>
+                  <motion.div
+                    className="bg-gradient-to-br from-green-50 to-emerald-100 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl p-6"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.7 }}
+                  >
+                    <Calendar className="h-8 w-8 text-green-600 dark:text-green-400 mb-4" />
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Event Management</h3>
+                    <p className="text-gray-600 dark:text-gray-400">Organize and attend exciting events</p>
+                  </motion.div>
+                  <motion.div
+                    className="bg-gradient-to-br from-purple-50 to-pink-100 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl p-6"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.8 }}
+                  >
+                    <Award className="h-8 w-8 text-purple-600 dark:text-purple-400 mb-4" />
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Achievement Tracking</h3>
+                    <p className="text-gray-600 dark:text-gray-400">Earn badges and track your progress</p>
+                  </motion.div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </motion.section>
 
@@ -307,7 +357,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
             </p>
           </motion.div>
 
-                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {features.map((feature, index) => (
               <motion.div
                 key={index}
@@ -534,7 +584,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <div className="flex items-center justify-center mb-4">
+            <div className="flex items-center juwstify-center mb-4">
               <div className="h-8 w-8 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center">
                 <Users className="h-5 w-5 text-white" />
               </div>
