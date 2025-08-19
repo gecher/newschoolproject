@@ -79,13 +79,13 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {  //Questio
       icon: Calendar,
       title: "Event Management & Organization",
       description: "Schedule events, manage RSVPs, and track attendance for all your club activities. Organize and attend exciting events.",
-      color: "green"
+      color: "purple"
     },
     {
       icon: Award,
       title: "Achievement System",
       description: "Earn badges and recognition for your contributions and participation in clubs.",
-      color: "yellow"
+      color: "purple"
     },
     {
       icon: MessageCircle,

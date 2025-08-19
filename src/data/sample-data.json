@@ -1043,18 +1043,18 @@
     {
       "id": 4,
       "name": "Community Service Club",
-      "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&h=600&fit=crop",
+      "image": "https://i.imgur.com/R5Qfl4j.jpeg",
       "description": "A club where students engage in service projects, help communities, and make a positive impact.",
       "clubs": [
         {
           "name": "Red Cross Club",
-          "image": "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=400&h=300&fit=crop",
+          "image": "https://i.imgur.com/iMTU6s3.jpeg",
           "members": 12,
           "description": "A club where students serve communities, promote health, and support those in need."
         },
         {
           "name": "Help the Community Club",
-          "image": "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400&h=300&fit=crop",
+          "image": "https://i.imgur.com/4xi6ZkO.jpeg",
           "members": 89,
           "description": "Students volunteering to support and uplift the community."
         }
@@ -1063,12 +1063,12 @@
     {
       "id": 5,
       "name": "Language Club",
-      "image": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&h=600&fit=crop",
+      "image": "https://i.imgur.com/EPZNDFC.jpeg",
       "description": "A place where students improve their communication skills",
       "clubs": [
         {
           "name": "English Language Club",
-          "image": "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=400&h=300&fit=crop",
+          "image": "https://i.imgur.com/TeMYpJK.jpeg",
           "members": 12,
           "description": "Master English, Speak Confidently, Shine Bright."
         },
@@ -1080,7 +1080,7 @@
         },
         {
           "name": "Afaan Orommo Language and Litrature Club",
-          "image": "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400&h=300&fit=crop",
+          "image": "https://i.imgur.com/xCpQypo.jpeg",
           "members": 89,
           "description": "Explore, Celebrate, and Express the Beauty of Afaan Oromo."
         }
