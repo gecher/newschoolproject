@@ -1,6 +1,5 @@
 {
-  "users": [
-    {
+  "users": [    {
       "id": "user-1",
       "fullName": "Dawit Mekonnen",
       "email": "dawit.mekonnen@school.edu",
@@ -11,22 +10,22 @@
       "coverPhoto": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&h=200&fit=crop",
       "bio": "School administrator passionate about student development and club management.",
       "isActive": true,
-      "createdAt": "2024-01-01T00:00:00Z",
-      "updatedAt": "2024-01-01T00:00:00Z"
+      "createdAt": "2025-08-16T22:55:38.897Z",
+      "updatedAt": "2025-08-16T22:55:38.897Z"
     },
     {
       "id": "user-2",
       "fullName": "Sara Gemechu",
       "email": "sara.gemechu@school.edu",
       "password": "sara123",
-      "role": "TEACHER",
+      "role": "STUDENT",
       "phone": "+251911234567",
       "profilePhoto": "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
       "coverPhoto": "https://images.unsplash.com/photo-1523240798139-8c4fc0f5c3a4?w=800&h=200&fit=crop",
-      "bio": "Science teacher and robotics club advisor. Love inspiring students to explore technology.",
+      "bio": "A science student passionate about drama and acting. Future actress. ",
       "isActive": true,
-      "createdAt": "2024-01-01T00:00:00Z",
-      "updatedAt": "2024-01-01T00:00:00Z"
+      "createdAt": "2025-08-16T22:55:38.897Z",
+      "updatedAt": "2025-08-16T22:55:38.897Z"
     },
     {
       "id": "user-3",
@@ -39,8 +38,8 @@
       "coverPhoto": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&h=200&fit=crop",
       "bio": "Senior student passionate about technology and robotics. President of the Tech Club.",
       "isActive": true,
-      "createdAt": "2024-01-01T00:00:00Z",
-      "updatedAt": "2024-01-01T00:00:00Z"
+      "createdAt": "2025-08-16T22:55:38.897Z",
+      "updatedAt": "2025-08-16T22:55:38.897Z"
     },
     {
       "id": "user-4",
@@ -53,8 +52,8 @@
       "coverPhoto": "https://images.unsplash.com/photo-1523240798139-8c4fc0f5c3a4?w=800&h=200&fit=crop",
       "bio": "Junior student with a love for art and creativity. Active member of the Art Club.",
       "isActive": true,
-      "createdAt": "2024-01-01T00:00:00Z",
-      "updatedAt": "2024-01-01T00:00:00Z"
+      "createdAt": "2025-08-16T22:55:38.897Z",
+      "updatedAt": "2025-08-16T22:55:38.897Z"
     },
     {
       "id": "user-5",
@@ -65,10 +64,10 @@
       "phone": "+251966193475",
       "profilePhoto": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
       "coverPhoto": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=200&fit=crop",
-      "bio": "Sophomore student interested in debate and public speaking. Member of the Debate Team.",
+      "bio": "Grade 11 student interested in debate and public speaking. Member of the Debate Team.",
       "isActive": true,
-      "createdAt": "2024-01-01T00:00:00Z",
-      "updatedAt": "2024-01-01T00:00:00Z"
+      "createdAt": "2025-08-16T22:55:38.897Z",
+      "updatedAt": "2025-08-16T22:55:38.897Z"
     },
     {
       "id": "user-6",
@@ -79,10 +78,10 @@
       "phone": "+251977652180",
       "profilePhoto": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
       "coverPhoto": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=200&fit=crop",
-      "bio": "Freshman student passionate about environmental science. Founder of the Eco Club.",
+      "bio": "Freshman student passionate about environmental science. Founder of the Community Service Club.",
       "isActive": true,
-      "createdAt": "2024-01-01T00:00:00Z",
-      "updatedAt": "2024-01-01T00:00:00Z"
+      "createdAt": "2025-08-16T22:55:38.897Z",
+      "updatedAt": "2025-08-16T22:55:38.897Z"
     },
     {
       "id": "user-7",
@@ -93,10 +92,10 @@
       "phone": "+251988041923",
       "profilePhoto": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
       "coverPhoto": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=200&fit=crop",
-      "bio": "Senior student and basketball team captain. Leading by example on and off the court.",
+      "bio": "Senior student and basketball team captain.",
       "isActive": true,
-      "createdAt": "2024-01-01T00:00:00Z",
-      "updatedAt": "2024-01-01T00:00:00Z"
+      "createdAt": "2025-08-16T22:55:38.897Z",
+      "updatedAt": "2025-08-16T22:55:38.897Z"
     },
     {
       "id": "user-8",
@@ -109,8 +108,8 @@
       "coverPhoto": "https://images.unsplash.com/photo-1523240798139-8c4fc0f5c3a4?w=800&h=200&fit=crop",
       "bio": "Junior student passionate about computer science and programming. Tech enthusiast.",
       "isActive": true,
-      "createdAt": "2024-01-01T00:00:00Z",
-      "updatedAt": "2024-01-01T00:00:00Z"
+      "createdAt": "2025-08-16T22:55:38.897Z",
+      "updatedAt": "2025-08-16T22:55:38.897Z"
     },
     {
       "id": "user-9",
@@ -121,10 +120,10 @@
       "phone": "+251923475619",
       "profilePhoto": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
       "coverPhoto": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=200&fit=crop",
-      "bio": "Sophomore student interested in music and performing arts. Guitar player.",
+      "bio": "Ambitious student interested in music and performing arts. Guitar player.",
       "isActive": true,
-      "createdAt": "2024-01-01T00:00:00Z",
-      "updatedAt": "2024-01-01T00:00:00Z"
+      "createdAt": "2025-08-16T22:55:38.897Z",
+      "updatedAt": "2025-08-16T22:55:38.897Z"
     },
     {
       "id": "user-10",
@@ -135,10 +134,10 @@
       "phone": "+251945693782",
       "profilePhoto": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
       "coverPhoto": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=200&fit=crop",
-      "bio": "Senior student passionate about journalism and writing. Editor of school newspaper.",
+      "bio": "Senior student passionate about language and literature. Editor of school newspaper.",
       "isActive": true,
-      "createdAt": "2024-01-01T00:00:00Z",
-      "updatedAt": "2024-01-01T00:00:00Z"
+      "createdAt": "2025-08-16T22:55:38.897Z",
+      "updatedAt": "2025-08-16T22:55:38.897Z"
     },
     {
       "id": "user-11",
@@ -151,8 +150,8 @@
       "coverPhoto": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=200&fit=crop",
       "bio": "Junior student interested in photography and visual arts. Creative mind.",
       "isActive": true,
-      "createdAt": "2024-01-01T00:00:00Z",
-      "updatedAt": "2024-01-01T00:00:00Z"
+      "createdAt": "2025-08-16T22:55:38.897Z",
+      "updatedAt": "2025-08-16T22:55:38.897Z"
     },
     {
       "id": "user-12",
@@ -163,26 +162,26 @@
       "phone": "+251978640251",
       "profilePhoto": "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
       "coverPhoto": "https://images.unsplash.com/photo-1523240798139-8c4fc0f5c3a4?w=800&h=200&fit=crop",
-      "bio": "Freshman student passionate about environmental activism and sustainability.",
+      "bio": "grade 9 student passionate about environmental activism and sustainability.",
       "isActive": true,
-      "createdAt": "2024-01-01T00:00:00Z",
-      "updatedAt": "2024-01-01T00:00:00Z"
+      "createdAt": "2025-08-16T22:55:38.897Z",
+      "updatedAt": "2025-08-16T22:55:38.897Z"
     },
     {
       "id": "user-13",
       "fullName": "Noah Aklilu",
       "email": "noah.aklilu@school.edu",
       "password": "noah123",
-      "role": "STUDENT",
+      "role": "TEACHER",
       "phone": "+251989705312",
       "profilePhoto": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
       "coverPhoto": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=200&fit=crop",
-      "bio": "Senior student and soccer team captain. Sports enthusiast and team leader.",
+      "bio": "Senior student and basketball captain. Sports enthusiast and team leader.",
       "isActive": true,
-      "createdAt": "2024-01-01T00:00:00Z",
-      "updatedAt": "2024-01-01T00:00:00Z"
+      "createdAt": "2025-08-16T22:55:38.897Z",
+      "updatedAt": "2025-08-16T22:55:38.897Z"
     },
-    { 
+    {
       "id": "user-14",
       "fullName": "Bezawit Adane",
       "email": "bezawit.adane@school.edu",
@@ -191,12 +190,12 @@
       "phone": "+251990812463",
       "profilePhoto": "",
       "coverPhoto": "",
-      "bio": "",
+      "bio": "Advisor in language club. Interested in debating and communicating with people.",
       "isActive": true,
       "createdAt": "2025-08-16T22:55:38.897Z",
       "updatedAt": "2025-08-16T22:55:38.897Z"
     },
-     {
+    {
       "id": "user-15",
       "fullName": "Alazar Abate",
       "email": "alazar.abate@gmail.com",
@@ -205,7 +204,7 @@
       "phone": "+251987520614",
       "profilePhoto": "",
       "coverPhoto": "",
-      "bio": "",
+      "bio": "Advisor of the book club. Passionate about reading historical books.",
       "isActive": true,
       "createdAt": "2025-08-17T06:25:07.867Z",
       "updatedAt": "2025-08-17T06:25:07.867Z"
@@ -219,8 +218,8 @@
       "phone": "+251998631027",
       "profilePhoto": "",
       "coverPhoto": "",
-      "bio": "",
-      "isActive": true,      
+      "bio": "A school human right advocate. A president of the Gender club.",
+      "isActive": true,
       "createdAt": "2025-08-17T06:26:35.537Z",
       "updatedAt": "2025-08-17T06:26:35.537Z"
     },
@@ -233,142 +232,12 @@
       "phone": "+251998731640",
       "profilePhoto": "",
       "coverPhoto": "",
-      "bio": "",
+      "bio": "Passionate about helping the community in providing health service.",
       "isActive": true,
       "createdAt": "2025-08-17T06:30:46.639Z",
       "updatedAt": "2025-08-17T06:30:46.639Z"
-    },
-    {
-      "id": "user-18",
-      "fullName": "Hassen Jemal",
-      "email": "hassen.jemal@gmail.com",
-      "password": "hassen123",
-      "role": "TEACHER",
-      "phone": "+251910823475",
-      "profilePhoto": "",
-      "coverPhoto": "",
-      "bio": "",
-      "isActive": true,      
-      "createdAt": "2025-08-17T06:32:07.406Z",
-      "updatedAt": "2025-08-17T06:32:07.406Z"
-    },
-    {
-      "id": "user-19",
-      "fullName": "Legesse Nebyu",
-      "email": "legesse.nebyu@gmail.com",
-      "password": "legesse123",
-      "role": "TEACHER",
-      "phone": "+251943705812",
-      "profilePhoto": "",
-      "coverPhoto": "",
-      "bio": "",
-      "isActive": true,      
-      "createdAt": "2025-08-17T06:36:38.831Z",
-      "updatedAt": "2025-08-17T06:36:38.831Z"
-    },
-    {
-      "id": "user-20",
-      "fullName": "Tamrat Tadele",
-      "email": "tamrat.tadele@gmail.com",
-      "password": "tamrat123",
-      "role": "TEACHER",
-      "phone": "+251994572018",
-      "profilePhoto": "",
-      "coverPhoto": "",
-      "bio": "",
-      "isActive": true,      
-      "createdAt": "2025-08-17T06:37:48.967Z",
-      "updatedAt": "2025-08-17T06:37:48.967Z"
-    },
-    {
-      "id": "user-21",
-      "fullName": "Kidus Mulgeta",
-      "email": "kidus.mulgeta@school.edu",
-      "password": "kidus123",
-      "role": "STUDENT",
-      "phone": "+251 96 789 0123",
-      "profilePhoto": "",
-      "coverPhoto": "",
-      "bio": "",
-      "isActive": true,      
-      "createdAt": "2025-08-17T19:23:10.439Z",
-      "updatedAt": "2025-08-17T19:23:10.439Z"
-    },
-    {
-      "id": "user-22",
-      "fullName": "Hanna Bahiru",
-      "email": "hanna.bahiru@school.edu",
-      "password": "hanna123",
-      "role": "STUDENT",
-      "phone": "+251 94 567 8901",
-      "profilePhoto": "",
-      "coverPhoto": "",
-      "bio": "",
-      "isActive": true,      
-      "createdAt": "2025-08-17T19:24:50.535Z",
-      "updatedAt": "2025-08-17T19:24:50.535Z"
-    },
-    {
-      "id": "user-23",
-      "fullName": "Bisrat Zerihun",
-      "email": "bisrat.zerihun@school.edu",
-      "password": "bisrat123",
-      "role": "STUDENT",
-      "phone": "+251 91 234 5678",
-      "profilePhoto": "",
-      "coverPhoto": "",
-      "bio": "",
-      "isActive": true,      
-      "createdAt": "2025-08-17T19:29:27.521Z",
-      "updatedAt": "2025-08-17T19:29:27.521Z"
-    },
-    {
-      "id": "user-24",
-      "fullName": "Mahlet Shimelis",
-      "email": "mahilet.shimelis@school.edu",
-      "password": "mahilet123",
-      "role": "STUDENT",
-      "phone": "+251 92 456 7890",
-      "profilePhoto": "",
-      "coverPhoto": "",
-      "bio": "",
-      "isActive": true,      
-      "createdAt": "2025-08-17T19:31:20.602Z",
-      "updatedAt": "2025-08-17T19:31:20.602Z"
-    },
-    {
-      "id": "user-25",
-      "fullName": "Mahider Samuel",
-      "email": "mahider.samuel@school.edu",
-      "password": "mahider123",
-      "role": "TEACHER",
-      "phone": "+251 94 678 9012",
-      "profilePhoto": "",
-      "coverPhoto": "",
-      "bio": "",
-      "isActive": true,
-      
-      "createdAt": "2025-08-17T19:33:03.235Z",
-      "updatedAt": "2025-08-17T19:33:03.235Z"
-    },
-    {
-      "id": "user-26",
-      "fullName": "Seyoum Seifu",
-      "email": "seyoum.seifu@school.edu",
-      "password": "seyoum123",
-      "role": "TEACHER",
-      "phone": "+251 92 345 6789",
-      "profilePhoto": "",
-      "coverPhoto": "",
-      "bio": "",
-      "isActive": true,
-      
-      "createdAt": "2025-08-17T19:44:27.902Z",
-      "updatedAt": "2025-08-17T19:44:27.902Z"
     }
-  ],
-
-
+    ],
   "clubs": [
     {
       "id": "club-1",
@@ -741,11 +610,11 @@
       "title": "Programming Seminar",
       "description": "Get ready to level up your coding skills! 🎉 Join our Programming Seminar designed for high school students—learn cool coding tricks, explore real-world applications, and discover how fun programming can be!",
       "location": "ICT Lab 101",
-      "date": "2024-02-15T14:00:00Z",
+      "date": "2025-11-15T00:00:00Z",
       "imageUrl": "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=600&h=300&fit=crop",
       "rsvpLimit": 25,
-      "createdAt": "2024-01-15T00:00:00Z",
-      "updatedAt": "2024-01-15T00:00:00Z"
+      "createdAt": "2025-11-15T00:00:00Z",
+      "updatedAt": "2025-11-15T00:00:00Z"
     },
     {
       "id": "event-2",
@@ -753,12 +622,12 @@
       "title": "Science Museum Tour",
       "description": "Step into the world of discovery! Join our Science Museum Tour and explore amazing exhibits, hands-on experiments, and the wonders of science—all in one unforgettable trip.",
       "location": "Science Museum",
-      "date": "2024-02-20T18:00:00Z",
+      "date": "2025-10-20T00:00:00Z",
       "imageUrl": "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=600&h=300&fit=crop",
       
       "rsvpLimit": 50,
-      "createdAt": "2024-01-20T00:00:00Z",
-      "updatedAt": "2024-01-20T00:00:00Z"
+      "createdAt": "2025-10-20T00:00:00Z",
+      "updatedAt": "2025-10-20T00:00:00Z"
     },
     {
       "id": "event-3",
@@ -766,11 +635,11 @@
       "title": "Student Parliament Selection",
       "description": "Your voice matters—be part of the Student Parliament and shape our school’s future!",
       "location": "Auditorium",
-      "date": "2024-02-25T09:00:00Z",
+      "date": "2025-10-07T00:00:00Z",
       "imageUrl": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&h=300&fit=crop",
       "rsvpLimit": 30,
-      "createdAt": "2024-01-25T00:00:00Z",
-      "updatedAt": "2024-01-25T00:00:00Z"
+      "createdAt": "2025-10-07T00:00:00Z",
+      "updatedAt": "2025-10-07T00:00:00Z"
     },
     {
       "id": "event-4",
@@ -778,11 +647,11 @@
       "title": "Football Match",
       "description": "Cheer loud, play hard! Don’t miss the thrilling football match full of school spirit and energy!",
       "location": "In the School Compound",
-      "date": "2024-03-01T10:00:00Z",
+      "date": "2025-11-15T14:00:00Z",
       "imageUrl": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&h=300&fit=crop",
       "rsvpLimit": 40,
-      "createdAt": "2024-01-30T00:00:00Z",
-      "updatedAt": "2024-01-30T00:00:00Z"
+      "createdAt": "2025-11-15T14:00:00Z",
+      "updatedAt": "2025-11-15T14:00:00Z"
     },
     {
       "id": "event-5",
@@ -790,11 +659,11 @@
       "title": "Basketball Championship",
       "description": "Annual basketball championship. Teams from all grades compete for the trophy.",
       "location": "School Gymnasium",
-      "date": "2024-03-05T16:00:00Z",
+      "date": "2025-11-20T00:00:00Z",
       "imageUrl": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=300&fit=crop",
       "rsvpLimit": 100,
-      "createdAt": "2024-02-05T00:00:00Z",
-      "updatedAt": "2024-02-05T00:00:00Z"
+      "createdAt": "2025-11-20T00:00:00Z",
+      "updatedAt": "2025-11-20T00:00:00Z"
     },
     {
       "id": "event-6",
@@ -802,12 +671,12 @@
       "title": "Art Exhibition Registration Open",
       "description": "Showcase your creative talents in our annual art exhibition. All art forms welcome!",
       "location": "Art Gallery",
-      "date": "2024-02-20T18:00:00Z",
+      "date": "2025-01-20T00:00:00Z",
       "imageUrl": "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=600&h=300&fit=crop",
       
       "rsvpLimit": 50,
-      "createdAt": "2024-01-20T00:00:00Z",
-      "updatedAt": "2024-01-20T00:00:00Z"
+      "createdAt": "2025-01-20T00:00:00Z",
+      "updatedAt": "2025-01-20T00:00:00Z"
     }
   ],
   "announcements": [
@@ -817,76 +686,75 @@
       "content": "Welcome back everyone! We're excited to start another amazing year filled with learning, growth, and fun activities. Check out our club fair this Friday to discover new opportunities.",
       "target": "GLOBAL",
       "createdBy": "user-1",
-      "createdAt": "2024-01-01T08:00:00Z",
-      "updatedAt": "2024-01-01T08:00:00Z"
+      "createdAt": "2025-09-14T08:00:00Z",
+      "updatedAt": "2025-09-14T08:00:00Z"
     },
-    {"id": "announcement-2",
-      "title": "Celebrating Nations and Nationalites Day",
-      "content": "We’re excited to celebrate Nations and Nationalities Day! This is a day to honor the rich cultures, languages, and traditions of all Ethiopian nations and nationalities.",
-      "target": "GLOBAL",
-      "createdBy": "user-1",
-      "createdAt": "2024-01-01T08:00:00Z",
-      "updatedAt": "2024-01-01T08:00:00Z"
+    {
+      "id": "announcement-2",
+      "title": "Blood Donating Day",
+      "content": "Our school is organizing a Blood Donation Drive to help save lives. If you are eligible, we encourage you to participate and be a hero to someone in need. Even if you can’t donate, you can still support by spreading the word and volunteering at the event.",
+      "clubId": "club-5",
+      "createdBy": "user-3",
+      "createdAt": "2025-09-28T14:00:00Z",
+      "updatedAt": "2025-09-28T14:00:00Z"
     },
     {"id": "announcement-3",
       "title": "Meeting with Parents",
       "content": "We invite you to attend a Parent-Teacher Meeting in the school hall. This is a great opportunity to discuss your child’s progress, address any concerns, and strengthen our school-community partnership.",
       "target": "GLOBAL",
       "createdBy": "user-1",
-      "createdAt": "2024-01-01T08:00:00Z",
-      "updatedAt": "2024-01-01T08:00:00Z"
+      "createdAt": "2025-10-01T08:00:00Z",
+      "updatedAt": "2025-10-01T08:00:00Z"
     },
     {
       "id": "announcement-4",
-      "title": "Coding Course This Month",
-      "content": "Join us for an exciting coding course happening this month! 🚀Learn the basics of programming, sharpen your coding skills, and work on real projects with peers. Open to all students—beginners and advanced learners welcome!",
-      "target": "CLUB",
-      "clubId": "club-1",
-      "createdBy": "user-2",
-      "createdAt": "2024-01-10T10:00:00Z",
-      "updatedAt": "2024-01-10T10:00:00Z"
-    },
-    {
-      "id": "announcement-5",
       "title": "Student Parliament Selection",
       "content": "Your voice matters—be part of the Student Parliament and shape our school’s future!",
       "target": "CLUB",
       "clubId": "club-10",
       "createdBy": "user-3",
-      "createdAt": "2024-01-15T14:00:00Z",
-      "updatedAt": "2024-01-15T14:00:00Z"
+      "createdAt": "2025-10-07T14:00:00Z",
+      "updatedAt": "2025-10-07T14:00:00Z"
+    },
+    {"id": "announcement-5",
+      "title": "Celebrating Nations and Nationalites Day",
+      "content": "We’re excited to celebrate Nations and Nationalities Day! This is a day to honor the rich cultures, languages, and traditions of all Ethiopian nations and nationalities.",
+      "target": "GLOBAL",
+      "createdBy": "user-1",
+      "createdAt": "2025-10-29T08:00:00Z",
+      "updatedAt": "2025-10-29T08:00:00Z"
     },
     {
       "id": "announcement-6",
+      "title": "Coding Course This Month",
+      "content": "Join us for an exciting coding course happening this month! 🚀Learn the basics of programming, sharpen your coding skills, and work on real projects with peers. Open to all students—beginners and advanced learners welcome!",
+      "target": "CLUB",
+      "clubId": "club-1",
+      "createdBy": "user-2",
+      "createdAt": "2025-11-10T10:00:00Z",
+      "updatedAt": "2025-11-10T10:00:00Z"
+    },
+    {
+      "id": "announcement-7",
       "title": "Football Match",
       "content": "Get ready, students! An exciting football match will be held this week. Come cheer for your classmates and enjoy the spirit of teamwork and sportsmanship! 🎉",
       "target": "CLUB",
       "clubId": "club-4",
       "createdBy": "user-4",
-      "createdAt": "2024-01-15T14:00:00Z",
-      "updatedAt": "2024-01-15T14:00:00Z"
+      "createdAt": "2025-11-15T14:00:00Z",
+      "updatedAt": "2025-11-15T14:00:00Z"
     },
     {
-      "id": "announcement-7",
+      "id": "announcement-8",
       "title": "Art Exhibition Registration Open",
       "content": "Calling all creative minds! Registration for this year’s Art Exhibition is now open. Showcase your talent in painting, drawing, or crafts and let your artwork shine. 🖌️✨",
       "target": "CLUB",
       "clubId": "club-5",
       "createdBy": "user-3",
-      "createdAt": "2024-01-15T14:00:00Z",
-      "updatedAt": "2024-01-15T14:00:00Z"
-    },
-    {
-      "id": "announcement-8",
-      "title": "Blood Donating Day",
-      "content": "Our school is organizing a Blood Donation Drive to help save lives. If you are eligible, we encourage you to participate and be a hero to someone in need. Even if you can’t donate, you can still support by spreading the word and volunteering at the event.",
-      "clubId": "club-5",
-      "createdBy": "user-3",
-      "createdAt": "2024-01-15T14:00:00Z",
-      "updatedAt": "2024-01-15T14:00:00Z"
+      "createdAt": "2025-12-08T14:00:00Z",
+      "updatedAt": "2025-12-08T14:00:00Z"
     }
   ],
-
   "notifications": [
     {
       "id": "notification-1",
