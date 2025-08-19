@@ -10,8 +10,8 @@
       "coverPhoto": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&h=200&fit=crop",
       "bio": "School administrator passionate about student development and club management.",
       "isActive": true,
-      "createdAt": "2024-01-01T00:00:00Z",
-      "updatedAt": "2024-01-01T00:00:00Z"
+      "createdAt": "2025-08-16T22:55:38.897Z",
+      "updatedAt": "2025-08-16T22:55:38.897Z"
     },
     {
       "id": "user-2",
@@ -22,10 +22,10 @@
       "phone": "+251911234567",
       "profilePhoto": "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
       "coverPhoto": "https://images.unsplash.com/photo-1523240798139-8c4fc0f5c3a4?w=800&h=200&fit=crop",
-      "bio": "Science teacher and robotics club advisor. Love inspiring students to explore technology.",
+      "bio": "A science student passionate about drama and acting. Future actress. ",
       "isActive": true,
-      "createdAt": "2024-01-01T00:00:00Z",
-      "updatedAt": "2024-01-01T00:00:00Z"
+      "createdAt": "2025-08-16T22:55:38.897Z",
+      "updatedAt": "2025-08-16T22:55:38.897Z"
     },
     {
       "id": "user-3",
@@ -38,8 +38,8 @@
       "coverPhoto": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&h=200&fit=crop",
       "bio": "Senior student passionate about technology and robotics. President of the Tech Club.",
       "isActive": true,
-      "createdAt": "2024-01-01T00:00:00Z",
-      "updatedAt": "2024-01-01T00:00:00Z"
+      "createdAt": "2025-08-16T22:55:38.897Z",
+      "updatedAt": "2025-08-16T22:55:38.897Z"
     },
     {
       "id": "user-4",
@@ -52,8 +52,8 @@
       "coverPhoto": "https://images.unsplash.com/photo-1523240798139-8c4fc0f5c3a4?w=800&h=200&fit=crop",
       "bio": "Junior student with a love for art and creativity. Active member of the Art Club.",
       "isActive": true,
-      "createdAt": "2024-01-01T00:00:00Z",
-      "updatedAt": "2024-01-01T00:00:00Z"
+      "createdAt": "2025-08-16T22:55:38.897Z",
+      "updatedAt": "2025-08-16T22:55:38.897Z"
     },
     {
       "id": "user-5",
@@ -64,10 +64,10 @@
       "phone": "+251966193475",
       "profilePhoto": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
       "coverPhoto": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=200&fit=crop",
-      "bio": "Sophomore student interested in debate and public speaking. Member of the Debate Team.",
+      "bio": "Grade 11 student interested in debate and public speaking. Member of the Debate Team.",
       "isActive": true,
-      "createdAt": "2024-01-01T00:00:00Z",
-      "updatedAt": "2024-01-01T00:00:00Z"
+      "createdAt": "2025-08-16T22:55:38.897Z",
+      "updatedAt": "2025-08-16T22:55:38.897Z"
     },
     {
       "id": "user-6",
@@ -78,10 +78,10 @@
       "phone": "+251977652180",
       "profilePhoto": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
       "coverPhoto": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=200&fit=crop",
-      "bio": "Freshman student passionate about environmental science. Founder of the Eco Club.",
+      "bio": "Freshman student passionate about environmental science. Founder of the Community Service Club.",
       "isActive": true,
-      "createdAt": "2024-01-01T00:00:00Z",
-      "updatedAt": "2024-01-01T00:00:00Z"
+      "createdAt": "2025-08-16T22:55:38.897Z",
+      "updatedAt": "2025-08-16T22:55:38.897Z"
     },
     {
       "id": "user-7",
@@ -92,10 +92,10 @@
       "phone": "+251988041923",
       "profilePhoto": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
       "coverPhoto": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=200&fit=crop",
-      "bio": "Senior student and basketball team captain. Leading by example on and off the court.",
+      "bio": "Senior student and basketball team captain.",
       "isActive": true,
-      "createdAt": "2024-01-01T00:00:00Z",
-      "updatedAt": "2024-01-01T00:00:00Z"
+      "createdAt": "2025-08-16T22:55:38.897Z",
+      "updatedAt": "2025-08-16T22:55:38.897Z"
     },
     {
       "id": "user-8",
@@ -108,8 +108,8 @@
       "coverPhoto": "https://images.unsplash.com/photo-1523240798139-8c4fc0f5c3a4?w=800&h=200&fit=crop",
       "bio": "Junior student passionate about computer science and programming. Tech enthusiast.",
       "isActive": true,
-      "createdAt": "2024-01-01T00:00:00Z",
-      "updatedAt": "2024-01-01T00:00:00Z"
+      "createdAt": "2025-08-16T22:55:38.897Z",
+      "updatedAt": "2025-08-16T22:55:38.897Z"
     },
     {
       "id": "user-9",
@@ -120,10 +120,10 @@
       "phone": "+251923475619",
       "profilePhoto": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
       "coverPhoto": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=200&fit=crop",
-      "bio": "Sophomore student interested in music and performing arts. Guitar player.",
+      "bio": "Ambitious student interested in music and performing arts. Guitar player.",
       "isActive": true,
-      "createdAt": "2024-01-01T00:00:00Z",
-      "updatedAt": "2024-01-01T00:00:00Z"
+      "createdAt": "2025-08-16T22:55:38.897Z",
+      "updatedAt": "2025-08-16T22:55:38.897Z"
     },
     {
       "id": "user-10",
@@ -134,10 +134,10 @@
       "phone": "+251945693782",
       "profilePhoto": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
       "coverPhoto": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=200&fit=crop",
-      "bio": "Senior student passionate about journalism and writing. Editor of school newspaper.",
+      "bio": "Senior student passionate about language and literature. Editor of school newspaper.",
       "isActive": true,
-      "createdAt": "2024-01-01T00:00:00Z",
-      "updatedAt": "2024-01-01T00:00:00Z"
+      "createdAt": "2025-08-16T22:55:38.897Z",
+      "updatedAt": "2025-08-16T22:55:38.897Z"
     },
     {
       "id": "user-11",
@@ -150,8 +150,8 @@
       "coverPhoto": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=200&fit=crop",
       "bio": "Junior student interested in photography and visual arts. Creative mind.",
       "isActive": true,
-      "createdAt": "2024-01-01T00:00:00Z",
-      "updatedAt": "2024-01-01T00:00:00Z"
+      "createdAt": "2025-08-16T22:55:38.897Z",
+      "updatedAt": "2025-08-16T22:55:38.897Z"
     },
     {
       "id": "user-12",
@@ -162,10 +162,10 @@
       "phone": "+251978640251",
       "profilePhoto": "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
       "coverPhoto": "https://images.unsplash.com/photo-1523240798139-8c4fc0f5c3a4?w=800&h=200&fit=crop",
-      "bio": "Freshman student passionate about environmental activism and sustainability.",
+      "bio": "grade 9 student passionate about environmental activism and sustainability.",
       "isActive": true,
-      "createdAt": "2024-01-01T00:00:00Z",
-      "updatedAt": "2024-01-01T00:00:00Z"
+      "createdAt": "2025-08-16T22:55:38.897Z",
+      "updatedAt": "2025-08-16T22:55:38.897Z"
     },
     {
       "id": "user-13",
@@ -176,10 +176,10 @@
       "phone": "+251989705312",
       "profilePhoto": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
       "coverPhoto": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=200&fit=crop",
-      "bio": "Senior student and soccer team captain. Sports enthusiast and team leader.",
+      "bio": "Senior student and basketball captain. Sports enthusiast and team leader.",
       "isActive": true,
-      "createdAt": "2024-01-01T00:00:00Z",
-      "updatedAt": "2024-01-01T00:00:00Z"
+      "createdAt": "2025-08-16T22:55:38.897Z",
+      "updatedAt": "2025-08-16T22:55:38.897Z"
     },
     {
       "id": "user-14",
@@ -190,7 +190,7 @@
       "phone": "+251990812463",
       "profilePhoto": "",
       "coverPhoto": "",
-      "bio": "",
+      "bio": "Advisor in language club. Interested in debating and communicating with people.",
       "isActive": true,
       "createdAt": "2025-08-16T22:55:38.897Z",
       "updatedAt": "2025-08-16T22:55:38.897Z"
@@ -204,7 +204,7 @@
       "phone": "+251987520614",
       "profilePhoto": "",
       "coverPhoto": "",
-      "bio": "",
+      "bio": "Advisor of the book club. Passionate about reading historical books.",
       "isActive": true,
       "createdAt": "2025-08-17T06:25:07.867Z",
       "updatedAt": "2025-08-17T06:25:07.867Z"
@@ -218,7 +218,7 @@
       "phone": "+251998631027",
       "profilePhoto": "",
       "coverPhoto": "",
-      "bio": "",
+      "bio": "A school human right advocate. A president of the Gender club.",
       "isActive": true,
       "createdAt": "2025-08-17T06:26:35.537Z",
       "updatedAt": "2025-08-17T06:26:35.537Z"
@@ -232,7 +232,7 @@
       "phone": "+251998731640",
       "profilePhoto": "",
       "coverPhoto": "",
-      "bio": "",
+      "bio": "Passionate about helping the community in providing health service.",
       "isActive": true,
       "createdAt": "2025-08-17T06:30:46.639Z",
       "updatedAt": "2025-08-17T06:30:46.639Z"
