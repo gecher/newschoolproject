@@ -32,7 +32,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {  //Questio
       subtitle: "Enhance your learning through extracurricular activities"
     },
     {
-      image: "https://i.imgur.com/8zj3BQd.jpeg",
+      image: "https://johnclements.com/wp-content/uploads/2023/08/LEADERSHIP.png",
       title: "Leadership Development",
       subtitle: "Develop essential skills for your future career"
     }
