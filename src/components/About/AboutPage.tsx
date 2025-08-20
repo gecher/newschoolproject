@@ -8,31 +8,31 @@ interface AboutPageProps {
 
 const team = [
   {
-    name: 'Selamawit Getachew',
-    role: 'Frontend Engineer',
-    image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=300&fit=crop&crop=face'
+    name: 'Daniya Usman',
+    role: 'Backend Developer',
+    image: 'https://i.imgur.com/HMasRG6.jpeg'
   },
   {
-    name: 'Alemayehu Mulatu',
-    role: 'Full‑Stack Engineer',
-    image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&h=300&fit=crop&crop=face'
+    name: 'Elpahreth Isaac',
+    role: 'Project Manager',
+    image: 'https://i.imgur.com/rhVuUV2.jpeg'
   },
   {
-    name: 'Sara Gemechu',
-    role: 'Product Designer',
-    image: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300&h=300&fit=crop&crop=face'
+    name: 'Kalkidan Addis',
+    role: 'UI and UX designer',
+    image: 'https://i.imgur.com/ibvN5w3.jpeg'
   },
   {
-    name: 'Dawit Mekonnen',
-    role: 'Mobile Engineer',
-    image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&h=300&fit=crop&crop=face'
+    name: 'Hidasie Zemenu',
+    role: 'Frontend Developer',
+    image: 'https://i.imgur.com/BkriFhj.jpeg'
   }
 ];
 
 const advisor = {
-  name: 'Dr. Tesfaye Bekele',
+  name: 'Getacher Ashebir',
   role: 'Project Advisor',
-  image: 'https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=300&h=300&fit=crop&crop=face'
+  image: 'https://i.imgur.com/7JZ32dA.jpeg'
 };
 
 const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
