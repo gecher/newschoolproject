@@ -859,7 +859,7 @@
     {
       "id": 2,
       "name": "Arts & Culture",
-      "image": "https://i.imgur.com/jgDEyF0.jpeg",
+      "image": "https://imgur.com/3EfQCIu.jpeg",
       "description": "Creative expression through various art forms",
       "clubs": [
         {
@@ -896,7 +896,7 @@
         },
         {
           "name": "Basketball Team",
-          "image": "https://i.imgur.com/8n2xcTE.jpeg",
+          "image": "https://i.imgur.com/IiWdLNQ.jpeg",
           "members": 67,
           "description": "Competitive basketball and training"
         },
@@ -911,7 +911,7 @@
     {
       "id": 4,
       "name": "Community Service Club",
-      "image": "https://i.imgur.com/FYSkS9I.jpeg",
+      "image": "https://i.imgur.com/izyeuDX.jpeg",
       "description": "A club where students engage in service projects, help communities, and make a positive impact.",
       "clubs": [
         {
