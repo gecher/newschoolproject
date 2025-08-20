@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   Users, Calendar,
   MessageCircle, ArrowRight,
-  ChevronDown, Menu, X, User, Star,
+  ChevronDown, User, Star,
   MapPin, Clock, Phone
 } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -12,8 +12,7 @@ interface LandingPageProps {
   onNavigate: (page: string) => void;
 }
 
-const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {  //Question
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [currentCategory, setCurrentCategory] = useState(0);
   const [currentClub, setCurrentClub] = useState(0);
@@ -106,112 +105,11 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {  //Questio
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-      {/* Navigation */}
-      <motion.nav
-        className="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md z-50 border-b border-gray-200 dark:border-gray-700"
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <div className="flex items-center">
-                  <div className="h-8 w-8 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center">
-                    <Users className="h-5 w-5 text-white" />
-                  </div>
-                  <span className="ml-2 text-xl font-bold text-gray-900 dark:text-white">SchoolClubs</span>
-                </div>
-              </div>
-            </div>
-            
 
-            <div className="hidden md:block">
-              <div className="flex items-center gap-3">
-
-                <motion.button
-                  onClick={() => onNavigate('contact')}
-                  className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all duration-300"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Contact Us
-                </motion.button>
-                <motion.button
-                  onClick={() => onNavigate('about')}
-                  className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all duration-300"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  About Us
-                </motion.button>
-                <motion.button
-                  onClick={() => onNavigate('login')}
-                  className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all duration-300"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Get Started
-                </motion.button>
-              </div>
-            </div>
-
-            <div className="md:hidden">
-              <motion.button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400"
-                whileHover={{ scale: 1.1, transition: { duration: 0.2 } }}
-                whileTap={{ scale: 0.9 }}
-              >
-                {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-              </motion.button>
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile menu */}
-        <motion.div
-          initial={false}
-          animate={{ height: isMenuOpen ? "auto" : 0 }}
-          transition={{ duration: 0.3 }}
-          className="overflow-hidden"
-        >
-                     {isMenuOpen && (
-             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
-               
-               <motion.button
-                 onClick={() => onNavigate('contact')}
-                 className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all duration-300"
-                 whileHover={{ scale: 1.02 }}
-                 whileTap={{ scale: 0.98 }}
-               >
-                 Contact Us
-               </motion.button>
-               <motion.button
-                 onClick={() => onNavigate('about')}
-                 className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all duration-300"
-                 whileHover={{ scale: 1.02 }}
-                 whileTap={{ scale: 0.98 }}
-               >
-                 About Us
-               </motion.button>
-               <motion.button
-                onClick={() => onNavigate('login')}
-                className="w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all duration-300"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                Get Started
-              </motion.button>
-            </div>
-          )}
-        </motion.div>
-      </motion.nav>
 
       {/* Hero Section with Auto-play Slides */}
       <motion.section
-        className="pt-20 pb-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
+         className="pt-8 pb-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -296,7 +194,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {  //Questio
               transition={{ duration: 0.5, delay: 0.2 }}
             >
               Transform Your
-              <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent"> School Clubs</span>
+                              <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent"> The Student Club</span>
             </motion.h1>
             <motion.p
               className="text-xl md:text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4"
@@ -846,12 +744,12 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {  //Questio
               <div className="h-8 w-8 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center">
                 <Users className="h-5 w-5 text-white" />
               </div>
-              <span className="ml-2 text-xl font-bold">SchoolClubs</span>
+                             <span className="ml-2 text-xl font-bold">The Student Club</span>
             </div>
             <p className="text-gray-400 mb-4">
               Empowering students to create, connect, and grow through meaningful club experiences.
             </p>
-            <p className="text-gray-500">&copy; 2024 SchoolClubs. All rights reserved.</p>
+                         <p className="text-gray-500">&copy; 2024 The Student Club. All rights reserved.</p>
           </motion.div>
         </div>
       </motion.footer>

@@ -55,7 +55,7 @@ const LoginForm: React.FC = () => {
             Welcome to ClubHub
           </h2>
           <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-            Sign in to manage your school clubs and activities
+            Sign in to manage your student clubs and activities
           </p>
         </div>
 

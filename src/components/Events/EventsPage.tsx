@@ -150,7 +150,7 @@ const EventsPage: React.FC<EventsPageProps> = ({ onNavigate: _onNavigate }) => {
         <div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Events</h1>
           <p className="mt-2 text-gray-600 dark:text-gray-400">
-            Discover and join exciting events from your school clubs
+            Discover and join exciting events from your student clubs
           </p>
         </div>
         {canCreateEvent() && (
