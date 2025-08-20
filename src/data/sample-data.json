@@ -870,7 +870,7 @@
         },
         {
           "name": "Drama Club",
-          "image": "https://i.imgur.com/DK7OmNc.jpeg",
+          "image": "https://i.imgur.com/kSeYUbE.jpeg",
           "members": 52,
           "description": "Theater performances and acting workshops"
         },
@@ -989,7 +989,7 @@
     {
       "id": 7,
       "name": "Other Clubs",
-      "image": "https://i.imgur.com/iLO430o.jpeg",
+      "image": "https://i.imgur.com/1nYHlaP.jpeg",
       "description": "Additonal Clubs as Extracurricular Activities.",
       "clubs": [
         {
