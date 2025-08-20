@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import {
   Users, Calendar,
   MessageCircle, ArrowRight,
-  ChevronDown, Menu, X, User, Star
+  ChevronDown, Menu, X, User, Star,
+  MapPin, Clock, Phone
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import sampleData from '../../data/sample-data.json';
@@ -128,16 +129,27 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {  //Questio
 
             <div className="hidden md:block">
               <div className="flex items-center gap-3">
-                <button
-                  onClick={() => onNavigate('about')}
-                  className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+
+                <motion.button
+                  onClick={() => onNavigate('contact')}
+                  className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all duration-300"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  About
-                </button>
+                  Contact Us
+                </motion.button>
+                <motion.button
+                  onClick={() => onNavigate('about')}
+                  className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all duration-300"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  About Us
+                </motion.button>
                 <motion.button
                   onClick={() => onNavigate('login')}
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-                  whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
+                  className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all duration-300"
+                  whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
                   Get Started
@@ -167,16 +179,27 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {  //Questio
         >
                      {isMenuOpen && (
              <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
-               <button
-                 onClick={() => onNavigate('about')}
-                 className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400"
+               
+               <motion.button
+                 onClick={() => onNavigate('contact')}
+                 className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all duration-300"
+                 whileHover={{ scale: 1.02 }}
+                 whileTap={{ scale: 0.98 }}
                >
-                 About
-               </button>
+                 Contact Us
+               </motion.button>
+               <motion.button
+                 onClick={() => onNavigate('about')}
+                 className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all duration-300"
+                 whileHover={{ scale: 1.02 }}
+                 whileTap={{ scale: 0.98 }}
+               >
+                 About Us
+               </motion.button>
                <motion.button
                 onClick={() => onNavigate('login')}
-                className="w-full text-left bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded-md text-base font-medium transition-colors"
-                whileHover={{ backgroundColor: "#4f46e5", transition: { duration: 0.2 } }}
+                className="w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all duration-300"
+                whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
                 Get Started
@@ -299,7 +322,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {  //Questio
             >
               <motion.button
                 onClick={() => onNavigate('login')}
-                className="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors flex items-center justify-center"
+                className="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-all duration-300 flex items-center justify-center"
+                whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
               >
                 Start Your Journey
@@ -320,21 +344,33 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {  //Questio
               <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {/* Feature cards */}
-                  <div className="bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-5">
+                  <motion.div 
+                    className="bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-5"
+                    whileHover={{ y: -3, scale: 1.02 }}
+                    transition={{ duration: 0.2 }}
+                  >
                     <Users className="h-6 w-6 text-blue-600 dark:text-blue-400 mb-3" />
                     <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-1">Club Discovery & Management</h3>
                     <p className="text-sm text-gray-600 dark:text-gray-400">Find and join clubs that match your interests.</p>
-                  </div>
-                  <div className="bg-gradient-to-br from-green-50 to-emerald-100 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl p-5">
+                  </motion.div>
+                  <motion.div 
+                    className="bg-gradient-to-br from-green-50 to-emerald-100 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl p-5"
+                    whileHover={{ y: -3, scale: 1.02 }}
+                    transition={{ duration: 0.2 }}
+                  >
                     <Calendar className="h-6 w-6 text-green-600 dark:text-green-400 mb-3" />
                     <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-1">Event Management & Organization</h3>
                     <p className="text-sm text-gray-600 dark:text-gray-400">Schedule events and track attendance.</p>
-                  </div>
-                  <div className="bg-gradient-to-br from-purple-50 to-pink-100 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl p-5">
+                  </motion.div>
+                  <motion.div 
+                    className="bg-gradient-to-br from-purple-50 to-pink-100 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl p-5"
+                    whileHover={{ y: -3, scale: 1.02 }}
+                    transition={{ duration: 0.2 }}
+                  >
                     <MessageCircle className="h-6 w-6 text-purple-600 dark:text-purple-400 mb-3" />
                     <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-1">Communication Hub</h3>
                     <p className="text-sm text-gray-600 dark:text-gray-400">Announcements, forums, and notifications.</p>
-                  </div>
+                  </motion.div>
                 </div>
               </div>
             </div>
@@ -422,7 +458,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {  //Questio
                                 y: currentCategory === categoryIndex ? 0 : 20
                               }}
                               transition={{ duration: 0.8, delay: 0.5 + clubIndex * 0.1 }}
-                              whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                              whileHover={{ y: -5, scale: 1.02, transition: { duration: 0.2 } }}
                             >
                               <div className="relative h-40 md:h-48 mb-3 rounded-lg overflow-hidden">
                                 <img
@@ -496,7 +532,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {  //Questio
             <motion.button
               className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white dark:bg-gray-800 p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
               onClick={() => setCurrentCategory((prev) => (prev - 1 + clubCategories.length) % clubCategories.length)}
-              whileHover={{ scale: 1.1 }}
+              whileHover={{ scale: 1.1, x: -2 }}
               whileTap={{ scale: 0.9 }}
             >
               <ChevronDown className="h-6 w-6 text-gray-600 dark:text-gray-400 transform rotate-90" />
@@ -504,7 +540,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {  //Questio
             <motion.button
               className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white dark:bg-gray-800 p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
               onClick={() => setCurrentCategory((prev) => (prev + 1) % clubCategories.length)}
-              whileHover={{ scale: 1.1 }}
+              whileHover={{ scale: 1.1, x: 2 }}
               whileTap={{ scale: 0.9 }}
             >
               <ChevronDown className="h-6 w-6 text-gray-600 dark:text-gray-400 transform -rotate-90" />
@@ -520,27 +556,59 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {  //Questio
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <div className="text-center mb-16">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="inline-block mb-6"
+            >
+              <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-1 rounded-full">
+                <div className="bg-white dark:bg-gray-900 px-6 py-2 rounded-full">
+                  <span className="text-sm font-semibold text-gray-900 dark:text-white">Testimonials</span>
+                </div>
+              </div>
+            </motion.div>
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-4xl md:text-6xl font-black bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-4"
+            >
               What People Say
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400 mt-2">Real voices from students and teachers</p>
+            </motion.h2>
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto"
+            >
+              Real voices from students and teachers who've transformed their school experience
+            </motion.p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonialItems.map((t: any, i: number) => {
               const initials = t.name.split(' ').map((s: string) => s[0]).slice(0,2).join('');
               return (
                 <motion.div
                   key={t.name}
-                  className="relative rounded-2xl p-6 bg-white/80 dark:bg-gray-800/80 backdrop-blur border border-transparent shadow-sm"
-                  style={{ backgroundImage: 'linear-gradient(white, white), radial-gradient(circle at top left, #c7d2fe, #fbcfe8)' , backgroundOrigin: 'border-box', backgroundClip: 'padding-box, border-box' }}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.1 * i }}
+                  initial={{ opacity: 0, y: 30, rotateY: -15 }}
+                  animate={{ opacity: 1, y: 0, rotateY: 0 }}
+                  transition={{ duration: 0.8, delay: 0.2 * i, ease: "easeOut" }}
+                  whileHover={{ 
+                    y: -10, 
+                    rotateY: 5, 
+                    scale: 1.05,
+                    transition: { duration: 0.3 }
+                  }}
+                  className="group relative"
                 >
-                  <div className="flex items-start gap-3">
+                  {/* Card background with gradient border */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-3xl blur opacity-20 group-hover:opacity-40 transition-opacity duration-300" />
+                  <div className="relative bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-3xl p-8 border border-gray-200/50 dark:border-gray-700/50 shadow-2xl">
+                    <div className="flex items-start gap-3">
                     {t.image ? (
                       <img src={t.image} alt={t.name} className="h-10 w-10 rounded-full object-cover shadow-md" />
                     ) : (
@@ -565,66 +633,195 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {  //Questio
                       </div>
                     </div>
                   </div>
+                  </div>
                 </motion.div>
             )})}
           </div>
         </div>
       </motion.section>
 
-      {/* FAQ Section at the end */}
+      {/* Location Section with Google Maps */}
       <motion.section
-        className="py-16 relative"
+        className="py-16 bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-gray-800 dark:to-gray-900"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
-        {/* Decorative gradient blobs */}
-        <div className="pointer-events-none absolute -z-10 inset-0 overflow-hidden">
-          <div className="absolute -top-10 -left-10 h-56 w-56 rounded-full bg-indigo-500/10 blur-3xl" />
-          <div className="absolute bottom-0 right-10 h-56 w-56 rounded-full bg-purple-500/10 blur-3xl" />
-        </div>
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-              Frequently Asked Questions
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            className="text-center mb-12"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              Find Us
             </h2>
-            <p className="text-gray-600 dark:text-gray-400 mt-2">Quick answers to common questions</p>
+            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              Visit our school and experience the vibrant club community firsthand
+            </p>
+          </motion.div>
+
+          
+
+          {/* Google Maps - Full Width */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="bg-white/80 dark:bg-gray-800/80 backdrop-blur rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-lg"
+          >
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 text-center">Map</h3>
+            
+            <div className="relative h-96 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-600">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3024.2219901290355!2d-74.00369368400567!3d40.71312937933185!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a23e28c1191%3A0x49f75d3281df052a!2s150%20Park%20Row%2C%20New%20York%2C%20NY%2010007%2C%20USA!5e0!3m2!1sen!2sus!4v1645000000000!5m2!1sen!2sus"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="School Location"
+              ></iframe>
+              
+              
+            </div>
+            
+            <div className="mt-4 text-center">
+              <p className="text-gray-600 dark:text-gray-400 text-sm">
+                Click on the map to open in Google Maps
+              </p>
+              <button
+                onClick={() => window.open('https://maps.google.com/?q=150+Park+Row,+New+York,+NY+10007,+USA', '_blank')}
+                className="mt-2 text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 text-sm font-medium transition-colors"
+              >
+                Open in Google Maps →
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {/* FAQ Section at the end */}
+      <motion.section
+        className="py-20 relative overflow-hidden"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        {/* Decorative background elements */}
+        <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/30 via-purple-50/20 to-pink-50/30 dark:from-indigo-900/10 dark:via-purple-900/10 dark:to-pink-900/10" />
+        <div className="absolute -top-20 -left-20 w-40 h-40 bg-gradient-to-br from-indigo-400/20 to-purple-400/20 rounded-full blur-3xl" />
+        <div className="absolute -bottom-20 -right-20 w-40 h-40 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-3xl" />
+        
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <div className="text-center mb-16">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="inline-block mb-6"
+            >
+              <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-1 rounded-full">
+                <div className="bg-white dark:bg-gray-900 px-6 py-2 rounded-full">
+                  <span className="text-sm font-semibold text-gray-900 dark:text-white">FAQ</span>
+                </div>
+              </div>
+            </motion.div>
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-4xl md:text-6xl font-black bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-4"
+            >
+              Frequently Asked Questions
+            </motion.h2>
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto"
+            >
+              Quick answers to common questions about our platform
+            </motion.p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {[
-              { q: 'How do I join a club?', a: 'Browse categories, open a club, and tap Join. Your membership request will be sent to the club admins.', tag: 'Getting Started' },
-              { q: 'Can teachers manage multiple clubs?', a: 'Yes. Teachers can advise multiple clubs, manage events, memberships, and announcements in one place.', tag: 'Teachers' },
-              { q: 'Do you support event RSVPs and attendance?', a: 'Absolutely. Create events, collect RSVPs, set limits, and track attendance with ease.', tag: 'Events' },
-              { q: 'What about achievements and badges?', a: 'Students earn badges for participation, leadership, and milestones. Progress is visible on their profile.', tag: 'Achievements' }
+              { 
+                q: 'How do I join a club?', 
+                a: 'Browse categories, open a club, and tap Join. Your membership request will be sent to the club admins.', 
+                tag: 'Getting Started',
+                icon: '🚀'
+              },
+              { 
+                q: 'Can teachers manage multiple clubs?', 
+                a: 'Yes. Teachers can advise multiple clubs, manage events, memberships, and announcements in one place.', 
+                tag: 'Teachers',
+                icon: '👨‍🏫'
+              },
+              { 
+                q: 'Do you support event RSVPs and attendance?', 
+                a: 'Absolutely. Create events, collect RSVPs, set limits, and track attendance with ease.', 
+                tag: 'Events',
+                icon: '📅'
+              },
+              { 
+                q: 'What about achievements and badges?', 
+                a: 'Students earn badges for participation, leadership, and milestones. Progress is visible on their profile.', 
+                tag: 'Achievements',
+                icon: '🏆'
+              }
             ].map((item, idx) => (
               <motion.div
                 key={idx}
-                className="rounded-2xl border bg-white/90 dark:bg-gray-800/90 backdrop-blur border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden"
-                whileHover={{ y: -2 }}
+                initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.1 * idx }}
+                whileHover={{ 
+                  y: -8, 
+                  scale: 1.03,
+                  transition: { duration: 0.3 }
+                }}
+                className="group relative"
               >
-                <details className="group" open={idx === 0}>
-                  <summary className="flex items-center justify-between px-5 py-4 cursor-pointer list-none select-none">
-                    <span className="flex items-center gap-3">
-                      <span className="inline-flex h-9 w-9 rounded-full bg-indigo-100 dark:bg-indigo-900/40 items-center justify-center">
-                        <User className="h-4 w-4 text-indigo-600" />
+                {/* Card background with gradient border */}
+                <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-3xl blur opacity-20 group-hover:opacity-40 transition-opacity duration-300" />
+                <div className="relative bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-3xl border border-gray-200/50 dark:border-gray-700/50 shadow-2xl overflow-hidden">
+                  <details className="group" open={idx === 0}>
+                    <summary className="flex items-center justify-between px-8 py-6 cursor-pointer list-none select-none hover:bg-gradient-to-r hover:from-indigo-50/50 hover:to-purple-50/50 dark:hover:from-indigo-900/20 dark:hover:to-purple-900/20 transition-all duration-300">
+                      <span className="flex items-center gap-4">
+                        <span className="text-2xl">{item.icon}</span>
+                        <span className="font-bold text-lg text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-300">
+                          {item.q}
+                        </span>
                       </span>
-                      <span className="font-semibold text-gray-900 dark:text-white">{item.q}</span>
-                    </span>
-                    <span className="flex items-center gap-3">
-                      <span className="text-xs px-2 py-1 rounded-full bg-indigo-50 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-200 border border-indigo-100 dark:border-indigo-800">{item.tag}</span>
-                      <ChevronDown className="h-5 w-5 text-gray-500 transition-transform group-open:rotate-180" />
-                    </span>
-                  </summary>
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    transition={{ duration: 0.25 }}
-                    className="px-5 pb-5 border-t border-gray-100 dark:border-gray-700 bg-gradient-to-b from-white/70 to-white/40 dark:from-gray-800/70 dark:to-gray-800/40"
-                  >
-                    <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">{item.a}</p>
-                  </motion.div>
-                </details>
+                      <span className="flex items-center gap-3">
+                        <span className="px-3 py-1 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white text-xs font-semibold border border-indigo-400/20">
+                          {item.tag}
+                        </span>
+                        <motion.div
+                          animate={{ rotate: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="group-open:rotate-180"
+                        >
+                          <ChevronDown className="h-6 w-6 text-gray-500 group-hover:text-indigo-500 transition-colors duration-300" />
+                        </motion.div>
+                      </span>
+                    </summary>
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      transition={{ duration: 0.4, ease: "easeOut" }}
+                      className="px-8 pb-6 border-t border-gray-100 dark:border-gray-700 bg-gradient-to-b from-white/80 to-white/60 dark:from-gray-800/80 dark:to-gray-800/60"
+                    >
+                      <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed pt-4">
+                        {item.a}
+                      </p>
+                    </motion.div>
+                  </details>
+                </div>
               </motion.div>
             ))}
           </div>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../contexts/AuthContext';
 import LoginForm from './Auth/LoginForm';
 import Navbar from './Layout/Navbar';
@@ -13,6 +14,7 @@ import ClubDetailPage from './Clubs/ClubDetailPage';
 import EventDetailPage from './Events/EventDetailPage';
 import AnnouncementsPage from './Announcements/AnnouncementsPage';
 import AboutPage from './About/AboutPage';
+import ContactPage from './Contact/ContactPage';
 
 const MainApp: React.FC = () => {
   const { currentUser, isLoading } = useAuth();
@@ -26,27 +28,56 @@ const MainApp: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-indigo-600"></div>
-      </div>
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center"
+      >
+        <motion.div 
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="animate-spin rounded-full h-32 w-32 border-b-2 border-indigo-600"
+        ></motion.div>
+      </motion.div>
     );
   }
 
   // Show public pages (with navbar) if no user is logged in
   if (!currentUser) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="min-h-screen bg-gray-50 dark:bg-gray-900"
+      >
         <Navbar onNavigate={handleNavigate} currentPage={currentPage} />
         <main>
-          {currentPage === 'login' ? (
-            <LoginForm />
-          ) : currentPage === 'about' ? (
-            <AboutPage onNavigate={handleNavigate} />
-          ) : (
-            <LandingPage onNavigate={handleNavigate} />
-          )}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentPage}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+            >
+              {currentPage === 'login' ? (
+                <LoginForm />
+              ) : currentPage === 'about' ? (
+                <AboutPage onNavigate={handleNavigate} />
+              ) : currentPage === 'contact' ? (
+                <ContactPage onNavigate={handleNavigate} />
+              ) : currentPage === 'landing' ? (
+                <LandingPage onNavigate={handleNavigate} />
+              ) : (
+                <LandingPage onNavigate={handleNavigate} />
+              )}
+            </motion.div>
+          </AnimatePresence>
         </main>
-      </div>
+      </motion.div>
     );
   }
 
@@ -91,7 +122,16 @@ const MainApp: React.FC = () => {
       case 'announcements':
         return <AnnouncementsPage onNavigate={handleNavigate} />;
       case 'about':
-        return <AboutPage onNavigate={handleNavigate} />;
+        // Redirect unauthenticated users to landing page
+        if (!currentUser) {
+          return <AboutPage onNavigate={handleNavigate} />;
+        }
+        // For authenticated users, redirect to landing page
+        return <LandingPage onNavigate={handleNavigate} />;
+      case 'contact':
+        return <ContactPage onNavigate={handleNavigate} />;
+      case 'landing':
+        return <LandingPage onNavigate={handleNavigate} />;
       case 'profile':
         return <ProfilePage onNavigate={handleNavigate} />;
       default:
@@ -107,12 +147,27 @@ const MainApp: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="min-h-screen bg-gray-50 dark:bg-gray-900"
+    >
       <Navbar onNavigate={handleNavigate} currentPage={currentPage} />
       <main>
-        {renderPage()}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentPage}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+          >
+            {renderPage()}
+          </motion.div>
+        </AnimatePresence>
       </main>
-    </div>
+    </motion.div>
   );
 };
 
