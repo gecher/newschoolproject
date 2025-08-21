@@ -42,6 +42,10 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate, current
   const [allEvents, setAllEvents] = useState<Event[]>([]);
   const [myMemberships, setMyMemberships] = useState<Membership[]>([]);
   const [availableClubs, setAvailableClubs] = useState<Club[]>([]);
+  const [allUsers, setAllUsers] = useState<User[]>([]);
+  const [clubsSearch, setClubsSearch] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState<string>('');
+  const [advisorFilter, setAdvisorFilter] = useState<string>('');
   const today = new Date();
   const formattedDate = today.toLocaleDateString(undefined, {
     weekday: 'long',
@@ -57,15 +61,20 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate, current
   }, [currentUser]);
 
   const loadStudentData = () => {
-    if (currentUser) {
-      setAllClubs(dataService.getAllClubs());
-      setAllEvents(dataService.getAllEvents());
-      setMyMemberships(dataService.getMembershipsByUser(currentUser.id));
-      
-      // Get clubs that the student is not a member of
-      const joinedClubIds = myMemberships.map(m => m.clubId);
-      setAvailableClubs(allClubs.filter(club => !joinedClubIds.includes(club.id)));
-    }
+    if (!currentUser) return;
+    const clubs = dataService.getAllClubs();
+    const events = dataService.getAllEvents();
+    const memberships = dataService.getMembershipsByUser(currentUser.id);
+    const users = dataService.getAllUsers();
+
+    const joinedClubIds = memberships.map(m => m.clubId);
+    const available = clubs.filter(club => !joinedClubIds.includes(club.id));
+
+    setAllClubs(clubs);
+    setAllEvents(events);
+    setMyMemberships(memberships);
+    setAvailableClubs(available);
+    setAllUsers(users);
   };
 
   const handleJoinClub = (clubId: string) => {
@@ -172,14 +181,65 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate, current
   };
 
   const renderJoinClubs = () => {
+    const advisorNameById = (advisorId?: string) => {
+      if (!advisorId) return '';
+      const u = allUsers.find(u => u.id === advisorId);
+      return u ? u.fullName : '';
+    };
+    const myMembershipByClub: Record<string, Membership | undefined> = myMemberships.reduce((acc, m) => { acc[m.clubId] = m; return acc; }, {} as Record<string, Membership | undefined>);
+    const categories = Array.from(new Set(allClubs.map(c => c.category).filter(Boolean)));
+    const advisors = Array.from(new Set(allClubs.map(c => c.advisorId).filter(Boolean))) as string[];
+
+    const filtered = allClubs.filter((club) => {
+      const q = clubsSearch.trim().toLowerCase();
+      const matchesQuery = !q || club.name.toLowerCase().includes(q) || (club.description || '').toLowerCase().includes(q) || (club.category || '').toLowerCase().includes(q) || advisorNameById(club.advisorId).toLowerCase().includes(q);
+      const matchesCategory = !categoryFilter || club.category === categoryFilter;
+      const matchesAdvisor = !advisorFilter || club.advisorId === advisorFilter;
+      return matchesQuery && matchesCategory && matchesAdvisor;
+    });
+
     return (
       <div className="space-y-6">
         <div className="flex justify-between items-center">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Join Clubs</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Clubs</h2>
+        </div>
+
+        {/* Filters */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <input
+            value={clubsSearch}
+            onChange={(e) => setClubsSearch(e.target.value)}
+            placeholder="Search by name, category, advisor..."
+            className="w-full border rounded px-3 py-2 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white"
+          />
+          <select
+            value={categoryFilter}
+            onChange={(e) => setCategoryFilter(e.target.value)}
+            className="w-full border rounded px-3 py-2 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white"
+          >
+            <option value="">All Categories</option>
+            {categories.map(cat => (
+              <option key={cat} value={cat}>{cat}</option>
+            ))}
+          </select>
+          <select
+            value={advisorFilter}
+            onChange={(e) => setAdvisorFilter(e.target.value)}
+            className="w-full border rounded px-3 py-2 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white"
+          >
+            <option value="">All Advisors</option>
+            {advisors.map(id => (
+              <option key={id} value={id}>{advisorNameById(id)}</option>
+            ))}
+          </select>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {availableClubs.map((club) => (
+          {filtered.map((club) => {
+            const my = myMembershipByClub[club.id];
+            const isApproved = my?.status === 'APPROVED';
+            const isPending = my?.status === 'PENDING';
+            return (
             <motion.div
               key={club.id}
               initial={{ opacity: 0, y: 20 }}
@@ -189,13 +249,21 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate, current
               <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{club.name}</h3>
-                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                    club.status === 'ACTIVE' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
-                    club.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
-                    'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
-                  }`}>
-                    {club.status}
-                  </span>
+                  <div className="flex items-center space-x-2">
+                    {isApproved && (
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">Joined</span>
+                    )}
+                    {isPending && (
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">Pending</span>
+                    )}
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                      club.status === 'ACTIVE' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
+                      club.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
+                      'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+                    }`}>
+                      {club.status}
+                    </span>
+                  </div>
                 </div>
                 
                 <p className="text-gray-600 dark:text-gray-400 mb-4">{club.description}</p>
@@ -207,19 +275,29 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate, current
                   </div>
                   <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
                     <Users className="h-4 w-4 mr-2" />
+                    Advisor: {advisorNameById(club.advisorId) || 'Unassigned'}
+                  </div>
+                  <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                    <Users className="h-4 w-4 mr-2" />
                     {club.memberCount} members
                   </div>
                 </div>
 
                 <button
                   onClick={() => handleJoinClub(club.id)}
-                  className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-lg transition-colors"
+                  disabled={isApproved || isPending}
+                  className={`w-full py-2 px-4 rounded-lg transition-colors ${
+                    isApproved ? 'bg-green-600 text-white cursor-not-allowed opacity-90' :
+                    isPending ? 'bg-yellow-500 text-white cursor-not-allowed opacity-90' :
+                    'bg-indigo-600 hover:bg-indigo-700 text-white'
+                  }`}
                 >
-                  Join Club
+                  {isApproved ? 'Joined' : isPending ? 'Request Sent' : 'Request to Join'}
                 </button>
               </div>
             </motion.div>
-          ))}
+            );
+          })}
         </div>
 
         {/* My Memberships */}

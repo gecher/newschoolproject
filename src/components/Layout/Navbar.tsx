@@ -51,7 +51,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
       ];
     } else if (currentUser?.role === 'STUDENT') {
       return [
-        { id: 'clubs', label: 'Join Clubs', icon: Users },
+        { id: 'clubs', label: 'Clubs', icon: Users },
         { id: 'events', label: 'All Events', icon: Calendar },
         { id: 'announcements', label: 'Announcements', icon: Megaphone },
       ];
