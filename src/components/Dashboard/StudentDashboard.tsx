@@ -42,6 +42,13 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate, current
   const [allEvents, setAllEvents] = useState<Event[]>([]);
   const [myMemberships, setMyMemberships] = useState<Membership[]>([]);
   const [availableClubs, setAvailableClubs] = useState<Club[]>([]);
+  const today = new Date();
+  const formattedDate = today.toLocaleDateString(undefined, {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
 
   useEffect(() => {
     if (currentUser) {
@@ -116,6 +123,7 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate, current
     
     return (
       <div className="space-y-8">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Overview</h3>
         {/* Overview Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {chartData.overview.map((item, index) => (
@@ -124,11 +132,11 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate, current
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border-l-4"
+              className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border-l-4 ring-1 ring-gray-100 dark:ring-gray-700 transition-all hover:shadow-lg hover:-translate-y-0.5"
               style={{ borderLeftColor: item.color }}
             >
               <div className="flex items-center">
-                <div className="p-2 rounded-full" style={{ backgroundColor: `${item.color}20` }}>
+                <div className="p-2 rounded-full shadow-inner" style={{ backgroundColor: `${item.color}20` }}>
                   <BarChart3 className="h-6 w-6" style={{ color: item.color }} />
                 </div>
                 <div className="ml-4">
@@ -333,6 +341,27 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate, current
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Student Dashboard</h1>
           <p className="text-gray-600 dark:text-gray-400">Welcome back, {currentUser?.fullName}. Discover clubs and events that interest you.</p>
         </motion.div>
+
+        {/* Welcome Card - only on Dashboard page */}
+        {currentPage === 'dashboard' && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="mb-8 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-2xl p-6 shadow-lg"
+          >
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div>
+                <h2 className="text-2xl font-semibold">Welcome to The Student Club</h2>
+                <p className="text-indigo-100">Empowering you to discover and join amazing communities.</p>
+              </div>
+              <div className="flex items-center px-4 py-2 bg-white/10 rounded-xl">
+                <Calendar className="h-5 w-5 mr-2 text-white" />
+                <span className="text-sm font-medium">{formattedDate}</span>
+              </div>
+            </div>
+          </motion.div>
+        )}
 
         {/* Content */}
         {renderContent()}

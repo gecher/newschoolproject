@@ -1,26 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
-  Users, 
   Calendar, 
-  UserPlus, 
   BarChart3, 
   Plus, 
   Edit, 
   Trash2, 
   CheckCircle, 
   XCircle,
-  UserCheck,
-  Clock,
-  MapPin,
-  Tag
+  MapPin
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { dataService } from '../../services/dataService';
 import type { Club, Event, User, Membership } from '../../services/dataService';
 import { 
-  BarChart, 
-  Bar, 
   XAxis, 
   YAxis, 
   CartesianGrid, 
@@ -39,7 +32,7 @@ interface AdminPanelProps {
   currentPage?: string;
 }
 
-const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate, currentPage = 'dashboard' }) => {
+const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate: _onNavigate, currentPage = 'dashboard' }) => {
   const { currentUser } = useAuth();
   const [clubs, setClubs] = useState<Club[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
@@ -56,6 +49,14 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate, currentPage = 'dash
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [confirmMessage, setConfirmMessage] = useState('');
   const [onConfirmAction, setOnConfirmAction] = useState<(() => void) | null>(null);
+
+  // Table search/sort state
+  const [clubsSearch, setClubsSearch] = useState('');
+  const [clubsSort, setClubsSort] = useState<{ key: 'name' | 'category' | 'status' | 'members' | 'advisor'; dir: 'asc' | 'desc' }>({ key: 'name', dir: 'asc' });
+  const [usersSearch, setUsersSearch] = useState('');
+  const [usersSort, setUsersSort] = useState<{ key: 'name' | 'role' | 'email'; dir: 'asc' | 'desc' }>({ key: 'name', dir: 'asc' });
+  const [requestsSearch, setRequestsSearch] = useState('');
+  const [requestsSort, setRequestsSort] = useState<{ key: 'student' | 'club' | 'date' | 'status'; dir: 'asc' | 'desc' }>({ key: 'date', dir: 'desc' });
 
   // Club modal state
   const [showClubModal, setShowClubModal] = useState(false);
@@ -92,6 +93,13 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate, currentPage = 'dash
   useEffect(() => {
     loadAdminData();
   }, []);
+  const today = new Date();
+  const formattedDate = today.toLocaleDateString(undefined, {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
 
   const loadAdminData = () => {
     setClubs(dataService.getAllClubs());
@@ -331,6 +339,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate, currentPage = 'dash
     
     return (
       <div className="space-y-8">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Overview</h3>
         {/* Overview Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {chartData.overview.map((item, index) => (
@@ -339,11 +348,11 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate, currentPage = 'dash
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border-l-4"
+              className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border-l-4 ring-1 ring-gray-100 dark:ring-gray-700 transition-all hover:shadow-lg hover:-translate-y-0.5"
               style={{ borderLeftColor: item.color }}
             >
               <div className="flex items-center">
-                <div className="p-2 rounded-full" style={{ backgroundColor: `${item.color}20` }}>
+                <div className="p-2 rounded-full shadow-inner" style={{ backgroundColor: `${item.color}20` }}>
                   <BarChart3 className="h-6 w-6" style={{ color: item.color }} />
                 </div>
                 <div className="ml-4">
@@ -438,6 +447,42 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate, currentPage = 'dash
   };
 
   const renderManageClubs = () => {
+    // derive filtered and sorted clubs
+    const rows = clubs.map((club) => {
+      const advisorName = club.advisorId ? (users.find(u => u.id === club.advisorId)?.fullName || 'Unknown') : '';
+      const membersCount = memberships.filter(m => m.clubId === club.id && m.status === 'APPROVED').length;
+      return { club, advisorName, membersCount };
+    })
+    .filter(({ club, advisorName }) => {
+      const q = clubsSearch.trim().toLowerCase();
+      if (!q) return true;
+      return (
+        club.name.toLowerCase().includes(q) ||
+        (club.category || '').toLowerCase().includes(q) ||
+        (club.status || '').toLowerCase().includes(q) ||
+        advisorName.toLowerCase().includes(q)
+      );
+    })
+    .sort((a, b) => {
+      const dir = clubsSort.dir === 'asc' ? 1 : -1;
+      switch (clubsSort.key) {
+        case 'name':
+          return a.club.name.localeCompare(b.club.name) * dir;
+        case 'category':
+          return (a.club.category || '').localeCompare(b.club.category || '') * dir;
+        case 'status':
+          return (a.club.status || '').localeCompare(b.club.status || '') * dir;
+        case 'members':
+          return (a.membersCount - b.membersCount) * dir;
+        case 'advisor':
+          return a.advisorName.localeCompare(b.advisorName) * dir;
+      }
+    });
+
+    const setSort = (key: 'name' | 'category' | 'status' | 'members' | 'advisor') => {
+      setClubsSort(prev => prev.key === key ? { key, dir: prev.dir === 'asc' ? 'desc' : 'asc' } : { key, dir: 'asc' });
+    };
+
     return (
       <div className="space-y-6">
         <div className="flex justify-between items-center">
@@ -448,21 +493,31 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate, currentPage = 'dash
           </button>
         </div>
 
+        {/* Search */}
+        <div className="flex items-center justify-between">
+          <input
+            value={clubsSearch}
+            onChange={(e) => setClubsSearch(e.target.value)}
+            placeholder="Search by name, category, status, advisor..."
+            className="w-full md:w-96 border rounded px-3 py-2 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white"
+          />
+        </div>
+
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
               <thead className="bg-gray-50 dark:bg-gray-700">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Club</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Category</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Advisor</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Members</th>
+                  <th onClick={() => setSort('name')} className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer">Club {clubsSort.key==='name' ? (clubsSort.dir==='asc'?'▲':'▼') : ''}</th>
+                  <th onClick={() => setSort('category')} className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer">Category {clubsSort.key==='category' ? (clubsSort.dir==='asc'?'▲':'▼') : ''}</th>
+                  <th onClick={() => setSort('status')} className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer">Status {clubsSort.key==='status' ? (clubsSort.dir==='asc'?'▲':'▼') : ''}</th>
+                  <th onClick={() => setSort('advisor')} className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer">Advisor {clubsSort.key==='advisor' ? (clubsSort.dir==='asc'?'▲':'▼') : ''}</th>
+                  <th onClick={() => setSort('members')} className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer">Members {clubsSort.key==='members' ? (clubsSort.dir==='asc'?'▲':'▼') : ''}</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
               <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                {clubs.map((club) => (
+                {rows.map(({ club, advisorName, membersCount }) => (
                   <tr key={club.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
@@ -501,7 +556,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate, currentPage = 'dash
                       {club.advisorId ? (
                         <div className="flex items-center space-x-3">
                         <span className="text-sm text-gray-900 dark:text-white">
-                          {users.find(u => u.id === club.advisorId)?.fullName || 'Unknown'}
+                          {advisorName}
                         </span>
                           <button
                             onClick={() => {
@@ -531,7 +586,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate, currentPage = 'dash
                         className="underline text-indigo-600 dark:text-indigo-400 hover:text-indigo-800"
                         title="View Members"
                       >
-                      {memberships.filter(m => m.clubId === club.id && m.status === 'APPROVED').length}
+                      {membersCount}
                       </button>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
@@ -623,6 +678,28 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate, currentPage = 'dash
   };
 
   const renderAllUsers = () => {
+    // filter and sort users
+    const q = usersSearch.trim().toLowerCase();
+    const filtered = users.filter(u => {
+      if (!q) return true;
+      return (
+        u.fullName.toLowerCase().includes(q) ||
+        u.email.toLowerCase().includes(q) ||
+        (u.role || '').toLowerCase().includes(q)
+      );
+    }).sort((a, b) => {
+      const dir = usersSort.dir === 'asc' ? 1 : -1;
+      switch (usersSort.key) {
+        case 'name': return a.fullName.localeCompare(b.fullName) * dir;
+        case 'email': return a.email.localeCompare(b.email) * dir;
+        case 'role': return (a.role || '').localeCompare(b.role || '') * dir;
+      }
+    });
+
+    const setSort = (key: 'name' | 'role' | 'email') => {
+      setUsersSort(prev => prev.key === key ? { key, dir: prev.dir === 'asc' ? 'desc' : 'asc' } : { key, dir: 'asc' });
+    };
+
     return (
       <div className="space-y-6">
         <div className="flex justify-between items-center">
@@ -633,20 +710,30 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate, currentPage = 'dash
           </button>
         </div>
 
+        {/* Search */}
+        <div className="flex items-center justify-between">
+          <input
+            value={usersSearch}
+            onChange={(e) => setUsersSearch(e.target.value)}
+            placeholder="Search by name, email, role..."
+            className="w-full md:w-96 border rounded px-3 py-2 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white"
+          />
+        </div>
+
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
               <thead className="bg-gray-50 dark:bg-gray-700">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">User</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Role</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Email</th>
+                  <th onClick={() => setSort('name')} className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer">User {usersSort.key==='name' ? (usersSort.dir==='asc'?'▲':'▼') : ''}</th>
+                  <th onClick={() => setSort('role')} className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer">Role {usersSort.key==='role' ? (usersSort.dir==='asc'?'▲':'▼') : ''}</th>
+                  <th onClick={() => setSort('email')} className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer">Email {usersSort.key==='email' ? (usersSort.dir==='asc'?'▲':'▼') : ''}</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
               <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                {users.map((user) => (
+                {filtered.map((user) => (
                   <tr key={user.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
@@ -706,10 +793,47 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate, currentPage = 'dash
   };
 
   const renderRequests = () => {
+    const reqs = memberships.filter(m => m.status === 'PENDING').map(m => {
+      const student = users.find(u => u.id === m.userId);
+      const club = clubs.find(c => c.id === m.clubId);
+      return { m, student, club };
+    }).filter(({ student, club }) => {
+      const q = requestsSearch.trim().toLowerCase();
+      if (!q) return true;
+      return (
+        (student?.fullName || '').toLowerCase().includes(q) ||
+        (student?.email || '').toLowerCase().includes(q) ||
+        (club?.name || '').toLowerCase().includes(q) ||
+        (club?.category || '').toLowerCase().includes(q)
+      );
+    }).sort((a, b) => {
+      const dir = requestsSort.dir === 'asc' ? 1 : -1;
+      switch (requestsSort.key) {
+        case 'student': return (a.student?.fullName || '').localeCompare(b.student?.fullName || '') * dir;
+        case 'club': return (a.club?.name || '').localeCompare(b.club?.name || '') * dir;
+        case 'status': return 'PENDING'.localeCompare('PENDING') * dir; // same status
+        case 'date': return (new Date(a.m.startDate).getTime() - new Date(b.m.startDate).getTime()) * dir;
+      }
+    });
+
+    const setSort = (key: 'student' | 'club' | 'date' | 'status') => {
+      setRequestsSort(prev => prev.key === key ? { key, dir: prev.dir === 'asc' ? 'desc' : 'asc' } : { key, dir: 'asc' });
+    };
+
     return (
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Membership Requests</h2>
+        </div>
+
+        {/* Search */}
+        <div className="flex items-center justify-between">
+          <input
+            value={requestsSearch}
+            onChange={(e) => setRequestsSearch(e.target.value)}
+            placeholder="Search by student, email, club, category..."
+            className="w-full md:w-96 border rounded px-3 py-2 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white"
+          />
         </div>
 
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
@@ -717,19 +841,15 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate, currentPage = 'dash
             <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
               <thead className="bg-gray-50 dark:bg-gray-700">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Student</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Club</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Request Date</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
+                  <th onClick={() => setSort('student')} className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer">Student {requestsSort.key==='student' ? (requestsSort.dir==='asc'?'▲':'▼') : ''}</th>
+                  <th onClick={() => setSort('club')} className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer">Club {requestsSort.key==='club' ? (requestsSort.dir==='asc'?'▲':'▼') : ''}</th>
+                  <th onClick={() => setSort('date')} className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer">Request Date {requestsSort.key==='date' ? (requestsSort.dir==='asc'?'▲':'▼') : ''}</th>
+                  <th onClick={() => setSort('status')} className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer">Status {requestsSort.key==='status' ? (requestsSort.dir==='asc'?'▲':'▼') : ''}</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
               <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                {memberships.filter(m => m.status === 'PENDING').map((membership) => {
-                  const student = users.find(u => u.id === membership.userId);
-                  const club = clubs.find(c => c.id === membership.clubId);
-                  
-                  return (
+                {reqs.map(({ m: membership, student, club }) => (
                     <tr key={membership.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
@@ -771,8 +891,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate, currentPage = 'dash
                         </button>
                       </td>
                     </tr>
-                  );
-                })}
+                  ))}
               </tbody>
             </table>
           </div>
@@ -806,6 +925,27 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate, currentPage = 'dash
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Admin Dashboard</h1>
           <p className="text-gray-600 dark:text-gray-400">Welcome back, {currentUser?.fullName}. Manage your school's clubs and activities.</p>
         </motion.div>
+
+        {/* Welcome Card - only on Dashboard page */}
+        {currentPage === 'dashboard' && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="mb-8 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-2xl p-6 shadow-lg"
+          >
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div>
+                <h2 className="text-2xl font-semibold">Welcome to The Student Club</h2>
+                <p className="text-indigo-100">Oversee and elevate all student activities and communities.</p>
+              </div>
+              <div className="flex items-center px-4 py-2 bg-white/10 rounded-xl">
+                <Calendar className="h-5 w-5 mr-2 text-white" />
+                <span className="text-sm font-medium">{formattedDate}</span>
+              </div>
+            </div>
+          </motion.div>
+        )}
 
         {/* Content */}
         {renderContent()}

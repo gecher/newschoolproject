@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { 
-  Search, Bell, User, Menu, X, Sun, Moon, 
+  Bell, User, Menu, X, Sun, Moon, 
   Home, Users, Calendar, MessageSquare, Award, BarChart3, UserPlus, Megaphone
 } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -36,7 +36,6 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
   const getNavigationItems = () => {
     if (currentUser?.role === 'ADMIN') {
       return [
-        { id: 'dashboard', label: 'Stats', icon: BarChart3 },
         { id: 'clubs', label: 'Manage Clubs', icon: Users },
         { id: 'events', label: 'Manage Events', icon: Calendar },
         { id: 'announcements', label: 'Announcements', icon: Megaphone },
@@ -45,7 +44,6 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
       ];
     } else if (currentUser?.role === 'TEACHER') {
       return [
-        { id: 'dashboard', label: 'Stats', icon: BarChart3 },
         { id: 'clubs', label: 'Assigned Clubs', icon: Users },
         { id: 'events', label: 'Club Events', icon: Calendar },
         { id: 'announcements', label: 'Announcements', icon: Megaphone },
@@ -53,7 +51,6 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
       ];
     } else if (currentUser?.role === 'STUDENT') {
       return [
-        { id: 'dashboard', label: 'Stats', icon: BarChart3 },
         { id: 'clubs', label: 'Join Clubs', icon: Users },
         { id: 'events', label: 'All Events', icon: Calendar },
         { id: 'announcements', label: 'Announcements', icon: Megaphone },
@@ -74,22 +71,22 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
   const isPublic = !currentUser;
 
   return (
-    <nav className="bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700">
+    <nav className="sticky top-0 z-40 backdrop-blur backdrop-saturate-150 bg-white/80 dark:bg-gray-800/80 shadow-lg border-b border-gray-200 dark:border-gray-700">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo and Brand */}
           <div className="flex items-center">
             <button
-              onClick={() => onNavigate('landing')}
+              onClick={() => onNavigate(currentUser ? 'dashboard' : 'landing')}
               className="flex-shrink-0 flex items-center group"
             >
               {/* Sample Logo - SVG Icon */}
-              <div className="h-8 w-8 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg">
+              <div className="h-9 w-9 md:h-10 md:w-10 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg ring-1 ring-white/30">
                 <svg className="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <span className="ml-2 text-xl font-bold text-gray-900 dark:text-white transition-all duration-300 group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
+              <span className="ml-2 text-xl md:text-2xl font-extrabold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent tracking-tight transition-all duration-300 group-hover:opacity-90">
                 The Student Club
               </span>
             </button>
@@ -147,10 +144,10 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
                       <button
                         key={item.id}
                         onClick={() => onNavigate(item.id)}
-                        className={`px-3 py-2 rounded-md text-sm font-medium flex items-center space-x-1 transition-all duration-300 hover:scale-105 ${
+                        className={`px-3 py-2 rounded-lg text-sm font-medium flex items-center space-x-1 transition-all duration-300 hover:scale-105 hover:-translate-y-0.5 border-b-2 ${
                           currentPage === item.id
-                            ? 'bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300'
-                            : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
+                            ? 'bg-indigo-50/80 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 ring-1 ring-indigo-200/60 dark:ring-indigo-700/40 border-indigo-500 dark:border-indigo-400'
+                            : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-700 border-transparent'
                         }`}
                       >
                         <Icon className="h-4 w-4" />
@@ -160,21 +157,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
                   })}
                 </div>
 
-                {/* Search Bar */}
-                <div className="hidden md:block flex-1 max-w-md mx-8">
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Search className="h-5 w-5 text-gray-400" />
-                    </div>
-                    <input
-                      type="text"
-                      placeholder="Search clubs, events, users..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md leading-5 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 focus:scale-105"
-                    />
-                  </div>
-                </div>
+                {/* Search removed */}
               </div>
             )}
           </div>
@@ -337,23 +320,9 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
                 </button>
               </>
             ) : (
-              // existing mobile menu for authenticated users
+              // existing mobile menu for authenticated users (search removed)
               <>
-                {/* Mobile Search */}
-                <div className="px-3 py-2">
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Search className="h-5 w-5 text-gray-400" />
-                    </div>
-                    <input
-                      type="text"
-                      placeholder="Search..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md leading-5 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 focus:scale-105"
-                    />
-                  </div>
-                </div>
+                {/* Mobile Search removed */}
                 {navigationItems.map((item) => {
                   const Icon = item.icon;
                   return (
@@ -363,10 +332,10 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
                         onNavigate(item.id);
                         setIsMobileMenuOpen(false);
                       }}
-                      className={`w-full text-left px-3 py-2 rounded-md text-base font-medium flex items-center space-x-2 transition-all duration-300 ${
+                      className={`w-full text-left px-3 py-2 rounded-lg text-base font-medium flex items-center space-x-2 transition-all duration-300 border-b-2 ${
                         currentPage === item.id
-                          ? 'bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300'
-                          : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
+                          ? 'bg-indigo-50/80 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 ring-1 ring-indigo-200/60 dark:ring-indigo-700/40 border-indigo-500 dark:border-indigo-400'
+                          : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-700 border-transparent'
                       }`}
                     >
                       <Icon className="h-5 w-5" />

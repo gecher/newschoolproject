@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../contexts/AuthContext';
 import LoginForm from './Auth/LoginForm';
@@ -25,6 +25,16 @@ const MainApp: React.FC = () => {
     setCurrentPage(page);
     setPageData(data);
   };
+
+  // After login, ensure we land on dashboard; after logout, go to landing
+  useEffect(() => {
+    if (currentUser) {
+      if (currentPage !== 'dashboard') setCurrentPage('dashboard');
+    } else {
+      if (currentPage !== 'landing') setCurrentPage('landing');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentUser]);
 
   if (isLoading) {
     return (

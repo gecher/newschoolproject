@@ -50,6 +50,20 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onNavigate, current
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [confirmMessage, setConfirmMessage] = useState('');
   const [onConfirmAction, setOnConfirmAction] = useState<(() => void) | null>(null);
+  // Table search/sort state
+  const [eventsSearch, setEventsSearch] = useState('');
+  const [eventsSort, setEventsSort] = useState<{ key: 'title' | 'date' | 'location' | 'club'; dir: 'asc' | 'desc' }>({ key: 'date', dir: 'desc' });
+  const [assignedSearch, setAssignedSearch] = useState('');
+  const [assignedSort, setAssignedSort] = useState<{ key: 'name' | 'category' | 'status' | 'members'; dir: 'asc' | 'desc' }>({ key: 'name', dir: 'asc' });
+  const [requestsSearch, setRequestsSearch] = useState('');
+  const [requestsSort, setRequestsSort] = useState<{ key: 'student' | 'club' | 'date' | 'status'; dir: 'asc' | 'desc' }>({ key: 'date', dir: 'desc' });
+  const today = new Date();
+  const formattedDate = today.toLocaleDateString(undefined, {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
 
   // Club edit modal
   const [showClubModal, setShowClubModal] = useState(false);
@@ -225,6 +239,7 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onNavigate, current
     
     return (
       <div className="space-y-8">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Overview</h3>
         {/* Overview Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {chartData.overview.map((item, index) => (
@@ -233,11 +248,11 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onNavigate, current
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border-l-4"
+              className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border-l-4 ring-1 ring-gray-100 dark:ring-gray-700 transition-all hover:shadow-lg hover:-translate-y-0.5"
               style={{ borderLeftColor: item.color }}
             >
               <div className="flex items-center">
-                <div className="p-2 rounded-full" style={{ backgroundColor: `${item.color}20` }}>
+                <div className="p-2 rounded-full shadow-inner" style={{ backgroundColor: `${item.color}20` }}>
                   <BarChart3 className="h-6 w-6" style={{ color: item.color }} />
                 </div>
                 <div className="ml-4">
@@ -273,14 +288,46 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onNavigate, current
   };
 
   const renderAssignedClubs = () => {
+    const rows = myClubs.map(club => ({ club, members: dataService.getAllMemberships().filter(m => m.clubId === club.id && m.status === 'APPROVED').length }))
+      .filter(({ club }) => {
+        const q = assignedSearch.trim().toLowerCase();
+        if (!q) return true;
+        return (
+          club.name.toLowerCase().includes(q) ||
+          (club.category || '').toLowerCase().includes(q) ||
+          (club.status || '').toLowerCase().includes(q)
+        );
+      })
+      .sort((a, b) => {
+        const dir = assignedSort.dir === 'asc' ? 1 : -1;
+        switch (assignedSort.key) {
+          case 'name': return a.club.name.localeCompare(b.club.name) * dir;
+          case 'category': return (a.club.category || '').localeCompare(b.club.category || '') * dir;
+          case 'status': return (a.club.status || '').localeCompare(b.club.status || '') * dir;
+          case 'members': return (a.members - b.members) * dir;
+        }
+      });
+
+    const setSort = (key: 'name' | 'category' | 'status' | 'members') => setAssignedSort(prev => prev.key === key ? { key, dir: prev.dir === 'asc' ? 'desc' : 'asc' } : { key, dir: 'asc' });
+
     return (
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white">My Assigned Clubs</h2>
         </div>
 
+        {/* Search */}
+        <div className="flex items-center justify-between">
+          <input
+            value={assignedSearch}
+            onChange={(e) => setAssignedSearch(e.target.value)}
+            placeholder="Search clubs by name, category, status..."
+            className="w-full md:w-96 border rounded px-3 py-2 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white"
+          />
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {myClubs.map((club) => (
+          {rows.map(({ club, members }) => (
             <motion.div
               key={club.id}
               initial={{ opacity: 0, y: 20 }}
@@ -308,7 +355,7 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onNavigate, current
                   </div>
                   <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
                     <Users className="h-4 w-4 mr-2" />
-                    {club.memberCount} members
+                    {members} members
                   </div>
                 </div>
 
@@ -329,6 +376,29 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onNavigate, current
   };
 
   const renderClubEvents = () => {
+    const rows = myEvents.map(e => ({
+      event: e,
+      clubName: myClubs.find(c => c.id === e.clubId)?.name || ''
+    })).filter(({ event, clubName }) => {
+      const q = eventsSearch.trim().toLowerCase();
+      if (!q) return true;
+      return (
+        event.title.toLowerCase().includes(q) ||
+        (event.location || '').toLowerCase().includes(q) ||
+        clubName.toLowerCase().includes(q)
+      );
+    }).sort((a, b) => {
+      const dir = eventsSort.dir === 'asc' ? 1 : -1;
+      switch (eventsSort.key) {
+        case 'title': return a.event.title.localeCompare(b.event.title) * dir;
+        case 'location': return (a.event.location || '').localeCompare(b.event.location || '') * dir;
+        case 'club': return a.clubName.localeCompare(b.clubName) * dir;
+        case 'date': return (new Date(a.event.date).getTime() - new Date(b.event.date).getTime()) * dir;
+      }
+    });
+
+    const setSort = (key: 'title' | 'date' | 'location' | 'club') => setEventsSort(prev => prev.key === key ? { key, dir: prev.dir === 'asc' ? 'desc' : 'asc' } : { key, dir: 'asc' });
+
     return (
       <div className="space-y-6">
         <div className="flex justify-between items-center">
@@ -339,8 +409,18 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onNavigate, current
           </button>
         </div>
 
+        {/* Search */}
+        <div className="flex items-center justify-between">
+          <input
+            value={eventsSearch}
+            onChange={(e) => setEventsSearch(e.target.value)}
+            placeholder="Search events by title, location, club..."
+            className="w-full md:w-96 border rounded px-3 py-2 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white"
+          />
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {myEvents.map((event) => (
+          {rows.map(({ event }) => (
             <motion.div
               key={event.id}
               initial={{ opacity: 0, y: 20 }}
@@ -380,10 +460,45 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onNavigate, current
   };
 
   const renderRequests = () => {
+    const rows = pendingMemberships.map(membership => ({
+      membership,
+      student: dataService.getUserById(membership.userId),
+      club: dataService.getClubById(membership.clubId)
+    })).filter(({ student, club }) => {
+      const q = requestsSearch.trim().toLowerCase();
+      if (!q) return true;
+      return (
+        (student?.fullName || '').toLowerCase().includes(q) ||
+        (student?.email || '').toLowerCase().includes(q) ||
+        (club?.name || '').toLowerCase().includes(q) ||
+        (club?.category || '').toLowerCase().includes(q)
+      );
+    }).sort((a, b) => {
+      const dir = requestsSort.dir === 'asc' ? 1 : -1;
+      switch (requestsSort.key) {
+        case 'student': return (a.student?.fullName || '').localeCompare(b.student?.fullName || '') * dir;
+        case 'club': return (a.club?.name || '').localeCompare(b.club?.name || '') * dir;
+        case 'status': return 'PENDING'.localeCompare('PENDING') * dir;
+        case 'date': return (new Date(a.membership.startDate).getTime() - new Date(b.membership.startDate).getTime()) * dir;
+      }
+    });
+
+    const setSort = (key: 'student' | 'club' | 'date' | 'status') => setRequestsSort(prev => prev.key === key ? { key, dir: prev.dir === 'asc' ? 'desc' : 'asc' } : { key, dir: 'asc' });
+
     return (
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Membership Requests</h2>
+        </div>
+
+        {/* Search */}
+        <div className="flex items-center justify-between">
+          <input
+            value={requestsSearch}
+            onChange={(e) => setRequestsSearch(e.target.value)}
+            placeholder="Search by student, email, club, category..."
+            className="w-full md:w-96 border rounded px-3 py-2 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white"
+          />
         </div>
 
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
@@ -391,19 +506,15 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onNavigate, current
             <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
               <thead className="bg-gray-50 dark:bg-gray-700">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Student</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Club</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Request Date</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
+                  <th onClick={() => setSort('student')} className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer">Student {requestsSort.key==='student' ? (requestsSort.dir==='asc'?'▲':'▼') : ''}</th>
+                  <th onClick={() => setSort('club')} className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer">Club {requestsSort.key==='club' ? (requestsSort.dir==='asc'?'▲':'▼') : ''}</th>
+                  <th onClick={() => setSort('date')} className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer">Request Date {requestsSort.key==='date' ? (requestsSort.dir==='asc'?'▲':'▼') : ''}</th>
+                  <th onClick={() => setSort('status')} className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer">Status {requestsSort.key==='status' ? (requestsSort.dir==='asc'?'▲':'▼') : ''}</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
               <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                {pendingMemberships.map((membership) => {
-                  const student = dataService.getUserById(membership.userId);
-                  const club = dataService.getClubById(membership.clubId);
-                  
-                  return (
+                {rows.map(({ membership, student, club }) => (
                     <tr key={membership.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
@@ -445,8 +556,7 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onNavigate, current
                         </button>
                       </td>
                     </tr>
-                  );
-                })}
+                  ))}
               </tbody>
             </table>
           </div>
@@ -478,6 +588,27 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onNavigate, current
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Teacher Dashboard</h1>
           <p className="text-gray-600 dark:text-gray-400">Welcome back, {currentUser?.fullName}. Manage your assigned clubs and activities.</p>
         </motion.div>
+
+        {/* Welcome Card - only on Dashboard page */}
+        {currentPage === 'dashboard' && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="mb-8 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-2xl p-6 shadow-lg"
+          >
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div>
+                <h2 className="text-2xl font-semibold">Welcome to The Student Club</h2>
+                <p className="text-indigo-100">Guide and inspire your clubs to thrive.</p>
+              </div>
+              <div className="flex items-center px-4 py-2 bg-white/10 rounded-xl">
+                <Calendar className="h-5 w-5 mr-2 text-white" />
+                <span className="text-sm font-medium">{formattedDate}</span>
+              </div>
+            </div>
+          </motion.div>
+        )}
 
         {/* Content */}
         {renderContent()}
