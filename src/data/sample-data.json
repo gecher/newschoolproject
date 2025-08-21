@@ -554,7 +554,7 @@
   "memberships": [
     {
       "id": "membership-1",
-      "userId": "user-6",
+      "userId": "user-9",
       "clubId": "club-1",
       "role": "PRESIDENT",
       "status": "APPROVED",

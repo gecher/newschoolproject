@@ -52,6 +52,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
     } else if (currentUser?.role === 'STUDENT') {
       return [
         { id: 'clubs', label: 'Clubs', icon: Users },
+        { id: 'memberships', label: 'My Memberships', icon: UserPlus },
         { id: 'events', label: 'All Events', icon: Calendar },
         { id: 'announcements', label: 'Announcements', icon: Megaphone },
       ];
@@ -80,12 +81,18 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
               onClick={() => onNavigate(currentUser ? 'dashboard' : 'landing')}
               className="flex-shrink-0 flex items-center group"
             >
-              {/* Sample Logo - SVG Icon */}
-              <div className="h-9 w-9 md:h-10 md:w-10 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg ring-1 ring-white/30">
-                <svg className="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
+                             {/* Student Club Logo - Best Quality Image */}
+               <div className="h-9 w-9 md:h-10 md:w-10 rounded-lg overflow-hidden transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg ring-1 ring-white/30 bg-gradient-to-br from-indigo-500 to-purple-600">
+                 <img 
+                   src="https://i.imgur.com/Dmwm6UM.jpeg" 
+                   alt="Student Club Logo"
+                   className="w-full h-full object-cover"
+                   onError={(e) => {
+                     // Fallback to gradient background if image fails
+                     e.currentTarget.style.display = 'none';
+                   }}
+                 />
+               </div>
               <span className="ml-2 text-xl md:text-2xl font-extrabold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent tracking-tight transition-all duration-300 group-hover:opacity-90">
                 The Student Club
               </span>

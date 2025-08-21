@@ -573,7 +573,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
             
             <div className="relative h-96 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-600">
               <iframe
-src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3940.8791874119465!2d38.781454975337475!3d8.983263291076263!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x164b84f0f9866b0b%3A0x41639f24ff77b030!2sEthiopian%20Aviation%20University!5e0!3m2!1sen!2set!4v1755774250801!5m2!1sen!2set"                width="100%"
+src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63050.30259082863!2d38.63417387008666!3d9.004875426057769!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x164b8779e01dc533%3A0x9e0a30b0545a390d!2z4Yuo4Yib4YqQIOGJpeGIreGIg-GKlSDhiIHhiIjhibDhipsg4Yuw4Yio4YyDIOGJteGIneGIheGIreGJtSDhiaThibUgWWVtYW5lIEJpcmhhbiBTZWNvbmRvcnkgYW5kIEVsZW1lbnRhcnkgU2Nob29s!5e0!3m2!1sen!2set!4v1755778111309!5m2!1sen!2set"                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
                 allowFullScreen
@@ -590,7 +590,7 @@ src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3940.8791874119465!2d
                 Click on the map to open in Google Maps
               </p>
               <button
-                onClick={() => window.open('https://maps.app.goo.gl/5a4vxk43JzsyiyoQ6', '_blank')}
+                onClick={() => window.open('https://maps.app.goo.gl/pKnU7v7hDvJK5TPVA', '_blank')}
                 className="mt-2 text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 text-sm font-medium transition-colors"
               >
                 Open in Google Maps →

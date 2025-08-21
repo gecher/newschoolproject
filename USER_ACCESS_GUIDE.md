@@ -1,141 +1,52 @@
-# 🎓 School Club Management System - User Access Guide
+# 🎓 **The Student Club - User Access Guide**
 
-## 📋 Login Credentials
+## 🚀 **System Overview**
 
-### 👨‍💼 **Admin User**
-- **Email:** `admin@school.edu`
-- **Password:** `admin123`
-- **Role:** ADMIN
-
-### 👩‍🏫 **Teacher User**
-- **Email:** `sarah.johnson@school.edu`
-- **Password:** `teacher123`
-- **Role:** TEACHER
-
-### 👨‍🎓 **Student User**
-- **Email:** `alex.smith@student.school.edu`
-- **Password:** `student123`
-- **Role:** STUDENT
+The Student Club Management System is a comprehensive platform designed to manage student clubs, events, memberships, and activities. The system provides role-based access control with three main user types: **Admin**, **Teacher**, and **Student**.
 
 ---
 
-## 🔐 **Admin User (admin@school.edu) - Full System Access**
+## 🔐 **Access Requirements**
 
-### ✅ **Available Features:**
-1. **🔧 Admin Panel**
-   - Create, edit, and delete clubs
-   - Manage all users (students, teachers, admins)
-   - Approve/reject club memberships
-   - View system-wide statistics
+### **To access the system, you need:**
+1. **Valid email address** registered in the system
+2. **Password** assigned by your administrator
+3. **User account** created by an administrator
 
-2. **📢 Announcements**
-   - Create global announcements
-   - Create club-specific announcements
-   - Edit and delete any announcement
-   - View all announcements
-
-3. **🎯 Events**
-   - Create events for any club
-   - Edit any event details
-   - Manage event attendees (approve/reject RSVPs)
-   - Check-in attendees
-   - View comprehensive attendee lists
-
-4. **👥 Club Management**
-   - Member of all 5 clubs (Tech Innovators, Creative Arts, Debate Champions, Eco Warriors, Sports Legends)
-   - Can view all club details and members
-   - Full access to club management features
-
-5. **📅 Event Participation**
-   - RSVP'd to all 5 events
-   - Various RSVP statuses (Accepted, Pending, Rejected)
-   - Some events checked in, others not
-
-6. **🔔 Notifications**
-   - Club registration requests
-   - Event RSVP updates
-   - System-wide notifications
+### **Getting Access:**
+- **Students & Teachers:** Contact your school administrator to create an account
+- **Administrators:** Contact the system administrator for initial setup
+- **No demo accounts available** - all users must have proper credentials
 
 ---
 
-## 👩‍🏫 **Teacher User (sarah.johnson@school.edu) - Teacher Dashboard Access**
+## 👥 **User Roles & Permissions**
 
-### ✅ **Available Features:**
-1. **📊 Teacher Dashboard**
-   - View assigned clubs (All 5 clubs - as advisor)
-   - Manage club members and roles for all clubs
-   - Create and edit events for all clubs
-   - View club statistics
+### **🔴 ADMIN (Full System Access)**
+- **Manage all clubs** - Create, edit, delete, approve
+- **Manage all events** - Create, edit, delete, manage attendees
+- **Manage all users** - Create, edit, delete user accounts
+- **Manage memberships** - Approve/reject club join requests
+- **System oversight** - View analytics, manage announcements
+- **Assign advisors** - Link teachers to clubs
 
-2. **📢 Announcements**
-   - Create announcements for all clubs
-   - View global and club-specific announcements
-   - Edit own announcements
+### **🔵 TEACHER (Club Advisor Access)**
+- **Manage assigned clubs** - Edit club details, manage members
+- **Create events** - For clubs they advise
+- **Manage attendees** - Approve RSVPs, check-in participants
+- **Create announcements** - Club-specific announcements
+- **View analytics** - For their assigned clubs
 
-3. **🎯 Events**
-   - Create events for all clubs
-   - **Created Events:** All 7 events (Robotics Workshop, Art Exhibition, Debate Tournament, Environmental Clean-up, Basketball Championship, Advanced Programming Workshop, Tech Innovation Fair)
-   - Manage event attendees for all club events
-   - Check-in attendees
-   - View attendee lists
-
-4. **👥 Club Management**
-   - Advisor of all 5 clubs (Tech Innovators, Creative Arts, Debate Champions, Eco Warriors, Sports Legends)
-   - Can view and manage all club details and members
-   - Full access to all club management features
-
-5. **📅 Event Participation**
-   - RSVP'd to multiple events
-   - Mix of accepted and pending RSVPs
-   - Some events checked in
-
-6. **🔔 Notifications**
-   - New member notifications
-   - Event reminders
-   - Club-specific updates
+### **🟢 STUDENT (Limited Access)**
+- **View clubs** - Browse available clubs
+- **Join clubs** - Request membership
+- **Participate in events** - RSVP to events
+- **View announcements** - Global and club-specific
+- **Manage profile** - Update personal information
 
 ---
 
-## 👨‍🎓 **Student User (alex.smith@student.school.edu) - Student Dashboard Access**
-
-### ✅ **Available Features:**
-1. **📊 Student Dashboard**
-   - View joined clubs and memberships
-   - See upcoming events
-   - Track personal activities
-
-2. **📢 Announcements**
-   - View global announcements
-   - View announcements for joined clubs
-   - Cannot create or edit announcements
-
-3. **🎯 Events**
-   - RSVP to events (Accept/Reject)
-   - View event details and attendees
-   - Cannot manage events or attendees
-
-4. **👥 Club Memberships**
-   - **Tech Innovators** - President role
-   - **Creative Arts** - Vice President role
-   - **Debate Champions** - Secretary role
-   - **Eco Warriors** - Member role
-   - **Sports Legends** - Captain role
-   - Demonstrates all membership roles
-
-5. **📅 Event Participation**
-   - RSVP'd to all 7 events
-   - Mix of accepted, pending, and rejected RSVPs
-   - Some events checked in by organizers
-
-6. **🔔 Notifications**
-   - Membership approval notifications
-   - Event updates
-   - Role assignment notifications
-   - Check-in confirmations
-
----
-
-## 🎯 **System Features to Demonstrate**
+## 🎯 **Key Features by Role**
 
 ### **1. Club Management**
 - **Admin:** Full CRUD operations on all clubs
@@ -167,39 +78,45 @@
 
 ---
 
-## 🚀 **Quick Start Guide**
+## 🚀 **Getting Started**
 
-1. **Login** with any of the three user credentials
-2. **Navigate** through different sections using the navbar
-3. **Test Features** based on user role permissions
-4. **Switch Users** to see different access levels
-5. **Explore** all system capabilities
+1. **Contact Administrator** to get your login credentials
+2. **Login** with your email and password
+3. **Navigate** through different sections using the navbar
+4. **Explore** features based on your role permissions
+5. **Contact Support** if you encounter any issues
 
 ---
 
-## 📊 **Data Overview**
+## 📊 **System Features**
 
-- **1 Admin:** John Admin (admin@school.edu)
-- **1 Teacher:** Sarah Johnson (sarah.johnson@school.edu) - Advisor of all 5 clubs
-- **11 Students:** Alex Smith, Emma Wilson, James Brown, Sophia Davis, Lucas Garcia, Maya Patel, Ryan Chen, Isabella Rodriguez, Ethan Thompson, Ava Johnson, Noah Williams
-- **5 Clubs:** Tech Innovators, Creative Arts, Debate Champions, Eco Warriors, Sports Legends
-- **7 Events:** All created by Sarah Johnson (Robotics Workshop, Art Exhibition, Debate Tournament, Environmental Clean-up, Basketball Championship, Advanced Programming Workshop, Tech Innovation Fair)
-- **7 Announcements:** Mix of global and club-specific
-- **8 Notifications:** Various types for different users
-- **28 Event Attendees:** Comprehensive RSVP and check-in data
+- **User Management:** Secure authentication and role-based access
+- **Club Management:** Complete club lifecycle management
+- **Event Management:** Event creation, RSVP, and attendance tracking
+- **Membership System:** Join requests, approvals, and role management
+- **Announcements:** Global and club-specific communication
+- **Notifications:** Real-time updates and alerts
+- **Analytics:** Performance metrics and insights
+- **Responsive Design:** Works on all devices
 
-## 🎯 **Additional Student Accounts for Testing:**
+---
 
-### **Student Login Credentials:**
-- **Emma Wilson:** `emma.wilson@student.school.edu` / `student123`
-- **James Brown:** `james.brown@student.school.edu` / `student123`
-- **Sophia Davis:** `sophia.davis@student.school.edu` / `student123`
-- **Lucas Garcia:** `lucas.garcia@student.school.edu` / `student123`
-- **Maya Patel:** `maya.patel@student.school.edu` / `student123`
-- **Ryan Chen:** `ryan.chen@student.school.edu` / `student123`
-- **Isabella Rodriguez:** `isabella.rodriguez@student.school.edu` / `student123`
-- **Ethan Thompson:** `ethan.thompson@student.school.edu` / `student123`
-- **Ava Johnson:** `ava.johnson@student.school.edu` / `student123`
-- **Noah Williams:** `noah.williams@student.school.edu` / `student123`
+## 🔒 **Security Features**
 
-This setup provides a complete demonstration of all system features with realistic data and proper role-based access control.
+- **Email-based authentication** - No username required
+- **Password protection** - Secure login required
+- **Role-based permissions** - Access control by user type
+- **Session management** - Secure user sessions
+- **Data validation** - Input sanitization and validation
+
+---
+
+## 📞 **Support & Contact**
+
+- **For Access Issues:** Contact your school administrator
+- **For Technical Problems:** Contact the system administrator
+- **For Feature Requests:** Submit through your administrator
+
+---
+
+*This system provides a complete school club management solution with secure, role-based access control. All users must have proper credentials to access the system.*

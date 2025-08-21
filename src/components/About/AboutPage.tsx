@@ -32,7 +32,7 @@ const team = [
 const advisor = {
   name: 'Getacher Ashebir',
   role: 'Project Advisor',
-  image: 'https://i.imgur.com/7JZ32dA.jpeg'
+  image: 'https://i.imgur.com/XOCQmGk.jpeg'
 };
 
 const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {

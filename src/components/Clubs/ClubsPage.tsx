@@ -254,7 +254,7 @@ const ClubsPage: React.FC<ClubsPageProps> = ({ onNavigate }) => {
               return (
                 <div
                   key={club.id}
-                  className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md transition-shadow cursor-pointer"
+                  className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md transition-shadow cursor-pointer h-full flex flex-col"
                   onClick={() => onNavigate('club-detail', { clubId: club.id })}
                 >
                   {/* Club Cover Image */}
@@ -288,7 +288,7 @@ const ClubsPage: React.FC<ClubsPageProps> = ({ onNavigate }) => {
                   </div>
 
                   {/* Club Content */}
-                  <div className="p-6 pt-8">
+                  <div className="p-6 pt-8 flex flex-col flex-1">
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                       {club.name}
                     </h3>
@@ -305,7 +305,7 @@ const ClubsPage: React.FC<ClubsPageProps> = ({ onNavigate }) => {
                     </div>
 
                     {/* Action Button */}
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between mt-auto">
                       {isMember ? (
                         <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200">
                           <span className="w-2 h-2 bg-green-400 rounded-full mr-2"></span>

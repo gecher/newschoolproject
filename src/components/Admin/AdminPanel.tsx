@@ -306,17 +306,30 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate: _onNavigate, curren
     const totalEvents = events.length;
     const activeMemberships = memberships.filter(m => m.status === 'APPROVED').length;
 
+    // Filter out zero values and ensure at least one category exists
+    const userStats = [
+      { name: 'Students', value: users.filter(u => u.role === 'STUDENT').length, color: '#3B82F6' },
+      { name: 'Teachers', value: users.filter(u => u.role === 'TEACHER').length, color: '#10B981' },
+      { name: 'Admins', value: users.filter(u => u.role === 'ADMIN').length, color: '#F59E0B' }
+    ].filter(stat => stat.value > 0);
+
+    const clubStats = [
+      { name: 'Active', value: clubs.filter(c => c.status === 'ACTIVE').length, color: '#10B981' },
+      { name: 'Pending', value: clubs.filter(c => c.status === 'PENDING').length, color: '#F59E0B' },
+      { name: 'Inactive', value: clubs.filter(c => c.status === 'INACTIVE').length, color: '#EF4444' }
+    ].filter(stat => stat.value > 0);
+
+    // If all values are 0, show a default message
+    if (clubStats.length === 0) {
+      clubStats.push({ name: 'No Data', value: 1, color: '#9CA3AF' });
+    }
+    if (userStats.length === 0) {
+      userStats.push({ name: 'No Data', value: 1, color: '#9CA3AF' });
+    }
+
     return {
-      userStats: [
-        { name: 'Students', value: users.filter(u => u.role === 'STUDENT').length, color: '#3B82F6' },
-        { name: 'Teachers', value: users.filter(u => u.role === 'TEACHER').length, color: '#10B981' },
-        { name: 'Admins', value: users.filter(u => u.role === 'ADMIN').length, color: '#F59E0B' }
-      ],
-      clubStats: [
-        { name: 'Active', value: clubs.filter(c => c.status === 'ACTIVE').length, color: '#10B981' },
-        { name: 'Pending', value: clubs.filter(c => c.status === 'PENDING').length, color: '#F59E0B' },
-        { name: 'Inactive', value: clubs.filter(c => c.status === 'INACTIVE').length, color: '#EF4444' }
-      ],
+      userStats,
+      clubStats,
       monthlyData: [
         { month: 'Jan', users: Math.floor(Math.random() * 20) + 10, clubs: Math.floor(Math.random() * 5) + 2 },
         { month: 'Feb', users: Math.floor(Math.random() * 20) + 15, clubs: Math.floor(Math.random() * 5) + 3 },
@@ -380,10 +393,19 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate: _onNavigate, curren
                   cx="50%"
                   cy="50%"
                   labelLine={false}
-                  label={({ name, percent }) => `${name} ${((percent || 0) * 100).toFixed(0)}%`}
+                  label={({ name, percent, value }) => {
+                    if (value === 0) return `${name} 0%`;
+                    return `${name} ${((percent || 0) * 100).toFixed(0)}%`;
+                  }}
                   outerRadius={80}
                   fill="#8884d8"
                   dataKey="value"
+                  labelStyle={{ 
+                    fontSize: '12px', 
+                    fontWeight: 'bold',
+                    fill: '#1f2937',
+                    textShadow: '0 0 3px white, 0 0 3px white, 0 0 3px white'
+                  }}
                 >
                   {chartData.userStats.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
@@ -408,10 +430,19 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate: _onNavigate, curren
                   cx="50%"
                   cy="50%"
                   labelLine={false}
-                  label={({ name, percent }) => `${name} ${((percent || 0) * 100).toFixed(0)}%`}
+                  label={({ name, percent, value }) => {
+                    if (value === 0) return `${name} 0%`;
+                    return `${name} ${((percent || 0) * 100).toFixed(0)}%`;
+                  }}
                   outerRadius={80}
                   fill="#8884d8"
                   dataKey="value"
+                  labelStyle={{ 
+                    fontSize: '12px', 
+                    fontWeight: 'bold',
+                    fill: '#1f2937',
+                    textShadow: '0 0 3px white, 0 0 3px white, 0 0 3px white'
+                  }}
                 >
                   {chartData.clubStats.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
@@ -432,10 +463,30 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate: _onNavigate, curren
             <ResponsiveContainer width="100%" height={300}>
               <LineChart data={chartData.monthlyData}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="month" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
+                <XAxis 
+                  dataKey="month" 
+                  tick={{ fill: '#6b7280', fontSize: 12 }}
+                  axisLine={{ stroke: '#d1d5db' }}
+                />
+                <YAxis 
+                  tick={{ fill: '#6b7280', fontSize: 12 }}
+                  axisLine={{ stroke: '#d1d5db' }}
+                />
+                <Tooltip 
+                  contentStyle={{ 
+                    backgroundColor: '#ffffff',
+                    border: '1px solid #d1d5db',
+                    borderRadius: '8px',
+                    color: '#1f2937'
+                  }}
+                />
+                <Legend 
+                  wrapperStyle={{ 
+                    color: '#1f2937',
+                    fontSize: '14px',
+                    fontWeight: '500'
+                  }}
+                />
                 <Line type="monotone" dataKey="users" stroke="#3B82F6" strokeWidth={2} name="New Users" />
                 <Line type="monotone" dataKey="clubs" stroke="#10B981" strokeWidth={2} name="New Clubs" />
               </LineChart>
@@ -544,10 +595,10 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate: _onNavigate, curren
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                        club.status === 'ACTIVE' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
-                        club.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
-                        'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium font-semibold ${
+                        club.status === 'ACTIVE' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 shadow-sm' :
+                        club.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200 shadow-sm' :
+                        'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 shadow-sm'
                       }`}>
                         {club.status}
                       </span>
@@ -758,10 +809,10 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate: _onNavigate, curren
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                        user.role === 'ADMIN' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' :
-                        user.role === 'TEACHER' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' :
-                        'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium font-semibold ${
+                        user.role === 'ADMIN' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 shadow-sm' :
+                        user.role === 'TEACHER' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 shadow-sm' :
+                        'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 shadow-sm'
                       }`}>
                         {user.role}
                       </span>
@@ -770,7 +821,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate: _onNavigate, curren
                       {user.email}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium font-semibold bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 shadow-sm">
                         Active
                       </span>
                     </td>
@@ -872,9 +923,9 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate: _onNavigate, curren
                          {new Date(membership.startDate).toLocaleDateString()}
                        </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
-                          Pending
-                        </span>
+                                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium font-semibold bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200 shadow-sm">
+                        Pending
+                      </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                         <button

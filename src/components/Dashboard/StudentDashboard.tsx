@@ -244,9 +244,9 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate, current
               key={club.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden"
+              className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden h-full"
             >
-              <div className="p-6">
+              <div className="p-6 h-full flex flex-col">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{club.name}</h3>
                   <div className="flex items-center space-x-2">
@@ -286,7 +286,7 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate, current
                 <button
                   onClick={() => handleJoinClub(club.id)}
                   disabled={isApproved || isPending}
-                  className={`w-full py-2 px-4 rounded-lg transition-colors ${
+                  className={`w-full py-2 px-4 rounded-lg transition-colors mt-auto ${
                     isApproved ? 'bg-green-600 text-white cursor-not-allowed opacity-90' :
                     isPending ? 'bg-yellow-500 text-white cursor-not-allowed opacity-90' :
                     'bg-indigo-600 hover:bg-indigo-700 text-white'
@@ -300,57 +300,65 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate, current
           })}
         </div>
 
-        {/* My Memberships */}
-        <div className="mt-12">
-          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">My Memberships</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {myMemberships.map((membership) => {
-              const club = allClubs.find(c => c.id === membership.clubId);
-              if (!club) return null;
-              
-              return (
-                <motion.div
-                  key={membership.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden"
-                >
-                  <div className="p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <h4 className="text-lg font-semibold text-gray-900 dark:text-white">{club.name}</h4>
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                        membership.status === 'APPROVED' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
-                        membership.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
-                        'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
-                      }`}>
-                        {membership.status}
-                      </span>
-                    </div>
-                    
-                    <div className="space-y-2 mb-4">
-                      <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-                        <Tag className="h-4 w-4 mr-2" />
-                        {club.category}
-                      </div>
-                      <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-                        <Users className="h-4 w-4 mr-2" />
-                        Role: {membership.role}
-                      </div>
-                    </div>
+        {/* My Memberships moved to dedicated page */}
+      </div>
+    );
+  };
 
-                    {membership.status === 'APPROVED' && (
-                      <button
-                        onClick={() => handleLeaveClub(membership.id)}
-                        className="w-full bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg transition-colors"
-                      >
-                        Leave Club
-                      </button>
-                    )}
+  const renderMyMemberships = () => {
+    return (
+      <div className="space-y-6">
+        <div className="flex justify-between items-center">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">My Memberships</h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {myMemberships.map((membership) => {
+            const club = allClubs.find(c => c.id === membership.clubId);
+            if (!club) return null;
+
+            return (
+              <motion.div
+                key={membership.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden"
+              >
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h4 className="text-lg font-semibold text-gray-900 dark:text-white">{club.name}</h4>
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                      membership.status === 'APPROVED' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
+                      membership.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
+                      'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+                    }`}>
+                      {membership.status}
+                    </span>
                   </div>
-                </motion.div>
-              );
-            })}
-          </div>
+
+                  <div className="space-y-2 mb-4">
+                    <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                      <Tag className="h-4 w-4 mr-2" />
+                      {club.category}
+                    </div>
+                    <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                      <Users className="h-4 w-4 mr-2" />
+                      Role: {membership.role}
+                    </div>
+                  </div>
+
+                  {membership.status === 'APPROVED' && (
+                    <button
+                      onClick={() => handleLeaveClub(membership.id)}
+                      className="w-full bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg transition-colors"
+                    >
+                      Leave Club
+                    </button>
+                  )}
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     );
@@ -369,9 +377,9 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate, current
               key={event.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden"
+              className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden h-full"
             >
-              <div className="p-6">
+              <div className="p-6 h-full flex flex-col">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{event.title}</h3>
                 
                 <p className="text-gray-600 dark:text-gray-400 mb-4">{event.description}</p>
@@ -387,7 +395,7 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate, current
                   </div>
                 </div>
 
-                <button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-lg transition-colors">
+                <button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-lg transition-colors mt-auto">
                   View Details
                 </button>
               </div>
@@ -406,6 +414,8 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate, current
         return renderJoinClubs();
       case 'events':
         return renderAllEvents();
+      case 'memberships':
+        return renderMyMemberships();
       default:
         return renderStats();
     }

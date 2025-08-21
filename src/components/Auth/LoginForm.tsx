@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Users, Eye, EyeOff, Mail, Lock } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
 const LoginForm: React.FC = () => {
@@ -22,37 +22,30 @@ const LoginForm: React.FC = () => {
     setIsLoading(false);
   };
 
-  const demoAccounts = [
-    { email: 'dawit.mekonnen@school.edu', password: 'dawit123', role: 'Admin' },
-    { email: 'bezawit.adane@school.edu', password: 'bezawit123', role: 'Teacher' },
-    { email: 'felege.birhan@school.edu', password: 'felege123', role: 'Student' }
-  ];
-
-  const loginWithDemo = async (demoEmail: string, demoPassword: string) => {
-    setEmail(demoEmail);
-    setPassword(demoPassword);
-    setError('');
-    setIsLoading(true);
-
-    const success = await login(demoEmail, demoPassword);
-    if (!success) {
-      setError('Demo login failed');
-    }
-    setIsLoading(false);
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-cyan-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         {/* Header */}
         <div className="text-center">
           <div className="flex justify-center">
-            <div className="bg-indigo-100 dark:bg-indigo-900 p-3 rounded-full">
-              <Users className="h-12 w-12 text-indigo-600 dark:text-indigo-400" />
+            <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-2 rounded-full shadow-lg overflow-hidden">
+              <img 
+                src="https://i.imgur.com/Dmwm6UM.jpeg" 
+                alt="The Student Club Logo"
+                className="h-16 w-16 rounded-full object-cover"
+                onError={(e) => {
+                  // Fallback to a simple icon if image fails to load
+                  e.currentTarget.style.display = 'none';
+                  e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                }}
+              />
+              <div className="hidden h-16 w-16 rounded-full bg-white flex items-center justify-center">
+                <div className="text-indigo-600 font-bold text-lg">SC</div>
+              </div>
             </div>
           </div>
           <h2 className="mt-6 text-3xl font-extrabold text-gray-900 dark:text-white">
-            Welcome to ClubHub
+            Welcome to The Student Club
           </h2>
           <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
             Sign in to manage your student clubs and activities
@@ -81,7 +74,7 @@ const LoginForm: React.FC = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg leading-5 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
-                    placeholder="Enter your email"
+                    placeholder="Enter your email address"
                   />
                 </div>
               </div>
@@ -131,38 +124,13 @@ const LoginForm: React.FC = () => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-lg text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 {isLoading ? 'Signing in...' : 'Sign in'}
               </button>
             </div>
           </div>
         </form>
-
-        {/* Demo Accounts */}
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
-          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Demo Accounts</h3>
-          <div className="space-y-2">
-            {demoAccounts.map((account, index) => (
-              <button
-                key={index}
-                onClick={() => loginWithDemo(account.email, account.password)}
-                disabled={isLoading}
-                className="w-full text-left p-3 rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <div className="flex justify-between items-center">
-                  <div>
-                    <p className="text-sm font-medium text-gray-900 dark:text-white">{account.role}</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">{account.email}</p>
-                  </div>
-                  <span className="text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded">
-                    Click to login
-                  </span>
-                </div>
-              </button>
-            ))}
-          </div>
-        </div>
       </div>
     </div>
   );

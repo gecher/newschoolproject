@@ -109,7 +109,7 @@ const MainApp: React.FC = () => {
 
     // Role-based routing for Student
     if (currentUser.role === 'STUDENT') {
-      if (['dashboard', 'clubs', 'events'].includes(currentPage)) {
+      if (['dashboard', 'clubs', 'events', 'memberships'].includes(currentPage)) {
         return <StudentDashboard onNavigate={handleNavigate} currentPage={currentPage} />;
       }
     }
