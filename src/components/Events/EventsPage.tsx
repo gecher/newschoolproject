@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Calendar, MapPin, Clock, Users, Plus, Search, 
-  ChevronRight, CheckCircle, XCircle 
+  ChevronRight, CheckCircle, XCircle
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { dataService } from '../../services/dataService';

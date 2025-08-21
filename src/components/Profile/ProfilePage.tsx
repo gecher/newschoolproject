@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { dataService } from '../../services/dataService';
 import { Edit, Camera, Save, X, Eye, EyeOff } from 'lucide-react';
-//
 import { useAuth } from '../../contexts/AuthContext';
 import { User as UserType } from '../../types';
 
@@ -129,7 +128,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate }) => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
