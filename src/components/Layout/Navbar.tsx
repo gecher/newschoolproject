@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { 
-  Search, Bell, User, Menu, X, Sun, Moon, 
+  Bell, User, Menu, X, Sun, Moon, 
   Home, Users, Calendar, MessageSquare, Award, BarChart3, UserPlus, Megaphone
 } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -36,7 +36,6 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
   const getNavigationItems = () => {
     if (currentUser?.role === 'ADMIN') {
       return [
-        { id: 'dashboard', label: 'Stats', icon: BarChart3 },
         { id: 'clubs', label: 'Manage Clubs', icon: Users },
         { id: 'events', label: 'Manage Events', icon: Calendar },
         { id: 'announcements', label: 'Announcements', icon: Megaphone },
@@ -45,7 +44,6 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
       ];
     } else if (currentUser?.role === 'TEACHER') {
       return [
-        { id: 'dashboard', label: 'Stats', icon: BarChart3 },
         { id: 'clubs', label: 'Assigned Clubs', icon: Users },
         { id: 'events', label: 'Club Events', icon: Calendar },
         { id: 'announcements', label: 'Announcements', icon: Megaphone },
@@ -53,8 +51,8 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
       ];
     } else if (currentUser?.role === 'STUDENT') {
       return [
-        { id: 'dashboard', label: 'Stats', icon: BarChart3 },
         { id: 'clubs', label: 'Join Clubs', icon: Users },
+        { id: 'joined', label: 'Joined', icon: Award },
         { id: 'events', label: 'All Events', icon: Calendar },
         { id: 'announcements', label: 'Announcements', icon: Megaphone },
       ];
@@ -74,14 +72,14 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
   const isPublic = !currentUser;
 
   return (
-    <nav className="bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700">
+    <nav className="relative sticky top-0 z-50 bg-white/80 dark:bg-gray-900/70 backdrop-blur border-b border-gray-200/60 dark:border-gray-700/60">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo and Brand */}
           <div className="flex items-center">
             <button
-              onClick={() => onNavigate('landing')}
-              className="flex-shrink-0 flex items-center group"
+              onClick={() => onNavigate(currentUser ? 'dashboard' : 'landing')}
+              className="flex-shrink-0 flex items-center group hover:opacity-95 transition"
             >
               {/* Sample Logo - SVG Icon */}
               <div className="h-8 w-8 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg">
@@ -89,14 +87,19 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
                   <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <span className="ml-2 text-xl font-bold text-gray-900 dark:text-white transition-all duration-300 group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
-                The Student Club
+              <span className={`ml-3 md:ml-4 text-[1.15rem] md:text-[1.25rem] font-bold tracking-tight transition-all duration-300 ${
+                isPublic
+                  ? 'text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400'
+                  : 'bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600'
+              }`}>
+                <span className="md:hidden">Student Club</span>
+                <span className="hidden md:inline">The Student Club</span>
               </span>
             </button>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:block flex-1">
+          <div className="hidden md:block flex-1 min-w-0">
             {isPublic ? (
               <div className="flex justify-end items-center gap-3">
                 {/* Theme Toggle for Public Users */}
@@ -139,49 +142,35 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
                 </button>
               </div>
             ) : (
-              <div className="flex items-center">
-                <div className="ml-10 flex items-baseline space-x-4">
+              <div className="flex items-center min-w-0">
+                <div className="ml-6 md:ml-10 flex items-baseline space-x-2 md:space-x-3 pr-2">
                   {navigationItems.map((item) => {
                     const Icon = item.icon;
                     return (
                       <button
                         key={item.id}
                         onClick={() => onNavigate(item.id)}
-                        className={`px-3 py-2 rounded-md text-sm font-medium flex items-center space-x-1 transition-all duration-300 hover:scale-105 ${
+                        className={`px-3 md:px-4 py-2 rounded-full text-xs md:text-sm font-medium flex items-center space-x-2 transition-all duration-300 hover:scale-[1.02] ${
                           currentPage === item.id
-                            ? 'bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300'
-                            : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
+                            ? 'bg-indigo-600 text-white shadow-sm dark:bg-indigo-600'
+                            : 'text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700/60'
                         }`}
                       >
                         <Icon className="h-4 w-4" />
-                        <span>{item.label}</span>
+                        <span className="hidden lg:inline">{item.label}</span>
                       </button>
                     );
                   })}
                 </div>
 
-                {/* Search Bar */}
-                <div className="hidden md:block flex-1 max-w-md mx-8">
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Search className="h-5 w-5 text-gray-400" />
-                    </div>
-                    <input
-                      type="text"
-                      placeholder="Search clubs, events, users..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md leading-5 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 focus:scale-105"
-                    />
-                  </div>
-                </div>
+                {/* Search removed as requested */}
               </div>
             )}
           </div>
 
           {/* Right side items */}
           {!isPublic && (
-            <div className="hidden md:flex items-center space-x-4">
+            <div className="hidden md:flex items-center space-x-3 flex-shrink-0">
               {/* Theme Toggle */}
               <button
                 onClick={toggleTheme}
@@ -206,7 +195,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: -10, scale: 0.95 }}
                     transition={{ duration: 0.2 }}
-                    className="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 z-50"
+                    className="absolute right-0 mt-2 w-80 bg-white/95 dark:bg-gray-800/95 backdrop-blur rounded-xl shadow-2xl border border-gray-200/70 dark:border-gray-700/70 z-50"
                   >
                     <div className="flex items-center justify-between px-4 py-2 border-b border-gray-200 dark:border-gray-700">
                       <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Notifications</span>
@@ -339,21 +328,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
             ) : (
               // existing mobile menu for authenticated users
               <>
-                {/* Mobile Search */}
-                <div className="px-3 py-2">
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Search className="h-5 w-5 text-gray-400" />
-                    </div>
-                    <input
-                      type="text"
-                      placeholder="Search..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md leading-5 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 focus:scale-105"
-                    />
-                  </div>
-                </div>
+                {/* Mobile Search removed */}
                 {navigationItems.map((item) => {
                   const Icon = item.icon;
                   return (
@@ -379,6 +354,8 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
           </div>
         )}
       </motion.div>
+      {/* Subtle gradient accent line */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent" />
     </nav>
   );
 };

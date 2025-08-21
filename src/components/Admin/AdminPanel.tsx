@@ -41,6 +41,11 @@ interface AdminPanelProps {
 
 const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate, currentPage = 'dashboard' }) => {
   const { currentUser } = useAuth();
+  const today = new Date();
+  const dateDisplay = `${today.toLocaleString('en-US', { month: 'short' })} ${today.getDate()} ${today.getFullYear()}`;
+  const monthAbbr = today.toLocaleString('en-US', { month: 'short' });
+  const dayNum = today.getDate();
+  const yearNum = today.getFullYear();
   const [clubs, setClubs] = useState<Club[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
   const [users, setUsers] = useState<User[]>([]);
@@ -88,6 +93,19 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate, currentPage = 'dash
     role: 'STUDENT' as User['role'],
     phone: ''
   });
+
+  // Table states: sorting and pagination
+  const [clubsSort, setClubsSort] = useState<{ key: 'name' | 'category' | 'status' | 'members' | 'advisor'; dir: 'asc' | 'desc' }>({ key: 'name', dir: 'asc' });
+  const [clubsPage, setClubsPage] = useState(1);
+  const CLUBS_PAGE_SIZE = 10;
+
+  const [usersSort, setUsersSort] = useState<{ key: 'fullName' | 'role' | 'email'; dir: 'asc' | 'desc' }>({ key: 'fullName', dir: 'asc' });
+  const [usersPage, setUsersPage] = useState(1);
+  const USERS_PAGE_SIZE = 10;
+
+  const [reqSort, setReqSort] = useState<{ key: 'student' | 'club' | 'date' | 'status'; dir: 'asc' | 'desc' }>({ key: 'date', dir: 'desc' });
+  const [reqPage, setReqPage] = useState(1);
+  const REQ_PAGE_SIZE = 10;
 
   useEffect(() => {
     loadAdminData();
@@ -448,20 +466,22 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate, currentPage = 'dash
           </button>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-              <thead className="bg-gray-50 dark:bg-gray-700">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Club</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Category</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Advisor</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Members</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+        <div className="relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-indigo-600/10 to-purple-600/10 rounded-2xl blur-2xl" />
+          <div className="relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl border border-gray-200/60 dark:border-gray-700/60 rounded-2xl shadow-lg overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200/70 dark:divide-gray-700/70">
+                <thead className="bg-gray-50/70 dark:bg-gray-900/40">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider">Club</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider">Category</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider">Advisor</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider">Members</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white/80 dark:bg-gray-800/80">
                 {clubs.map((club) => (
                   <tr key={club.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -555,8 +575,9 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate, currentPage = 'dash
                     </td>
                   </tr>
                 ))}
-              </tbody>
-            </table>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
@@ -633,19 +654,21 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate, currentPage = 'dash
           </button>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-              <thead className="bg-gray-50 dark:bg-gray-700">
+        <div className="relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-indigo-600/10 to-purple-600/10 rounded-2xl blur-2xl" />
+          <div className="relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl border border-gray-200/60 dark:border-gray-700/60 rounded-2xl shadow-lg overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200/70 dark:divide-gray-700/70">
+                <thead className="bg-gray-50/70 dark:bg-gray-900/40">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">User</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Role</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Email</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider">User</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider">Role</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider">Email</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
-              <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+              <tbody className="bg-white/80 dark:bg-gray-800/80 divide-y divide-gray-200/70 dark:divide-gray-700/70">
                 {users.map((user) => (
                   <tr key={user.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -712,19 +735,21 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate, currentPage = 'dash
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Membership Requests</h2>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-              <thead className="bg-gray-50 dark:bg-gray-700">
+        <div className="relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-indigo-600/10 to-purple-600/10 rounded-2xl blur-2xl" />
+          <div className="relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl border border-gray-200/60 dark:border-gray-700/60 rounded-2xl shadow-lg overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200/70 dark:divide-gray-700/70">
+                <thead className="bg-gray-50/70 dark:bg-gray-900/40">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Student</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Club</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Request Date</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider">Student</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider">Club</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider">Request Date</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
-              <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+              <tbody className="bg-white/80 dark:bg-gray-800/80 divide-y divide-gray-200/70 dark:divide-gray-700/70">
                 {memberships.filter(m => m.status === 'PENDING').map((membership) => {
                   const student = users.find(u => u.id === membership.userId);
                   const club = clubs.find(c => c.id === membership.clubId);
@@ -799,12 +824,45 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigate, currentPage = 'dash
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-900 relative overflow-hidden">
+      <div className="pointer-events-none absolute -top-20 -left-20 w-72 h-72 bg-gradient-to-br from-indigo-400/20 to-purple-400/20 rounded-full blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-20 -right-20 w-72 h-72 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-3xl" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Admin Dashboard</h1>
-          <p className="text-gray-600 dark:text-gray-400">Welcome back, {currentUser?.fullName}. Manage your school's clubs and activities.</p>
+          <div className="inline-block mb-3">
+            <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-1 rounded-full">
+              <div className="bg-white dark:bg-gray-900 px-4 py-1 rounded-full">
+                <span className="text-xs font-semibold text-gray-900 dark:text-white">Dashboard</span>
+              </div>
+            </div>
+          </div>
+          <h1 className="text-4xl md:text-5xl font-black bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">Admin Dashboard</h1>
+          <p className="text-lg text-gray-600 dark:text-gray-400">Welcome back, {currentUser?.fullName}. Manage your school's clubs and activities.</p>
+        </motion.div>
+
+        {/* Welcome Card */}
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="mb-8">
+          <div className="relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-2xl blur opacity-20" />
+            <div className="relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl border border-gray-200/60 dark:border-gray-700/60 rounded-2xl p-6 shadow-lg">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Welcome</p>
+                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{currentUser?.fullName}</h2>
+                </div>
+                <div className="flex items-center">
+                  <div className="rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
+                    <div className="bg-indigo-600 text-white text-xs font-semibold tracking-wide text-center px-3 py-1">{monthAbbr}</div>
+                    <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur px-4 py-2 text-center">
+                      <div className="text-2xl font-bold text-gray-900 dark:text-white leading-none">{dayNum}</div>
+                      <div className="text-[10px] text-gray-500 dark:text-gray-400 mt-1">{yearNum}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </motion.div>
 
         {/* Content */}

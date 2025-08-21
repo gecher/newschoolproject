@@ -42,6 +42,13 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate, current
   const [allEvents, setAllEvents] = useState<Event[]>([]);
   const [myMemberships, setMyMemberships] = useState<Membership[]>([]);
   const [availableClubs, setAvailableClubs] = useState<Club[]>([]);
+  const today = new Date();
+  const dateDisplay = `${today.toLocaleString('en-US', { month: 'short' })} ${today.getDate()} ${today.getFullYear()}`;
+  const monthAbbr = today.toLocaleString('en-US', { month: 'short' });
+  const dayNum = today.getDate();
+  const yearNum = today.getFullYear();
+  const [clubSearch, setClubSearch] = useState('');
+  const [clubCategory, setClubCategory] = useState('');
 
   useEffect(() => {
     if (currentUser) {
@@ -164,54 +171,107 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate, current
   };
 
   const renderJoinClubs = () => {
+    const uniqueCategories = Array.from(new Set(allClubs.map(c => c.category))).filter(Boolean).sort();
+    const membershipMap = new Map(myMemberships.map(m => [m.clubId, m] as const));
+    const filtered = allClubs.filter(c => {
+      const matchesName = c.name.toLowerCase().includes(clubSearch.toLowerCase());
+      const matchesCat = !clubCategory || c.category === clubCategory;
+      return matchesName && matchesCat;
+    });
+
     return (
       <div className="space-y-6">
-        <div className="flex justify-between items-center">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Join Clubs</h2>
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">All Clubs</h2>
+            <p className="text-sm text-gray-600 dark:text-gray-400">Search and request to join any club.</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {availableClubs.map((club) => (
-            <motion.div
-              key={club.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden"
+          <div className="flex flex-col sm:flex-row gap-3">
+            <input
+              value={clubSearch}
+              onChange={e => setClubSearch(e.target.value)}
+              placeholder="Search by name..."
+              className="w-full sm:w-64 px-3 py-2 rounded-full border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/70 backdrop-blur text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+            <select
+              value={clubCategory}
+              onChange={e => setClubCategory(e.target.value)}
+              className="w-full sm:w-56 px-3 py-2 rounded-full border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/70 backdrop-blur text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{club.name}</h3>
-                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                    club.status === 'ACTIVE' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
-                    club.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
-                    'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
-                  }`}>
-                    {club.status}
-                  </span>
-                </div>
-                
-                <p className="text-gray-600 dark:text-gray-400 mb-4">{club.description}</p>
-                
-                <div className="space-y-2 mb-4">
-                  <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-                    <Tag className="h-4 w-4 mr-2" />
-                    {club.category}
-                  </div>
-                  <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-                    <Users className="h-4 w-4 mr-2" />
-                    {club.memberCount} members
+              <option value="">All categories</option>
+              {uniqueCategories.map(cat => (
+                <option key={cat} value={cat}>{cat}</option>
+              ))}
+            </select>
                   </div>
                 </div>
 
+        <div className="relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-indigo-600/10 to-purple-600/10 rounded-2xl blur-2xl" />
+          <div className="relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl border border-gray-200/60 dark:border-gray-700/60 rounded-2xl shadow-lg overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="min-w-full">
+                <thead className="bg-gray-50/70 dark:bg-gray-900/40">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider">Club</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider">Category</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider">Members</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider">Action</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200/70 dark:divide-gray-700/70">
+                  {filtered.map((club) => {
+                    const membership = membershipMap.get(club.id);
+                    const isPending = membership?.status === 'PENDING';
+                    const isApproved = membership?.status === 'APPROVED';
+                    return (
+                      <tr key={club.id} className="hover:bg-gray-50/60 dark:hover:bg-gray-700/40 transition-colors">
+                        <td className="px-6 py-4">
+                          <div className="font-medium text-gray-900 dark:text-white">{club.name}</div>
+                          <div className="text-sm text-gray-500 dark:text-gray-400 line-clamp-1">{club.description}</div>
+                        </td>
+                        <td className="px-6 py-4">
+                          <span className="px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">{club.category}</span>
+                        </td>
+                        <td className="px-6 py-4 text-gray-900 dark:text-white">{club.memberCount}</td>
+                        <td className="px-6 py-4">
+                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                            club.status === 'ACTIVE' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
+                            club.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
+                            'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+                          }`}>{club.status}</span>
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="flex items-center gap-2">
                 <button
+                              disabled={isPending || isApproved}
                   onClick={() => handleJoinClub(club.id)}
-                  className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-lg transition-colors"
-                >
-                  Join Club
+                              className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                                isApproved
+                                  ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-200 cursor-not-allowed'
+                                  : isPending
+                                  ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-200 cursor-not-allowed'
+                                  : 'bg-indigo-600 text-white hover:bg-indigo-700'
+                              }`}
+                            >
+                              {isApproved ? 'Joined' : isPending ? 'Requested' : 'Request to Join'}
                 </button>
               </div>
-            </motion.div>
-          ))}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                  {filtered.length === 0 && (
+                    <tr>
+                      <td colSpan={5} className="px-6 py-10 text-center text-gray-500 dark:text-gray-400">No clubs match your filters.</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
 
         {/* My Memberships */}
@@ -221,7 +281,6 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate, current
             {myMemberships.map((membership) => {
               const club = allClubs.find(c => c.id === membership.clubId);
               if (!club) return null;
-              
               return (
                 <motion.div
                   key={membership.id}
@@ -240,7 +299,6 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate, current
                         {membership.status}
                       </span>
                     </div>
-                    
                     <div className="space-y-2 mb-4">
                       <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
                         <Tag className="h-4 w-4 mr-2" />
@@ -251,7 +309,6 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate, current
                         Role: {membership.role}
                       </div>
                     </div>
-
                     {membership.status === 'APPROVED' && (
                       <button
                         onClick={() => handleLeaveClub(membership.id)}
@@ -318,6 +375,35 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate, current
         return renderStats();
       case 'clubs':
         return renderJoinClubs();
+      case 'joined':
+        return (
+          <div className="space-y-6">
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Joined Clubs</h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {myMemberships.filter(m => m.status === 'APPROVED').map((membership) => {
+                const club = allClubs.find(c => c.id === membership.clubId);
+                if (!club) return null;
+                return (
+                  <motion.div key={membership.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                    <div className="p-6">
+                      <div className="flex items-center justify-between mb-4">
+                        <h4 className="text-lg font-semibold text-gray-900 dark:text-white">{club.name}</h4>
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">APPROVED</span>
+                      </div>
+                      <div className="space-y-2 mb-4">
+                        <div className="flex items-center text-sm text-gray-500 dark:text-gray-400"><Tag className="h-4 w-4 mr-2" />{club.category}</div>
+                        <div className="flex items-center text-sm text-gray-500 dark:text-gray-400"><Users className="h-4 w-4 mr-2" />Role: {membership.role}</div>
+                      </div>
+                      <button onClick={() => handleLeaveClub(membership.id)} className="w-full bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg transition-colors">Leave Club</button>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+        );
       case 'events':
         return renderAllEvents();
       default:
@@ -326,12 +412,45 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate, current
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-900 relative overflow-hidden">
+      <div className="pointer-events-none absolute -top-20 -left-20 w-72 h-72 bg-gradient-to-br from-indigo-400/20 to-purple-400/20 rounded-full blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-20 -right-20 w-72 h-72 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-3xl" />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative">
         {/* Header */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Student Dashboard</h1>
-          <p className="text-gray-600 dark:text-gray-400">Welcome back, {currentUser?.fullName}. Discover clubs and events that interest you.</p>
+          <div className="inline-block mb-3">
+            <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-1 rounded-full">
+              <div className="bg-white dark:bg-gray-900 px-4 py-1 rounded-full">
+                <span className="text-xs font-semibold text-gray-900 dark:text-white">Dashboard</span>
+              </div>
+            </div>
+          </div>
+          <h1 className="text-4xl md:text-5xl font-black bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">Student Dashboard</h1>
+          <p className="text-lg text-gray-600 dark:text-gray-400">Welcome back, {currentUser?.fullName}. Discover clubs and events that interest you.</p>
+        </motion.div>
+
+        {/* Welcome Card */}
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="mb-8">
+          <div className="relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-2xl blur opacity-20" />
+            <div className="relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl border border-gray-200/60 dark:border-gray-700/60 rounded-2xl p-6 shadow-lg">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Welcome</p>
+                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{currentUser?.fullName}</h2>
+                </div>
+                <div className="flex items-center">
+                  <div className="rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
+                    <div className="bg-indigo-600 text-white text-xs font-semibold tracking-wide text-center px-3 py-1">{monthAbbr}</div>
+                    <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur px-4 py-2 text-center">
+                      <div className="text-2xl font-bold text-gray-900 dark:text-white leading-none">{dayNum}</div>
+                      <div className="text-[10px] text-gray-500 dark:text-gray-400 mt-1">{yearNum}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </motion.div>
 
         {/* Content */}
