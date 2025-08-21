@@ -22,17 +22,17 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
   // Auto-play slides
   const slides = [
     {
-      image: "https://i.imgur.com/NT3OQKz.jpeg",
+      image: "https://i.imgur.com/MXRFgo2.jpeg",
       title: "Student Collaboration",
       subtitle: "Connect with peers and build lasting friendships"
     },
     {
-      image: "https://i.imgur.com/ddR9wyS.jpeg",
+      image: "https://i.imgur.com/uKliuxp.jpeg",
       title: "Academic Excellence",
       subtitle: "Enhance your learning through extracurricular activities"
     },
     {
-      image: "https://johnclements.com/wp-content/uploads/2023/08/LEADERSHIP.png",
+      image: "https://i.imgur.com/U62VBJ0.jpeg",
       title: "Leadership Development",
       subtitle: "Develop essential skills for your future career"
     }
